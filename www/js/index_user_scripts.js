@@ -711,14 +711,38 @@
 
     $(document).on("click", ".uib_w_308 > li", function(evt)
     {
-        if($(this).attr("id") !== "novoabarelatar"){
-            if($(".uib_w_308 li").length > 2){
+        var abaClicada = $(this).attr("id");
 
-                guardarcamposrel();
+        if(abaClicada !== "novoabarelatar"){
+            if($(".uib_w_308 li").length > 2){
+                if(JSON.parse(sessionStorage.getItem("camposrelatar")).length < $(".uib_w_308 li").length - 1 ){
+                    //window.console.log(JSON.parse(sessionStorage.getItem("camposrelatar")).length);
+                    guardarcamposrel();
+                }
+
             }
             $(".uib_w_308").append($(this));
             $(".inputsrelatado").show();
-        //$(".uib_w_308").append($("#novoabarelatar"));
+
+            //push os itens do local storage
+            //window.console.log($(this).attr("id"));
+            var campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
+
+            var i = 0;
+            $.each(campos, function(){
+                //window.console.log(campos[i].idaba);
+                if(campos[i].idaba === abaClicada){
+                    window.console.log("entrou");
+                    campos = campos[i];
+                    return false;
+                }
+            i++;
+            });
+            $("#relatardata").val(campos.datarelatada);
+            $("#relatarum").prop('selectedIndex',campos.um);
+            $("#relatarvalor").val(campos.valor);
+
+
         }
         return false;
 
@@ -727,7 +751,7 @@
 
     $(document).on("click", "#okmodal", function(evt)
     {
-        window.console.log($(".uib_w_308 li").length);
+        //window.console.log($(".uib_w_308 li").length);
 
         if($(".uib_w_308 li").length > 1){
             guardarcamposrel();
@@ -736,14 +760,13 @@
        /* var item ='<li role="presentation" class="abarelatar widget uib_w_309 active" data-uib="twitter%20bootstrap/tab_item" data-ver="1" id="'+$('#idestinacao').selectedIndex +'"><a role="tab" data-toggle="tab">'+ $('#idestinacao').val()+'</a></li>';
         */
 
-        var item ='<li role="presentation" class="widget uib_w_309 active" data-uib="twitter%20bootstrap/tab_item" data-ver="1" id="abas'+$(".uib_w_308 li").length+'"><a role="tab" data-toggle="tab">'+ $('#idestinacao').val()+'</a></li>';
+        var item ='<li role="presentation" class="widget uib_w_309 active" data-uib="twitter%20bootstrap/tab_item" data-ver="1" id="aba'+$(".uib_w_308 li").length+'"><a role="tab" data-toggle="tab">'+ $('#idestinacao').val()+'</a></li>';
 
         $("#abasrelatar").append(item);
         $(".inputsrelatado").show();
         //$(".uib_w_308").append($("#novoabarelatar"));
         $("#novoabarelatar").removeClass("active");
-        //window.console.log($("#novo").text());
-
+        //guarda no localstorage
 
 
         return false;
@@ -751,6 +774,7 @@
 
     $(document).on("click", "#cancelamodal", function(evt)
     {
+
         $("#novoabarelatar").removeClass("active");
         $(".inputsrelatado").hide();
          return false;
@@ -766,22 +790,28 @@
 
     function guardarcamposrel(){
 
-        window.console.log($(".uib_w_308 .active").attr("id"));
+        //window.console.log($(".uib_w_308 li").length);
+
+
         var campos = [];
         if(sessionStorage.getItem("camposrelatar")){
 
             campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
 
-            campos[campos.length] = {//idaba:$(".uib_w_309 li ").attr("id")
-            data: $("#relatardata").val(),
-            um: $("#relatarum").val(),
+            //window.console.log(campos.length);
+
+            campos[campos.length] = {idaba:"aba"+(campos.length + 1),
+            datarelatada: $("#relatardata").val(),
+            um: $("#relatarum")[0].selectedIndex,
             valor: $("#relatarvalor").val()};
 
         }else{
-            campos[0] = {data: $("#relatardata").val(),
-            um: $("#relatarum").val(),
+            campos[0] = {idaba:"aba1",
+            datarelatada: $("#relatardata").val(),
+            um: $("#relatarum")[0].selectedIndex,
             valor: $("#relatarvalor").val()};
         }
+
         sessionStorage.setItem("camposrelatar", JSON.stringify(campos));
     }
 
