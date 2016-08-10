@@ -700,48 +700,60 @@
          return false;
     });
 
-     //aba novo relato de cultivar recebido
-     $(document).on("click", "#novoabarelatar", function(evt)
-    {
-        $(".uib_w_310").modal("toggle");
-
-         return false;
-    });
-
-
+     /*$('#relatarvalor').outside('click', function(e) {
+        window.console.log('outside');
+     });
+*/
     $(document).on("click", ".uib_w_308 > li", function(evt)
     {
         var abaClicada = $(this).attr("id");
-        window.console.log(abaClicada);
+
+
         if(abaClicada !== "novoabarelatar"){
-            if($(".uib_w_308 li").length > 2){
-                if(JSON.parse(sessionStorage.getItem("camposrelatar")).length < $(".uib_w_308 li").length - 1 ){
-                    //window.console.log(JSON.parse(sessionStorage.getItem("camposrelatar")).length);
-                    guardarcamposrel();
-                }
 
-            }
-            $(".uib_w_308").append($(this));
-            $(".inputsrelatado").show();
+                    if(JSON.parse(sessionStorage.getItem("camposrelatar")).length < $(".uib_w_308 li").length - 1 ){
+                        //gera outro campo e guarda na memoria
+                        //var n = parseInt(sessionStorage.getItem("qtdAbas"))+1;
+                        //sessionStorage.setItem("qtdAbas", n);
+                        guardarcamposrel();
+                    }
+                    //reescreve informacoes no sessionStorage
+                    //var abaanterior = sessionStorage.getItem("abaselecionada");
+                    //sessionStorage.setItem("abaselecionada", abaClicada);
 
-            //push os itens do local storage
-            //window.console.log($(this).attr("id"));
-            var campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
+                    $(".uib_w_308").append($(this));
+                    $(".inputsrelatado").show();
 
-            var i = 0;
-            $.each(campos, function(){
-                if(campos[i].idaba === abaClicada){
-                    campos = campos[i];
-                    return false;
-                }
-            i++;
-            });
-            $("#relatardata").val(campos.datarelatada);
-            $("#relatarum").prop('selectedIndex',campos.um);
-            $("#relatarvalor").val(campos.valor);
+                    //push os itens do local storage
+                    //window.console.log($(this).attr("id"));
+                    var campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
+                    var valorinputs = [];
+                    var i = 0;
+                    $.each(campos, function(){
+                        if(campos[i].idaba === abaClicada){
+                            valorinputs = campos[i];
+                            //return false;
+                        }
+                        /*if(campos[i].idaba === abaanterior && campos[i].valor !== $("#relatarvalor").val()){
+                           //&& campos[i].datarelatada !== $("#relatardata").val() && campos[i].um !== $("#relatarum").val() && campos[i].valor !== $("#relatarvalor").val()){
+                            campos[i].datarelatada = $("#relatardata").val();
+                            campos[i].um = $("#relatarum")[0].selectedIndex;
+                            campos[i].valor = $("#relatarvalor").val();
+                            window.console.log("mudanca");
+                        }*/
+                    i++;
+                    });
+                    $("#relatardata").val(valorinputs.datarelatada);
+                    $("#relatarum").prop('selectedIndex',valorinputs.um);
+                    $("#relatarvalor").val(valorinputs.valor);
+
+                    //sessionStorage.setItem("camposrelatar", JSON.stringify(campos));
 
 
+        }else{
+            $(".uib_w_310").modal("toggle");
         }
+
         return false;
 
     });
@@ -751,13 +763,17 @@
     {
         var i;
         if(sessionStorage.getItem("qtdAbas")){
+             //guarda no session storage itens dos inputs
+            if($(".uib_w_308 li").length > 1){
+                guardarcamposrel();
+            }
             i = parseInt(sessionStorage.getItem("qtdAbas"))+1;
         }else{
             i = 1;
         }
         sessionStorage.setItem("qtdAbas", i);
-        //guarda itens no session storage
-        guardarcamposrel();
+
+
 
         var item ='<li role="presentation" class="widget uib_w_309 active" data-uib="twitter%20bootstrap/tab_item" data-ver="1" id="aba'+i+'"><a role="tab" data-toggle="tab">'+ $('#idestinacao').val()+'</a></li>';
 
@@ -765,8 +781,8 @@
         $(".inputsrelatado").show();
         //$(".uib_w_308").append($("#novoabarelatar"));
         $("#novoabarelatar").removeClass("active");
-        //guarda no localstorage
 
+        //sessionStorage.setItem("abaselecionada", $(".uib_w_308 .active").attr("id"));
 
         return false;
     });
