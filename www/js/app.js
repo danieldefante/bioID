@@ -234,7 +234,7 @@ function listarCultivar(){
         var a = dados.data;
         var qnt = a.length;
         for(var i=0; i<qnt; i++){
-            var item ='<a id="1" class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+ a[i].nome +'</h4><p class="list-group-item-text">500 kilos</p></a>';
+            var item ='<a id="1" class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+ a[i].nomecultivar +'</h4><p class="list-group-item-text">500 kilos</p></a>';
 
             $("#cultivarUnidade").append(item);
         }
@@ -245,7 +245,7 @@ function listarCultivar(){
 
 
 function cultivarRelatado(teste){
-    if(teste !== 'nao relatada'){
+    if(teste !== 'Não relatado'){
         return '<span class="verde badge fa fa-thumbs-o-up"><span class="amarelo badge fa fa-chevron-right"> </span></span>';
     }else{
         return '<span class="laranja badge fa fa-chevron-right"> </span>';
