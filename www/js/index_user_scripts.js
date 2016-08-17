@@ -156,14 +156,6 @@
          $("#relatorios").hide();
     }
 
-    //atualizar lista de produtos recebidos
-    $(document).on("click", ".uib_w_270", function(evt)
-    {
-
-        navigator.notification.alert("Trabalhando off-line algumas informações que dependem do servidor podem sofrer alterações(Exemplo: O estoque da sua unidade), trabalhe sempre on-line se possível. A colheita de informações é armazenada em lotes na memória do aparelho e precisa ser repassada ao servidor, seu lote espirará no prazo de 2 dias e suas informações serão perdidas, conecte-se em uma rede e repasse suas informaçõe antes de espirar. Bom trabalho!", function(){},"Alerta!", "OK");
-        // window.listarCultivarRecebidos();
-
-    });
 
         /* button  .uib_w_50 */
     $(document).on("click", ".uib_w_50", function(evt)
@@ -323,6 +315,7 @@
             'Deseja sair?', // message
             function(buttonIndex) {
                 if(buttonIndex === 2){
+                    $('#bs-navbar-1').collapse('hide');
                     //chama a funcao que limpa a localStorage e abre mainpage
                     window.clearGoMainPage();
 
@@ -506,44 +499,46 @@
         //var nomeCultivar = $(this).children('h4').html();
         //carrega item que esta no localStorage
         var cultivaresRecebidos = JSON.parse(localStorage.getItem("cultivaresRecebidos"));
-        cultivarSelecionado = cultivaresRecebidos[a];
+        if(cultivaresRecebidos.length > 1){
+            cultivarSelecionado = cultivaresRecebidos[a];
 
-        //hide e show os painels de cada usuario
-        if(window.usuario === "e"){
-            $("#painelEstoque").show();
-            $("#desabilitado").prop('disabled', true);
-            $("#salvarEstoque").hide();
-            //some botao de relatar
-            $("#relatar").hide();
-        }else if(window.usuario === "g"){
-            $("#desabilitado").prop('disabled', false);
-            $("#salvarEstoque").show();
-            $("#painelEstoque").show();
-            //some botao de relatar
-            $("#relatar").hide();
-        //usuario agricultor
-        }else{
-            $("#painelEstoque").hide();
-            //aparece botao de relatar se não foi relatado ainda a produçao do cultivar
-            if(cultivarSelecionado.descricao === "Não relatado"){
-                $("#relatar").show();
-                $("#nomeCultivarRelatar").html("Relatar "+cultivarSelecionado.qtdrecebida+" de "+cultivarSelecionado.grandeza_cultivar+" de "+cultivarSelecionado.nomecultivar+':<i class="fa fa-truck button-icon-right" data-position="top"></i>');
-            }else{
+            //hide e show os painels de cada usuario
+            if(window.usuario === "e"){
+                $("#painelEstoque").show();
+                $("#desabilitado").prop('disabled', true);
+                $("#salvarEstoque").hide();
+                //some botao de relatar
                 $("#relatar").hide();
+            }else if(window.usuario === "g"){
+                $("#desabilitado").prop('disabled', false);
+                $("#salvarEstoque").show();
+                $("#painelEstoque").show();
+                //some botao de relatar
+                $("#relatar").hide();
+            //usuario agricultor
+            }else{
+                $("#painelEstoque").hide();
+                //aparece botao de relatar se não foi relatado ainda a produçao do cultivar
+                if(cultivarSelecionado.descricao === "Não relatado"){
+                    $("#relatar").show();
+                    $("#nomeCultivarRelatar").html("Relatar "+cultivarSelecionado.qtdrecebida+" de "+cultivarSelecionado.grandeza_cultivar+" de "+cultivarSelecionado.nomecultivar+':<i class="fa fa-truck button-icon-right" data-position="top"></i>');
+                }else{
+                    $("#relatar").hide();
+                }
             }
-        }
 
 
-        //renomeia os valores dos produtos
-        $("#nomeProduto").html(cultivarSelecionado.nomecultivar);
-        //muda a image do cultivar
-        $("#imgCultivar").attr("src", carregarImgCultivar(cultivarSelecionado.nomecultivar));
+            //renomeia os valores dos produtos
+            $("#nomeProduto").html(cultivarSelecionado.nomecultivar);
+            //muda a image do cultivar
+            $("#imgCultivar").attr("src", carregarImgCultivar(cultivarSelecionado.nomecultivar));
 
-        //carregarImgCultivar(cultivarSelecionado.nomecultivar);
+            //carregarImgCultivar(cultivarSelecionado.nomecultivar);
 
 
-        activate_page("#page_6");
+            activate_page("#page_6");
 
+    }
          return false;
     });
 

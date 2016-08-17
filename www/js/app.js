@@ -208,25 +208,34 @@ function servArmazenarCulRecebdo(usuario){
 
 //funcao que organiza e lista as propriedades
 function listarPropriedades(){
+    var item;
     $("#itemPropriedades").empty();
     var propriedades = JSON.parse(localStorage.getItem("propriedades"));
-    var item;
+    if(propriedades.length > 0){
+        var i = 0;
+        $.each(propriedades, function(){
+            item = '<li id="propriedade'+i+'" role="presentation" class="widget uib_w_287" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i].nomepropriedade+'</a></li>';
 
-    var i = 0;
-    $.each(propriedades, function(){
-        item = '<li id="propriedade'+i+'" role="presentation" class="widget uib_w_287" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i].nomepropriedade+'</a></li>';
+            $("#itemPropriedades").append(item);
 
-        $("#itemPropriedades").append(item);
+            i++;
+        });
 
-        i++;
-    });
+        //marca o ultima propriedade como ativa
+        $('#propriedade'+ (i-1)).addClass("active");
+        //chama a funcao de listar cultivares recebidos
+        listarCultivarRecebidos(propriedades[i-1].propriedade_idpropriedade);
 
-    //marca o ultima propriedade como ativa
-    $('#propriedade'+ (i-1)).addClass("active");
-    //chama a funcao de listar cultivares recebidos
-    listarCultivarRecebidos(propriedades[i-1].propriedade_idpropriedade);
+    }else{
+        $("#cultivarRecebido").empty();
+
+        item = '<a id="1" class="list-group-item allow-badge widget uib_w_267" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-rotate-left"> </span><h4 class="list-group-item-heading">Atualizar lista</h4><p class="list-group-item-text">data recebimento/quantidade</p></a>';
+
+        $("#cultivarRecebido").append(item);
+
+        navigator.notification.alert("Nenhum cultivar foi recebido!",function(){},"Alerta","OK");
+    }
 }
-
 function listarCultivar(){
     $("#cultivarUnidade").empty();
 
