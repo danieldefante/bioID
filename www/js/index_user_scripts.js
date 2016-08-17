@@ -298,15 +298,12 @@
 
      }
 
-     $(document).on("click", ".inicio", function(evt)
+
+     $(document).on("click", "#page_3, #page_4", function(evt)
      {
+        $('.bs-navbar-menu').collapse('hide');
 
-         if(window.usuario === "a"){
-             retornaInicioUser1();
-         }else{
-             retornaInicioUser3();
-         }
-
+         return false;
      });
 
      $(document).on("click", ".sair", function(evt)
@@ -315,7 +312,7 @@
             'Deseja sair?', // message
             function(buttonIndex) {
                 if(buttonIndex === 2){
-                    $('#bs-navbar-1').collapse('hide');
+                    $('.bs-navbar-menu').collapse('hide');
                     //chama a funcao que limpa a localStorage e abre mainpage
                     window.clearGoMainPage();
 
@@ -325,7 +322,7 @@
             ['Sair App', 'Deslogar', 'Cancelar']     // buttonLabels
         );
 
-
+         return false;
      });
 
 
@@ -334,25 +331,19 @@
      {
           activate_page("#page_99");
 
-         if(window.usuario === "a"){
-             $("#checkOffLine").hide();
-         }else{
-             $("#checkOffLine").show();
-         }
-
-
+         return false;
      });
 
       $(document).on("click", ".duvidas", function(evt)
      {
-           activate_page("#page_5");
-
+          activate_page("#page_5");
+          return false;
      });
 
      $(document).on("click", ".sobre", function(evt)
      {
            $(".uib_w_145").modal("toggle");
-
+           return false;
      });
 
     //organiza lista de propriedades com o click da propriedade
@@ -422,12 +413,13 @@
         /* button  .uib_w_136 */
     $(document).on("click", ".uib_w_136", function(evt)
     {
-        if(window.usuario === "a"){
+
+        if(window.papel === "a"){
              activate_page("#page_3");
-         }else if(window.usuario === "e"){
+         }else if(window.papel === "e" || window.papel === "g"){
              activate_page("#page_4");
          }else{
-             activate_page("#page_4");
+             window.clearGoMainPage();
          }
          return false;
     });
@@ -503,13 +495,13 @@
             cultivarSelecionado = cultivaresRecebidos[a];
 
             //hide e show os painels de cada usuario
-            if(window.usuario === "e"){
+            if(window.papel === "e"){
                 $("#painelEstoque").show();
                 $("#desabilitado").prop('disabled', true);
                 $("#salvarEstoque").hide();
                 //some botao de relatar
                 $("#relatar").hide();
-            }else if(window.usuario === "g"){
+            }else if(window.papel === "g"){
                 $("#desabilitado").prop('disabled', false);
                 $("#salvarEstoque").show();
                 $("#painelEstoque").show();
@@ -522,6 +514,7 @@
                 if(cultivarSelecionado.descricao === "Não relatado"){
                     $("#relatar").show();
                     $("#nomeCultivarRelatar").html("Relatar "+cultivarSelecionado.qtdrecebida+" de "+cultivarSelecionado.grandeza_cultivar+" de "+cultivarSelecionado.nomecultivar+':<i class="fa fa-truck button-icon-right" data-position="top"></i>');
+
                 }else{
                     $("#relatar").hide();
                 }
@@ -531,10 +524,7 @@
             //renomeia os valores dos produtos
             $("#nomeProduto").html(cultivarSelecionado.nomecultivar);
             //muda a image do cultivar
-            $("#imgCultivar").attr("src", carregarImgCultivar(cultivarSelecionado.nomecultivar));
-
-            //carregarImgCultivar(cultivarSelecionado.nomecultivar);
-
+            $("#imgCultivar").attr("src", carregarCultivar(cultivarSelecionado.nomecultivar));
 
             activate_page("#page_6");
 
@@ -542,19 +532,24 @@
          return false;
     });
 
-   function carregarImgCultivar(nomeCultivar){
-       var imgcultivares = JSON.parse(window.localStorage.getItem("imagens"));
-       var imagem;
+   function carregarCultivar(nomeCultivar){
+       var listaCultivares = JSON.parse(window.localStorage.getItem("imagens"));
+       var cultivar;
        var i = 0;
-       $.each(imgcultivares, function(){
-          if(imgcultivares[i].nomecultivar === nomeCultivar){
-             imagem = imgcultivares[i].imagem;
+       $.each(listaCultivares, function(){
+          if(listaCultivares[i].nomecultivar === nomeCultivar){
+             cultivar = listaCultivares[i];
              return false;
           }
             i++;
        });
+        //muda a descricao do cultivar
+        $("#descricaocultivar").html(cultivar.descricao);
+        //muda os valores nutricionais do cultivar
+        $("#valornutcultivar").html(cultivar.valornutricional);
 
-       return imagem;
+
+       return cultivar.imagem;
 
    }
 
@@ -620,12 +615,12 @@
 
 
 
-    $(document).on("click", ".uib_w_140", function(evt)
+    /*$(document).on("click", ".uib_w_140", function(evt)
     {
         navigator.notification.alert("Trabalhando off-line algumas informações que dependem do servidor podem sofrer alterações(Exemplo: O estoque da sua unidade), trabalhe sempre on-line se possível. A colheita de informações é armazenada em lotes na memória do aparelho e precisa ser repassada ao servidor, seu lote espirará no prazo de 2 dias e suas informações serão perdidas, conecte-se em uma rede e repasse suas informaçõe antes de espirar. Bom trabalho!", function(){},"Alerta!", "OK");
          return false;
     });
-
+*/
 
 
 
@@ -889,13 +884,18 @@
             campos[campos.length] = {idaba:"aba"+i,
             datarelatada: $("#relatardata").val(),
             um: $("#relatarum")[0].selectedIndex,
-            valor: $("#relatarvalor").val()};
+            valor: $("#relatarvalor").val(),
+            qtdcolhida: $("#qtdcolhida").val()};
 
         }else{
             campos[0] = {idaba:"aba"+1,
             datarelatada: $("#relatardata").val(),
             um: $("#relatarum")[0].selectedIndex,
-            valor: $("#relatarvalor").val()};
+            valor: $("#relatarvalor").val(),
+            qtdcolhida: $("#qtdcolhida").val()};
+
+
+
 
         }
 

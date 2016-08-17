@@ -146,8 +146,7 @@
                                     <div class="col uib_col_24 single-col" data-uib="layout/col" data-ver="0">
                                         <div class="widget-container content-area vertical-col">
                                             <div id="checkOffLine">
-                                                <label class="checkbox checkbox-padding-left widget uib_w_140 d-margins" data-uib="twitter%20bootstrap/checkbox" data-ver="1">
-                                                    <input type="checkbox">Trabalhar off-line</label>
+
                                             </div>
                                             <div class="table-thing widget uib_w_155 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
                                                 <label class="narrow-control label-top-left">Papel de Parede:</label>
@@ -163,16 +162,12 @@
                                                 <label class="narrow-control label-top-left">Localidade:</label>
                                                 <select class="wide-control form-control default input-lg">
                                                     <option>Brasil</option>
-                                                    <option>Colômbia</option>
-                                                    <option>Paraguay</option>
                                                 </select>
                                             </div>
                                             <div class="table-thing widget uib_w_240 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
-                                                <label class="narrow-control label-top-left">Linguage:</label>
+                                                <label class="narrow-control label-top-left">Linguagem:</label>
                                                 <select class="wide-control form-control default">
                                                     <option>Português-BR</option>
-                                                    <option>Espanhol</option>
-                                                    <option>Inglês</option>
                                                 </select>
                                             </div><span class="uib_shim"></span>
                                         </div>
@@ -533,8 +528,8 @@
                                                 <div class="col uib_col_79 single-col" data-uib="layout/col" data-ver="0">
                                                     <div class="widget-container content-area vertical-col">
                                                         <div class="table-thing widget uib_w_319 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
-                                                            <label class="narrow-control label-top-left">Quantidade colhida:</label>
-                                                            <input class="wide-control form-control default input-lg" type="text" placeholder="Digite um valor...">
+                                                            <label class="narrow-control label-top-left" for="qtdcolhida">Quantidade colhida:</label>
+                                                            <input class="wide-control form-control default input-lg" type="text" placeholder="Digite um valor..." id="qtdcolhida">
                                                         </div>
                                                         <span class="uib_shim"></span>
                                                     </div>
@@ -813,15 +808,11 @@
                         <div role="navigation" class="navbar navbar-default full-width-widget widget uib_w_41 d-margins navbar-inverse" data-uib="twitter%20bootstrap/navbar" data-ver="1">
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar-1"> <span class="icon-bar"></span>  <span class="icon-bar"></span>  <span class="icon-bar"></span>
                             </button><a class="navbar-brand" href="#">BioID</a>
-                            <div id="bs-navbar-1" class="navbar-collapse collapse">
+                            <div id="bs-navbar-1" class="navbar-collapse collapse bs-navbar-menu">
                                 <ul class="nav navbar-nav">
-                                    <li><a href="#" data-toggle="collapse" data-target="#bs-navbar-0" class="inicio">Início</a>
-                                    </li>
                                     <li><a href="#" class="sobre">Sobre</a>
                                     </li>
                                     <li><a href="#" class="configuracoes">Configurações</a>
-                                    </li>
-                                    <li><a href="#">Tirar Dúvidas</a>
                                     </li>
                                     <li><a href="#" class="sair">Sair</a>
                                     </li>
@@ -912,15 +903,11 @@
                         <div role="navigation" class="navbar navbar-default full-width-widget widget uib_w_47 d-margins navbar-inverse" data-uib="twitter%20bootstrap/navbar" data-ver="1">
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar-2"> <span class="icon-bar"></span>  <span class="icon-bar"></span>  <span class="icon-bar"></span>
                             </button><a class="navbar-brand" href="#">BioID</a>
-                            <div id="bs-navbar-2" class="navbar-collapse collapse">
+                            <div id="bs-navbar-2" class="navbar-collapse collapse bs-navbar-menu">
                                 <ul class="nav navbar-nav">
-                                    <li><a href="#" data-toggle="collapse" data-target="#bs-navbar-0" class="inicio">Início</a>
-                                    </li>
                                     <li><a href="#" class="sobre">Sobre</a>
                                     </li>
                                     <li><a href="#" class="configuracoes">Configurações</a>
-                                    </li>
-                                    <li><a href="#">Tirar Dúvidas</a>
                                     </li>
                                     <li><a href="#" class="sair">Sair</a>
                                     </li>
@@ -1204,14 +1191,14 @@
                                     <div id="colapseDesc" class="colapses panel widget uib_w_260 panel-success" data-uib="twitter%20bootstrap/collapsible" data-ver="1">
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
-           <a class="accordion-toggle" data-toggle="collapse" href="#bs-accordion-group-9" data-parent="#bs-accordion-2">Descrição<i id="iconeDesc" class="fa fa-chevron-down button-icon-right" data-position="top"></i></a>
+           <a class="accordion-toggle" data-toggle="collapse" href="#bs-accordion-group-9" data-parent="#bs-accordion-2">Descrição</a>
        </h4>
                                         </div>
                                         <div id="bs-accordion-group-9" class="panel-collapse collapse">
                                             <div class="panel-body">
                                                 <div class="col uib_col_64 single-col" data-uib="layout/col" data-ver="0">
                                                     <div class="widget-container content-area vertical-col">
-                                                        <div class="tarea widget uib_w_263 d-margins" data-uib="media/text" data-ver="0" name="uib_w_263">
+                                                        <div class="tarea widget uib_w_263 d-margins" data-uib="media/text" data-ver="0" name="uib_w_263" id="descricaocultivar">
                                                             <div class="widget-container left-receptacle"></div>
                                                             <div class="widget-container right-receptacle"></div>
                                                             <div class="text-container">
@@ -1234,7 +1221,7 @@
                                             <div class="panel-body">
                                                 <div class="col uib_col_65 single-col" data-uib="layout/col" data-ver="0">
                                                     <div class="widget-container content-area vertical-col">
-                                                        <div class="tarea widget uib_w_264 d-margins" data-uib="media/text" data-ver="0" name="uib_w_264">
+                                                        <div class="tarea widget uib_w_264 d-margins" data-uib="media/text" data-ver="0" name="uib_w_264" id="valornutcultivar">
                                                             <div class="widget-container left-receptacle"></div>
                                                             <div class="widget-container right-receptacle"></div>
                                                             <div class="text-container">
