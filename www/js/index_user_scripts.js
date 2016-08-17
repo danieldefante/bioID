@@ -708,9 +708,16 @@
             retorno = [false, 'As senhas não correspondem!', '#ireescrevasenha'];
         }
 
+        //valida o email
+        var filtro1 = $("#iemail").val().match(/@/g);
+        var filtro2 = $("#iemail").val().match(/./g);
+        if(filtro1 === null || filtro2 === null || filtro1.length > 1){
+            retorno = [false, 'Email não valido!', '#iemail'];
+        }
+
         var campos = ['#inome', '#isobrenome', '#idatanascimento', '#irg', '#icpf', '#itelefone1', '#inomepropriedade', '#irua', '#inumero', '#ibairro', '#icomplemento', '#icep', '#estado', '#cidade', '#iarea', '#iareautilizavel', '#igpslat', '#igpslong', '#iqtdintegrantes', '#iqtdcriancas', '#iqtdgravidas', '#iusuario', '#iemail', '#isenha'];
         var msgs = ['O campo nome não pode ser vazio!', 'O campo sobrenome não pode ser vazio!', 'O campo data nascimento não pode ser vazio!', 'O campo rg não pode ser vazio!', 'O campo cpf não pode ser vazio!', 'O campo telefone 1 não pode ser vazio!', 'O campo nome do Sítio/Terreno/Propriedade não pode ser vazio!', 'O campo rua não pode ser vazio!', 'O campo numero não pode ser vazio!', 'O campo bairro não pode ser vazio!', 'O campo complemento não pode ser vazio!', 'O campo cep não pode ser vazio!', 'O campo estado não pode ser vazio!', 'O campo cidade não pode ser vazio!', 'O campo Área total não pode ser vazio!', 'O campo Área utilizável não pode ser vazio!', 'O campo latitude não pode ser vazio!', 'O campo longitude não pode ser vazio!', 'O campo quantidade de membros não pode ser vazio!', 'O campo números de crianças menores de 5 anos não pode ser vazio!', 'O campo número de mulheres grávidas ou amamentando não pode ser vazio!', 'O campo usuário não pode ser vazio!', 'O campo email não pode ser vazio!', 'O campo senha não pode ser vazio!'];
-       /* var i = 0;
+        var i = 0;
         $.each(campos, function(){
             if($(campos[i]).val() === ""){
                 retorno = [false, msgs[i], campos[i]];
@@ -719,19 +726,6 @@
 
             i++;
         });
-      */
-
-		// filtros
-		var emailFilter = new RegExp(/^.+@.+\..{2,}$/);
-        // condição
-        if(!(emailFilter.test($("#iemail").val()))){
-			retorno = [false, 'Email não valido!', '#iemail'];
-		}
-
-
-
-
-
 
 
         return retorno;
