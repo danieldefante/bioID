@@ -37,7 +37,7 @@ dgCidadesEstados.prototype = {
     var opts = this.cidade;
     while (opts.childNodes.length)
       opts.removeChild(opts.firstChild);
-    this.addOption(opts, '', 'Selecione uma cidade');
+    this.addOption(opts, '', '');
     for (var i=0;i<itens_total;i++)
       this.addOption(opts, itens[i], itens[i]);
   },
@@ -55,7 +55,7 @@ dgCidadesEstados.prototype = {
     elm.appendChild(opt);
   },
   estados : [
-    ['','Selecione um estado'],['AC','Acre'],['AL','Alagoas'],['AM','Amazonas'],['AP','Amapá'],['BA','Bahia'],
+    ['',''],['AC','Acre'],['AL','Alagoas'],['AM','Amazonas'],['AP','Amapá'],['BA','Bahia'],
     ['CE','Ceará'],['DF','Distrito Federal'],['ES','Espírito Santo'],['GO','Goiás'],['MA','Maranhão'],['MG','Minas Gerais'],
     ['MS','Mato Grosso do Sul'],['MT','Mato Grosso'],['PA','Pará'],['PB','Paraíba'],['PE','Pernambuco'],['PI','Piauí'],
     ['PR','Paraná'],['RJ','Rio de Janeiro'],['RN','Rio Grande do Norte'],['RO','Rondônia'],['RR','Roraima'],['RS','Rio Grande do Sul'],

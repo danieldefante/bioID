@@ -10,7 +10,6 @@
 
      $(document).ready(function(){
         $('#icpf').mask('000.000.000-00');//, {reverse: true});
-        //$('.date').mask('00/00/0000');
         $('#icep').mask('00000-000');
         $('#irg').mask('0.000.000.000');
         $('.telefone').mask('(00) 00000-0000');
@@ -19,7 +18,8 @@
         $(".palavras").mask('a',{'translation': {'a': {pattern: /[A-Za-zçÇãÃâÂáÁéÉíÍõÕôÔ-\s]/, optional: true, recursive: true}}});
         $("#iusuario").mask('a',{'translation': {'a': {pattern: /[A-Za-z0-9]/, optional: true, recursive: true}}});
         $('.nreal').mask('0', {'translation': {0: {pattern: /[0-9.]/, optional: true, recursive: true}}});
-
+        $('.idatas').mask('00/00/0000');
+        $("#iemail").mask('a',{'translation': {'a': {pattern: /[A-Za-z@-_.0-9]/, optional: true, recursive: true}}});
      });
 
      //variavel responsavel por armazenar cultivar selecionado
@@ -61,7 +61,7 @@
     {
          /*global activate_page */
          activate_page("#page_2");
-        $("#inputNomeCadastrar").focus();
+        $("#inome").focus();
          return false;
     });
 
@@ -648,49 +648,113 @@
         /* button  .uib_w_30 */
     $(document).on("click", ".uib_w_30", function(evt)
     {
+        //teste se existe campos nulos
+        //if($("#inome").val() !== ""){
+        var teste = testeCamposNulos();
 
-        var data = "nome="+$("#inome").val()+"&sobrenome="+$("#isobrenome").val()+"&apelido="+$("#iapelido").val()+"&cpf="+$("#icpf").val()+"&sexo="+$('input[name = "bs-radio-group-0"]:checked').val()+"&rg="+$("#irg").val()+"&datanascimento="+$("#idatanascimento").val()+"&telefone1="+$("#itelefone1").val()+"&telefone2="+$("#itelefone2").val()+ "&escolaridade_idescolaridade="+$("#iescolaridade")[0].selectedIndex+ "&estadocivil_idestadocivil="+$("#iestadocivil")[0].selectedIndex+"&nomepropriedade="+$("#inomepropriedade").val()+"&rua="+$("#irua").val()+"&numero="+$("#inumero").val()+"&bairro="+$("#ibairro").val()+"&complemento="+$("#icomplemento").val()+"&cep="+$("#icep").val()+"&cidade_idcidade="+$("#cidade")[0].selectedIndex+"&area="+$("#iarea").val()+"&unidadedemedida="+$('input[name = "bs-radio-group-2"]:checked').val()+"&areautilizavel="+$("#iareautilizavel").val()+"&unidadedemedidaau="+$('input[name = "bs-radio-group-1"]:checked').val()+"&gps_lat="+$("#igpslat").val()+"&gps_long="+$("#igpslong").val()+"&qtdedeintegrantes="+$("#iqtdintegrantes").val()+"&qtdedecriancas="+$("#iqtdcriancas").val()+"&qtdedegravidas="+$("#iqtdgravidas").val()+"&usuario="+$("#iusuario").val()+"&senha="+$("#isenha").val()+"&email="+$("#iemail").val()+"&papel=a&unidade_idunidade=2";
-
-
-        $.post("http://"+window.ipServidor+":8080/Projeto_BioID-war/servico/pessoa/inseriragricultor", data, function(dados){
-
-
-
-            if(dados.sucesso){
-                //vai para a pagina de login
-                activate_page("#page_2");
-                //limpa os campos
-                $("camposcadastro").val();
-
-            }else{
-               navigator.notification.alert("Usuario não cadastrado!, mensage="+dados.mensagem, function(){},"Alerta!", "OK");
-
-            }
+        if(teste[0]){
+            var data = "nome="+$("#inome").val()+"&sobrenome="+$("#isobrenome").val()+"&apelido="+$("#iapelido").val()+"&cpf="+$("#icpf").val()+"&sexo="+$('input[name = "bs-radio-group-0"]:checked').val()+"&rg="+$("#irg").val()+"&datanascimento="+$("#idatanascimento").val()+"&telefone1="+$("#itelefone1").val()+"&telefone2="+$("#itelefone2").val()+ "&escolaridade_idescolaridade="+($("#iescolaridade")[0].selectedIndex+1)+ "&estadocivil_idestadocivil="+($("#iestadocivil")[0].selectedIndex+1)+"&nomepropriedade="+$("#inomepropriedade").val()+"&rua="+$("#irua").val()+"&numero="+$("#inumero").val()+"&bairro="+$("#ibairro").val()+"&complemento="+$("#icomplemento").val()+"&cep="+$("#icep").val()+"&cidade_idcidade="+($("#cidade")[0].selectedIndex+1)+"&area="+$("#iarea").val()+"&unidadedemedida="+$('input[name = "bs-radio-group-2"]:checked').val()+"&areautilizavel="+$("#iareautilizavel").val()+"&unidadedemedidaau="+$('input[name = "bs-radio-group-1"]:checked').val()+"&gps_lat="+$("#igpslat").val()+"&gps_long="+$("#igpslong").val()+"&qtdedeintegrantes="+$("#iqtdintegrantes").val()+"&qtdedecriancas="+$("#iqtdcriancas").val()+"&qtdedegravidas="+$("#iqtdgravidas").val()+"&usuario="+$("#iusuario").val()+"&senha="+$("#isenha").val()+"&email="+$("#iemail").val()+"&papel=a&unidade_idunidade=2";
 
 
+            $.post("http://"+window.ipServidor+":8080/Projeto_BioID-war/servico/pessoa/inseriragricultor", data, function(dados){
+
+                //se cadastrado entao vai para pagina inicial
+                if(dados.sucesso){
+                    //vai para a pagina de login
+                    navigator.notification.alert(dados.mensagem, function(){
+                        $(".camposcadastro").val("");
+                        activate_page("#page_1");
+                        $("#inputUsuario").focus();
+
+                    },"Alerta!", "OK");
+
+                }else{
+                   navigator.notification.alert("Usuario não cadastrado!, mensage="+dados.mensagem, function(){},"Alerta!", "OK");
+
+                }
 
 
+            },"json")
+            //Tratamento de erro da requisicao servico RESt login
+            .fail(function(){
+                navigator.notification.confirm(
+                    'Cadastro não efetuado, sem conexão com o servidor!',
+                    function() {
+                        //limpa a tela e vai para a pagina inicial
+                        window.clearGoMainPage();
+                    },
+                    'Erro',
+                    ['OK']
+                );
 
 
+            });
 
-        },"json")
-        //Tratamento de erro da requisicao servico RESt login
-        .fail(function(){
-            navigator.notification.confirm(
-                'Sem conexão com o servidor!',
-                function() {
-                    //limpa a tela e vai para a pagina inicial
-                    window.clearGoMainPage();
-                },
-                'Erro',
-                ['OK']
-            );
+        //mensagem de alerta
+        }else{
+            alertaCampoNulo(teste[1], teste[2]);
+        }
 
-
-        });
-
+        ///
          return false;
     });
+    //funcao para verificar se existe campos nulos
+    function testeCamposNulos(){
+        var retorno = [true, 'Erro verificação dos campos', 'nulo'];
+        //verifica se a senha correspondem
+        if($("#ireescrevasenha").val() === ""){
+            retorno = [false, 'O campo reescreva senha não pode ser vazio!', '#ireescrevasenha'];
+        }else if($("#isenha").val() !== $("#ireescrevasenha").val()){
+            retorno = [false, 'As senhas não correspondem!', '#ireescrevasenha'];
+        }
+
+        var campos = ['#inome', '#isobrenome', '#idatanascimento', '#irg', '#icpf', '#itelefone1', '#inomepropriedade', '#irua', '#inumero', '#ibairro', '#icomplemento', '#icep', '#estado', '#cidade', '#iarea', '#iareautilizavel', '#igpslat', '#igpslong', '#iqtdintegrantes', '#iqtdcriancas', '#iqtdgravidas', '#iusuario', '#iemail', '#isenha'];
+        var msgs = ['O campo nome não pode ser vazio!', 'O campo sobrenome não pode ser vazio!', 'O campo data nascimento não pode ser vazio!', 'O campo rg não pode ser vazio!', 'O campo cpf não pode ser vazio!', 'O campo telefone 1 não pode ser vazio!', 'O campo nome do Sítio/Terreno/Propriedade não pode ser vazio!', 'O campo rua não pode ser vazio!', 'O campo numero não pode ser vazio!', 'O campo bairro não pode ser vazio!', 'O campo complemento não pode ser vazio!', 'O campo cep não pode ser vazio!', 'O campo estado não pode ser vazio!', 'O campo cidade não pode ser vazio!', 'O campo Área total não pode ser vazio!', 'O campo Área utilizável não pode ser vazio!', 'O campo latitude não pode ser vazio!', 'O campo longitude não pode ser vazio!', 'O campo quantidade de membros não pode ser vazio!', 'O campo números de crianças menores de 5 anos não pode ser vazio!', 'O campo número de mulheres grávidas ou amamentando não pode ser vazio!', 'O campo usuário não pode ser vazio!', 'O campo email não pode ser vazio!', 'O campo senha não pode ser vazio!'];
+       /* var i = 0;
+        $.each(campos, function(){
+            if($(campos[i]).val() === ""){
+                retorno = [false, msgs[i], campos[i]];
+                return false;
+            }
+
+            i++;
+        });
+      */
+
+		// filtros
+		var emailFilter = new RegExp(/^.+@.+\..{2,}$/);
+        // condição
+        if(!(emailFilter.test($("#iemail").val()))){
+			retorno = [false, 'Email não valido!', '#iemail'];
+		}
+
+
+
+
+
+
+
+        return retorno;
+    }
+    //funcao de alerta campos nulos
+    function alertaCampoNulo(msg, campo){
+        navigator.notification.confirm(
+            msg,
+            function() {
+                if(campo !== "nulo"){
+                    //leva o cursor para o campo
+                    $(campo).focus();
+                }else{
+                    //limpa a tela e vai para a pagina inicial
+                    $(".camposcadastro").val("");
+                    window.clearGoMainPage();
+                }
+
+            },
+            'Alerta!',
+            ['OK']
+        );
+    }
 
         /* button  .uib_w_105 */
     $(document).on("click", ".uib_w_105", function(evt)
