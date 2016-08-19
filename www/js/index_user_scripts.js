@@ -583,6 +583,7 @@
          $("#colheita").show();
          $(".inputsrelatado").hide();
          $("#recebidos").hide();
+         $("#qtdcolhida").focus();
 
          return false;
     });
@@ -751,89 +752,119 @@
          return false;
     });
 
-     /*$('#relatarvalor').outside('click', function(e) {
-        window.console.log('outside');
+     //funcao de guardar na memoria dados do input quantidade colhida
+     $('#qtdcolhida').focusout(function() {
+         //guarda valor na memoria
+         sessionStorage.setItem('qtdcolhida', $('#qtdcolhida').val());
+
+        return false;
      });
-*/
+
+
+     $(document).on("click", ".uib_w_338", function(evt){
+
+        if($(this).children('input').is(':checked')){
+            $(this).children('input').prop( "checked", false);
+            $('#relatarqtd').prop('disabled', false);
+            $('#relatarqtd').val('');
+            $("#relatarum").val("Kilo(s)");
+            $('#relatarum').prop('disabled', false);
+        }else{
+            $(this).children('input').prop( "checked", true);
+            $('#relatarqtd').prop('disabled', true);
+            $('#relatarqtd').val($('#qtdcolhida').val());
+            $('#relatarum').prop('disabled', true);
+            $("#relatarum").val($('#umcolheita').val());
+        }
+
+         return false;
+     });
+
     $(document).on("click", ".uib_w_308 > li", function(evt)
     {
         var abaClicada = $(this).attr("id");
 
+        //testa se foi populado o input de quantidade colhida
+        if($('#qtdcolhida').val() > 0 && sessionStorage.getItem("qtdcolhida") === $('#qtdcolhida').val()){
 
-        if(abaClicada !== "novoabarelatar"){
+            //primeira destinacao
+            if($("#abasrelatar li").length === 1 ){
+                $(".uib_w_310").modal("toggle");
+            }else if($('#relatardata').val() !== ''){
+                if($('#relatarqtd').val() !== ''){
+                    //testa se o checkbox esta ativo
+                    if(!$('#todacolheita').is(':checked')){
+                        if($('#idestinacao option').length < 1 && abaClicada === "novoabarelatar"){
+                            navigator.notification.alert("Todas as destinações estão abertas!",function(){
+                                $("#novoabarelatar").removeClass("active");
+                                $(".inputsrelatado").hide();
+                            },"Alerta!:", "OK");
+                        }else{
+                            //verifica e guarda dados na sessionStorage
+                            verificaAba(abaClicada);
+                            //cria uma nova destinacao, abre o modal
+                            if(abaClicada === "novoabarelatar"){
+                                $(".uib_w_310").modal("toggle");
+                            //salva e carrega dados das abas
+                            }else{
+                                $(".uib_w_308").append($(this));
+                            }
 
-                    if(JSON.parse(sessionStorage.getItem("camposrelatar")).length < $(".uib_w_308 li").length - 1 ){
-                        //gera outro campo e guarda na memoria
-                        //var n = parseInt(sessionStorage.getItem("qtdAbas"))+1;
-                        //sessionStorage.setItem("qtdAbas", n);
-                        guardarcamposrel();
-                    }
-                    //reescreve informacoes no sessionStorage
-                    //var abaanterior = sessionStorage.getItem("abaselecionada");
-                    //sessionStorage.setItem("abaselecionada", abaClicada);
-
-                    $(".uib_w_308").append($(this));
-                    $(".inputsrelatado").show();
-
-                    //push os itens do local storage
-                    //window.console.log($(this).attr("id"));
-                    var campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
-                    var valorinputs = [];
-                    var i = 0;
-                    $.each(campos, function(){
-                        if(campos[i].idaba === abaClicada){
-                            valorinputs = campos[i];
-                            //return false;
                         }
-                        /*if(campos[i].idaba === abaanterior && campos[i].valor !== $("#relatarvalor").val()){
-                           //&& campos[i].datarelatada !== $("#relatardata").val() && campos[i].um !== $("#relatarum").val() && campos[i].valor !== $("#relatarvalor").val()){
-                            campos[i].datarelatada = $("#relatardata").val();
-                            campos[i].um = $("#relatarum")[0].selectedIndex;
-                            campos[i].valor = $("#relatarvalor").val();
-                            window.console.log("mudanca");
-                        }*/
-                    i++;
-                    });
-                    $("#relatardata").val(valorinputs.datarelatada);
-                    $("#relatarum").prop('selectedIndex',valorinputs.um);
-                    $("#relatarvalor").val(valorinputs.valor);
+                    }else{
+                        navigator.notification.alert("O item toda colheita está marcado!",function(){
+                            $("#"+sessionStorage.getItem("abaAnterior")).addClass("active");
+                            $("#"+abaClicada).removeClass("active");
+                        },"Alerta!", "OK");
+                    }
 
-                    //sessionStorage.setItem("camposrelatar", JSON.stringify(campos));
-
+                }else{
+                    navigator.notification.alert("Insira uma quantidade para navegar nas abas!",function(){
+                        $('#relatarqtd').focus();
+                        $("#"+abaClicada).removeClass("active");
+                        $("#"+sessionStorage.getItem("abaAnterior")).addClass("active");
+                    },"Alerta!", "OK");
+                }
+            }else{
+                navigator.notification.alert("Insira uma data para navegar nas abas!",function(){
+                    $('#relatardata').focus();
+                    $("#"+abaClicada).removeClass("active");
+                    $("#"+sessionStorage.getItem("abaAnterior")).addClass("active");
+                },"Alerta!", "OK");
+            }
 
         }else{
-            $(".uib_w_310").modal("toggle");
+            navigator.notification.alert("Insira uma quantidade antes de criar uma nova destinação!",function(){
+                $('#qtdcolhida').focus();
+                $("#novoabarelatar").removeClass("active");
+            },"Alerta!", "OK");
         }
+
 
         return false;
 
     });
 
-
+     //botao no modal de destinacao
     $(document).on("click", "#okmodal", function(evt)
     {
-        var i;
-        if(sessionStorage.getItem("qtdAbas")){
-             //guarda no session storage itens dos inputs
-            if($(".uib_w_308 li").length > 1){
-                guardarcamposrel();
-            }
-            i = parseInt(sessionStorage.getItem("qtdAbas"))+1;
-        }else{
-            i = 1;
-        }
-        sessionStorage.setItem("qtdAbas", i);
+
+        sessionStorage.setItem("abaAnterior", $('#idestinacao option:selected').val());
 
 
-
-        var item ='<li role="presentation" class="widget uib_w_309 active" data-uib="twitter%20bootstrap/tab_item" data-ver="1" id="aba'+i+'"><a role="tab" data-toggle="tab">'+ $('#idestinacao').val()+'</a></li>';
+        var item ='<li role="presentation" class="widget uib_w_309 active" data-uib="twitter%20bootstrap/tab_item" data-ver="1" id="'+$('#idestinacao option:selected').val()+'"><a role="tab" data-toggle="tab">'+ $('#idestinacao').val()+'</a></li>';
 
         $("#abasrelatar").append(item);
-        $(".inputsrelatado").show();
-        //$(".uib_w_308").append($("#novoabarelatar"));
-        $("#novoabarelatar").removeClass("active");
+        //exclui o item do combobox
+        $('#idestinacao option:selected').remove();
 
-        //sessionStorage.setItem("abaselecionada", $(".uib_w_308 .active").attr("id"));
+
+        $(".inputsrelatado").show();
+        //limpa os campos
+        $('#relatardata').val('');
+        $('#relatarqtd').val('');
+        $("#novoabarelatar").removeClass("active");
+        $('#relatardata').focus();
 
         return false;
     });
@@ -850,56 +881,115 @@
     /* button  .uib_w_313 */
     $(document).on("click", ".uib_w_313", function(evt)
     {
-        var abaClicada = $(".uib_w_308 .active").attr("id");
+        navigator.notification.confirm(
+            'Deseja realmente excluir essa destinção?', // message
+            function(buttonIndex) {
+                if(buttonIndex === 2){
+                    var abaClicada = $(".uib_w_308 .active").attr("id");
+                    var campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
+                    var novoCampos = [];
+                    var i = 0;
+                    $.each(campos, function(){
 
-        var campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
-        var novoCampos = [];
-        var i = 0;
-        $.each(campos, function(){
-
-            if(campos[i].idaba !== abaClicada){
-                novoCampos[novoCampos.length] = campos[i];
-               // novoCampos[novoCampos.length-1].idaba = "idaba"+novoCampos.length;
-                //$("#"+campos[i].idaba).attr("id", "idaba"+novoCampos.length);
-            }
-        i++;
-        });
+                        if(campos[i].idaba !== abaClicada){
+                            novoCampos[novoCampos.length] = campos[i];
+                        }
+                    i++;
+                    });
 
 
-        sessionStorage.setItem("camposrelatar", JSON.stringify(novoCampos));
+                    sessionStorage.setItem("camposrelatar", JSON.stringify(novoCampos));
+                    $('#idestinacao').append('<option>'+$(".uib_w_308 .active").text()+'</option>');
 
-        $(".uib_w_308 .active").remove();
-        $(".inputsrelatado").hide();
+                    $(".uib_w_308 .active").remove();
+                    $(".inputsrelatado").hide();
+                }
+           },            // callback to invoke with index of button pressed
+            'Confirmação',           // title
+            ['Não', 'Sim']     // buttonLabels
+        );
+
         return false;
     });
 
     function guardarcamposrel(){
 
-        var i = sessionStorage.getItem("qtdAbas");
+        var i = sessionStorage.getItem("abaAnterior");
         var campos = [];
         if(sessionStorage.getItem("camposrelatar")){
 
             campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
 
-            campos[campos.length] = {idaba:"aba"+i,
+            campos[campos.length] = {idaba:i,
             datarelatada: $("#relatardata").val(),
-            um: $("#relatarum")[0].selectedIndex,
-            valor: $("#relatarvalor").val(),
-            qtdcolhida: $("#qtdcolhida").val()};
+            um: $("#relatarum").val(),
+            valor: $("#relatarqtd").val()};
 
         }else{
-            campos[0] = {idaba:"aba"+1,
+            campos[0] = {idaba: i,
             datarelatada: $("#relatardata").val(),
-            um: $("#relatarum")[0].selectedIndex,
-            valor: $("#relatarvalor").val(),
-            qtdcolhida: $("#qtdcolhida").val()};
-
-
+            um: $("#relatarum").val(),
+            valor: $("#relatarqtd").val()};
 
 
         }
 
         sessionStorage.setItem("camposrelatar", JSON.stringify(campos));
+
+    }
+
+
+    function verificaAba(abaClicada){
+        var teste = false;
+
+        var indiceAba;
+        var campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
+        var abaAnterior = sessionStorage.getItem("abaAnterior");
+        var campoAba;
+        var i = 0;
+        //percorre a sessao storage para verificar se existe o id
+        $.each(campos, function(){
+            if(abaAnterior === campos[i].idaba){
+                indiceAba = i;
+                teste = true;
+            }
+            i++;
+        });
+
+        // cria e grava informacoes no sessionStorage
+        if(!teste){
+            guardarcamposrel();
+        //atualiza o sessionStorage
+        }else{
+            campos[indiceAba].datarelatada =  $("#relatardata").val();
+            campos[indiceAba].um =  $("#relatarum").val();
+            campos[indiceAba].valor =  $("#relatarqtd").val();
+            sessionStorage.setItem("camposrelatar", JSON.stringify(campos));
+        }
+
+        //atualiza a variavel campos com os dados anteriores
+        campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
+
+        i = 0;
+        $.each(campos, function(){
+
+            if(abaClicada === campos[i].idaba){
+                $("#relatardata").val(campos[i].datarelatada);
+                $("#relatarum").val(campos[i].um);
+                $("#relatarqtd").val(campos[i].valor);
+                //mostra os campos
+                $(".inputsrelatado").show();
+            }
+            i++;
+
+        });
+
+        //grava a aba clicada na sessionstorage
+        if(abaClicada !== "novoabarelatar"){
+            sessionStorage.setItem("abaAnterior", abaClicada);
+        }
+
+
 
     }
 
