@@ -120,31 +120,103 @@
     });
 
 
+     function existeDados(atalhoClicado){
+
+            navigator.notification.confirm(
+                'Sua colheita não foi relatada! Deseja realmente cancelar?', // message
+                function(buttonIndex) {
+                    if(buttonIndex === 2){
+
+                        //limpa os abas relatar
+                        var novoItem = $("#novoabarelatar");
+                        $("#abasrelatar").empty();
+                        $("#abasrelatar").append(novoItem);
+                        $('#qtdcolhida').val('');
+                        $("#umcolheita").val("Kilo(s)");
+
+                        if($('#todacolheita').is(':checked')){
+                            $('#todacolheita').prop( "checked", false);
+                            $('#relatarqtd').prop('disabled', false);
+                            $("#relatarum").prop('disabled', false);
+                        }
+
+
+                        //limpa o combobox no modal e inseri novamente
+                        $('#idestinacao').empty();
+                        $('#idestinacao').append('<option>Consumo</option>');
+                        $('#idestinacao').append('<option>Replantio</option>');
+                        $('#idestinacao').append('<option>Venda</option>');
+                        $('#idestinacao').append('<option>Merenda Escolar</option>');
+                        $('#idestinacao').append('<option>Doação</option>');
+                        $('#idestinacao').append('<option>Perda</option>');
+
+                        //abre as box corretos
+                        $("#colheita").hide();
+                        $("#safra").hide();
+                        $("#recebidos").hide();
+                        $("#relatorios").hide();
+                        $("#"+atalhoClicado).show();
+
+                        //limpa o sessionStorage
+                        window.sessionStorage.clear();
+                    }
+               },            // callback to invoke with index of button pressed
+                'Confirmação',           // title
+                ['Não', 'Sim']     // buttonLabels
+            );
+
+
+    }
+
         /* button  .uib_w_45 */
     $(document).on("click", ".uib_w_45", function(evt)
     {
-         $("#colheita").hide();
-         $("#safra").show();
-         $("#recebidos").hide();
-         $("#relatorios").hide();
+
+         //funcao que testa se existe abas para relatar
+         if($('#colheita').is(":visible")){
+            existeDados('safra');
+         }else{
+             $("#colheita").hide();
+             $("#safra").show();
+             $("#recebidos").hide();
+             $("#relatorios").hide();
+
+         }
 
          return false;
     });
 
+
         /* button  .uib_w_46 */
     $(document).on("click", ".uib_w_46", function(evt)
     {
-         $("#recebidos").hide();
-         $("#colheita").hide();
-         $("#safra").hide();
-         $("#relatorios").show();
+         //funcao que testa se existe abas para relatar
+         if($('#colheita').is(":visible")){
+            existeDados('relatorios');
+
+         }else{
+             $("#recebidos").hide();
+             $("#colheita").hide();
+             $("#safra").hide();
+             $("#relatorios").show();
+         }
+
+
+
          return false;
     });
 
         /* button  .uib_w_44 */
     $(document).on("click", ".uib_w_44", function(evt)
     {
-         retornaInicioUser1();
+         //funcao que testa se existe abas para relatar
+         if($('#colheita').is(":visible")){
+            existeDados('recebidos');
+
+         }else{
+
+            retornaInicioUser1();
+         }
          return false;
     });
 
@@ -301,7 +373,12 @@
 
      $(document).on("click", "#page_3, #page_4", function(evt)
      {
-        $('.bs-navbar-menu').collapse('hide');
+         if($('#bs-navbar-1').is(':visible')){
+            $('#bs-navbar-1').collapse('hide');
+         }else if($('#bs-navbar-2').is(':visible')){
+            $('#bs-navbar-2').collapse('hide');
+         }
+
 
          return false;
      });
@@ -568,12 +645,6 @@
          return false;
     });
 
-        /* listitem  Batata Docez */
-    $(document).on("click", ".uib_w_98", function(evt)
-    {
-        /* your code goes here */
-         return false;
-    });
 
         /* button  .uib_w_272 */
     $(document).on("click", ".uib_w_272", function(evt)
@@ -757,6 +828,17 @@
          //guarda valor na memoria
          sessionStorage.setItem('qtdcolhida', $('#qtdcolhida').val());
 
+         //testa se toda a destinacao esta selecionada e muda os valores dos inputs
+         if($('.uib_w_338').children('input').is(':checked')){
+            $('#relatarqtd').val($('#qtdcolhida').val());
+            $("#relatarum").val($('#umcolheita').val());
+         }
+        return false;
+     });
+
+
+     $("#umcolheita").focusout(function() {
+        $("#relatarum").val($('#umcolheita').val());
         return false;
      });
 
@@ -764,13 +846,13 @@
      $(document).on("click", ".uib_w_338", function(evt){
 
         if($(this).children('input').is(':checked')){
-            $(this).children('input').prop( "checked", false);
+            $('#todacolheita').prop( "checked", false);
             $('#relatarqtd').prop('disabled', false);
             $('#relatarqtd').val('');
             $("#relatarum").val("Kilo(s)");
             $('#relatarum').prop('disabled', false);
         }else{
-            $(this).children('input').prop( "checked", true);
+            $('#todacolheita').prop( "checked", true);
             $('#relatarqtd').prop('disabled', true);
             $('#relatarqtd').val($('#qtdcolhida').val());
             $('#relatarum').prop('disabled', true);
@@ -890,7 +972,7 @@
                     var novoCampos = [];
                     var i = 0;
                     $.each(campos, function(){
-
+                        //adiciona todos os dados da memoria menos os que vai ser excluido
                         if(campos[i].idaba !== abaClicada){
                             novoCampos[novoCampos.length] = campos[i];
                         }
@@ -903,6 +985,23 @@
 
                     $(".uib_w_308 .active").remove();
                     $(".inputsrelatado").hide();
+                    //desativa o checkbox e os inputs
+                    $('#todacolheita').prop( "checked", false);
+                    $('#relatarqtd').prop('disabled', false);
+                    $('#relatarum').prop('disabled', false);
+                    $("#relatarum").val("Kilo(s)");
+                    //
+                    //adiciona uma data para navegar
+
+                    if($("#abasrelatar li").length === 1 ){
+                        sessionStorage.removeItem("abaAnterior");
+                    }else{
+                        sessionStorage.setItem("abaAnterior", novoCampos[novoCampos.length - 1].idaba);
+                        $('#relatardata').val(novoCampos[novoCampos.length - 1].datarelatada);
+                        $('#relatarqtd').val(novoCampos[novoCampos.length - 1].valor);
+                        $('#relatarum').val(novoCampos[novoCampos.length - 1].um);
+                    }
+
                 }
            },            // callback to invoke with index of button pressed
             'Confirmação',           // title
