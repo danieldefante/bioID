@@ -397,7 +397,7 @@
             },            // callback to invoke with index of button pressed
             'Confirmação',           // title
             ['Sair App', 'Deslogar', 'Cancelar']     // buttonLabels
-        );
+         );
 
          return false;
      });
@@ -588,9 +588,9 @@
             }else{
                 $("#painelEstoque").hide();
                 //aparece botao de relatar se não foi relatado ainda a produçao do cultivar
-                if(cultivarSelecionado.status === "não relatada"){
+                if(cultivarSelecionado.status !== "relatada" && cultivarSelecionado.status !== "tempo expirado para relatar"){
                     $("#relatar").show();
-                    $("#nomeCultivarRelatar").html("Relatar "+cultivarSelecionado.qtdrecebida+" de "+cultivarSelecionado.grandeza_cultivar+" de "+cultivarSelecionado.nomecultivar+':<i class="fa fa-truck button-icon-right" data-position="top"></i>');
+                    $("#nomeCultivarRelatar").html("Relatar "+cultivarSelecionado.qtdrecebida+" de "+cultivarSelecionado.grandeza_cultivar+" de "+cultivarSelecionado.nomecultivar+':');
 
                 }else{
                     $("#relatar").hide();
@@ -845,7 +845,7 @@
 
      $(document).on("click", ".uib_w_338", function(evt){
 
-        if($(this).children('input').is(':checked')){
+        if($('#todacolheita').is(':checked')){
             $('#todacolheita').prop( "checked", false);
             $('#relatarqtd').prop('disabled', false);
             $('#relatarqtd').val('');
@@ -858,6 +858,50 @@
             $('#relatarum').prop('disabled', true);
             $("#relatarum").val($('#umcolheita').val());
         }
+
+         return false;
+     });
+
+
+     $(document).on("click", ".uib_w_343", function(evt){
+
+
+        if(!$('#colheitafinalizada').is(':checked') && sessionStorage.getItem("qtdcolhida")){
+            navigator.notification.confirm(
+                'Toda sua safra foi realmente colhida?', // message
+                function(buttonIndex) {
+                    if(buttonIndex === 2){
+                        $('#colheitafinalizada').prop( "checked", true);
+                        $('#textColheita').text("Colheita: "+$('#qtdcolhida').val()+" "+$('#umcolheita').val());
+                        $('.uib_w_337').hide();
+                        $('.uib_w_319').hide();
+                    }else{
+                        $('#textColheita').text("Colheita:");
+                        $('.uib_w_337').show();
+                        $('.uib_w_319').show();
+                    }
+                },            // callback to invoke with index of button pressed
+                'Confirmação',           // title
+                ['Não', 'Sim']     // buttonLabels
+            );
+
+        }else{
+             navigator.notification.alert("Informa a quantidade colhida!", function(){
+                //$('#relatarqtd').focus();
+             },"Alerta!", "OK");
+
+        }
+         return false;
+     });
+
+     $(document).on("click", ".uib_w_342", function(evt){
+
+            $('#colheitafinalizada').prop( "checked", false);
+            $('#colheitaparcial').prop( "checked", true);
+            $('#textColheita').text("Colheita:");
+            $('.uib_w_337').show();
+            $('.uib_w_319').show();
+
 
          return false;
      });

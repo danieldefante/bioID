@@ -523,13 +523,15 @@
                                                 <div class="widget-container left-receptacle"></div>
                                                 <div class="widget-container right-receptacle"></div>
                                                 <div class="text-container">
-                                                    <p>Colheita:</p>
+                                                    <p id="textColheita">Colheita:<i class="fa fa-cart-plus button-icon-right" data-position="top"></i>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col uib_col_87 single-col" data-uib="layout/col" data-ver="0">
                                         <div class="widget-container content-area vertical-col">
+
                                             <div class="table-thing widget uib_w_319 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                                 <label class="narrow-control label-top-left" for="qtdcolhida">Quantidade colhida:</label>
                                                 <input class="wide-control form-control default nreal input-lg" type="text" placeholder="Digite um valor..." id="qtdcolhida">
@@ -541,7 +543,14 @@
                                                     <option>Tonelada(s)</option>
                                                     <option>Saca(s)</option>
                                                 </select>
-                                            </div><span class="uib_shim"></span>
+                                            </div>
+
+                                            <fieldset class="widget uib_w_340 d-margins" data-uib="twitter%20bootstrap/radio_group" data-ver="1" data-child-name="bs-radio-group-3">
+                                                <label class="radio radio-padding-left widget uib_w_342" data-uib="twitter%20bootstrap/radio_button" data-ver="1">
+                                                    <input type="radio" name="bs-radio-group-3" id="colheitaparcial" checked="checked">Colheita parcial</label>
+                                                <label class="radio radio-padding-left widget uib_w_343" data-uib="twitter%20bootstrap/radio_button" data-ver="1">
+                                                    <input type="radio" name="bs-radio-group-3" id="colheitafinalizada">Colheita finalizada</label>
+                                            </fieldset><span class="uib_shim"></span>
                                         </div>
                                     </div>
 
@@ -553,7 +562,8 @@
                                                 <div class="widget-container left-receptacle"></div>
                                                 <div class="widget-container right-receptacle"></div>
                                                 <div class="text-container">
-                                                    <p>Destinação:</p>
+                                                    <p>Destinação:<i class="fa fa-truck button-icon-right" data-position="top"></i>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>

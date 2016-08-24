@@ -255,14 +255,15 @@ function listarCultivar(){
 
 
 function cultivarRelatado(teste){
-    if(teste === 'não relatada'){
-        return '<span class="amarelo badge fa fa-chevron-right"> </span>';
-
-    }else if(teste === 'relatada'){
+    if(teste === 'relatada'){
         return '<span class="verde badge fa fa-thumbs-o-up"><span class="verde badge fa fa-chevron-right"> </span></span>';
 
-    }else{
+    }else if(teste === 'tempo expirado para relatar'){
         return '<span class="vermelho badge fa fa-thumbs-o-down"><span class="vermelho badge fa fa-chevron-right"> </span></span>';
+
+    }else{
+        return '<span class="amarelo badge fa fa-chevron-right"> </span>';
+
     }
 
 }
