@@ -588,7 +588,7 @@
             }else{
                 $("#painelEstoque").hide();
                 //aparece botao de relatar se não foi relatado ainda a produçao do cultivar
-                if(cultivarSelecionado.descricao === "Não relatado"){
+                if(cultivarSelecionado.status === "não relatada"){
                     $("#relatar").show();
                     $("#nomeCultivarRelatar").html("Relatar "+cultivarSelecionado.qtdrecebida+" de "+cultivarSelecionado.grandeza_cultivar+" de "+cultivarSelecionado.nomecultivar+':<i class="fa fa-truck button-icon-right" data-position="top"></i>');
 
@@ -610,7 +610,7 @@
     });
 
    function carregarCultivar(nomeCultivar){
-       var listaCultivares = JSON.parse(window.localStorage.getItem("imagens"));
+       var listaCultivares = JSON.parse(window.localStorage.getItem("cultivares"));
        var cultivar;
        var i = 0;
        $.each(listaCultivares, function(){

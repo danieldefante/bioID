@@ -138,7 +138,7 @@ function listarCultivarRecebidos(idpropriedade){
                 var a = cultivaresRecebidos[i];
                 //teste a propriedade
                 if(a.propriedade_idpropriedade === idpropriedade){
-                    var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ cultivarRelatado(a.descricao)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">Quantidade recebida: '+ a.qtdrecebida +'&nbsp'+ a.grandeza_cultivar +'</p><p class="list-group-item-text">data recebimento: '+a.datareceb+'</p><p class="list-group-item-text">Status: '+a.descricao+'</p></a>';
+                    var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ cultivarRelatado(a.status)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">Quantidade recebida: '+ a.qtdrecebida +'&nbsp'+ a.grandeza_cultivar +'</p><p class="list-group-item-text">data recebimento: '+a.datareceb+'</p><p class="list-group-item-text">Status: '+a.status+'</p></a>';
                     $("#cultivarRecebido").append(item);
                 }
                 i++;
@@ -155,7 +155,7 @@ function listarCultivarRecebidos(idpropriedade){
 function servArmazenarCulRecebdo(usuario){
     var cultivaresRecebidos = [];
     var propriedades = [];
-    var imagens = [];
+    var cultivares = [];
 
     $.post("http://"+window.ipServidor+":8080/Projeto_BioID-war/servico/cultivar/listarrecebidos", usuario, function(dados){
         //armazena no localStorge
@@ -163,9 +163,7 @@ function servArmazenarCulRecebdo(usuario){
             var i = 0;
             $.each(dados.data, function(){
                 //armazena os cultivares em um array
-                cultivaresRecebidos[i] = dados.data[i];
-                //armazena as imagens dos cultivares em um array
-                imagens[i] = dados.imagens[i];
+                cultivaresRecebidos[i] = {nomecultivar: dados.data[i].nomecultivar, qtdrecebida: dados.data[i].qtdrecebida, grandeza_cultivar: dados.data[i].grandeza_cultivar, safra: dados.data[i].qtdrecebida, datareceb: dados.data[i].datareceb, status: dados.data[i].status, nomepropriedade: dados.data[i].nomepropriedade};
                 //armazena a propriedade em um array
                 if(propriedades.length < 1){
                     propriedades[0] = {propriedade_idpropriedade: cultivaresRecebidos[i].propriedade_idpropriedade, nomepropriedade: cultivaresRecebidos[i].nomepropriedade};
@@ -177,6 +175,9 @@ function servArmazenarCulRecebdo(usuario){
 
                 i++;
             });
+
+            //armazena as imagens dos cultivares em um array
+            cultivares = dados.cultivares;
         }
     }, "json")
     //Tratamento de erro da requisicao servico RESt login
@@ -196,7 +197,7 @@ function servArmazenarCulRecebdo(usuario){
         //armazena propriedades no localstorage
         localStorage.setItem("propriedades", JSON.stringify(propriedades));
         //armazena imagens no localstorage
-        localStorage.setItem("imagens", JSON.stringify(imagens));
+        localStorage.setItem("cultivares", JSON.stringify(cultivares));
         //chama o metodo que popula o item de propriedades
         listarPropriedades();
 
@@ -254,10 +255,14 @@ function listarCultivar(){
 
 
 function cultivarRelatado(teste){
-    if(teste !== 'Não relatado'){
-        return '<span class="verde badge fa fa-thumbs-o-up"><span class="amarelo badge fa fa-chevron-right"> </span></span>';
+    if(teste === 'não relatada'){
+        return '<span class="amarelo badge fa fa-chevron-right"> </span>';
+
+    }else if(teste === 'relatada'){
+        return '<span class="verde badge fa fa-thumbs-o-up"><span class="verde badge fa fa-chevron-right"> </span></span>';
+
     }else{
-        return '<span class="laranja badge fa fa-chevron-right"> </span>';
+        return '<span class="vermelho badge fa fa-thumbs-o-down"><span class="vermelho badge fa fa-chevron-right"> </span></span>';
     }
 
 }
