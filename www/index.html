@@ -509,7 +509,7 @@
                                     <div class="widget-container left-receptacle"></div>
                                     <div class="widget-container right-receptacle"></div>
                                     <div class="text-container">
-                                        <p id="nomeCultivarRelatar">destinacao e colheita</p>
+                                        <p id="nomeCColheita">colheita</p>
                                     </div>
                                 </div>
                             </div>
@@ -546,28 +546,42 @@
                                             </div>
 
                                             <fieldset class="widget uib_w_340 d-margins" data-uib="twitter%20bootstrap/radio_group" data-ver="1" data-child-name="bs-radio-group-3">
+                                                <label class="radio radio-padding-left widget uib_w_341" data-uib="twitter%20bootstrap/radio_button" data-ver="1">
+                                                    <input type="radio" name="bs-radio-group-3" id="colheitaParcial" checked="checked">Colheita parcial</label>
                                                 <label class="radio radio-padding-left widget uib_w_342" data-uib="twitter%20bootstrap/radio_button" data-ver="1">
-                                                    <input type="radio" name="bs-radio-group-3" id="colheitaparcial" checked="checked">Colheita parcial</label>
+                                                    <input type="radio" name="bs-radio-group-3" id="ultimaColheita">Última colheita</label>
                                                 <label class="radio radio-padding-left widget uib_w_343" data-uib="twitter%20bootstrap/radio_button" data-ver="1">
-                                                    <input type="radio" name="bs-radio-group-3" id="colheitafinalizada">Colheita finalizada</label>
+                                                    <input type="radio" name="bs-radio-group-3" id="finalizarColheita">Finalizar safra ou relatar perda</label>
                                             </fieldset><span class="uib_shim"></span>
                                         </div>
                                     </div>
 
                                 </div>
-                                <div class="panel widget uib_w_335 d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
-                                    <div class="panel-heading">
-                                        <div class="widget-container">
-                                            <div class="tarea widget uib_w_336 d-margins" data-uib="media/text" data-ver="0" name="uib_w_336">
-                                                <div class="widget-container left-receptacle"></div>
-                                                <div class="widget-container right-receptacle"></div>
-                                                <div class="text-container">
-                                                    <p>Destinação:<i class="fa fa-truck button-icon-right" data-position="top"></i>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
+
+                                <button class="btn widget uib_w_105 d-margins btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1" id="enviarcolheita">Enviar <i class="fa fa-cloud-upload button-icon-right" data-position="right"></i>
+                                </button>
+
+                                <span class="uib_shim"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="panel widget uib_w_345 d-margins panel-success marginTopo" data-uib="twitter%20bootstrap/panel" data-ver="1" id="destinacao">
+                        <div class="panel-heading">
+                            <div class="widget-container">
+                                <div class="tarea widget uib_w_234 d-margins" data-uib="media/text" data-ver="0" name="uib_w_234">
+                                    <div class="widget-container left-receptacle"></div>
+                                    <div class="widget-container right-receptacle"></div>
+                                    <div class="text-container">
+                                        <p id="nomeCDestinacao">Destinacao</p>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col uib_col_89 single-col" data-uib="layout/col" data-ver="0">
+                            <div class="widget-container content-area vertical-col">
+                                <div class="panel widget uib_w_335 d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
+
                                     <div class="col uib_col_88 single-col" data-uib="layout/col" data-ver="0">
                                         <div class="widget-container content-area vertical-col">
                                             <ul class="nav widget uib_w_308 d-margins footer-bg nav-tabs" role="tablist" data-uib="twitter%20bootstrap/tab_bar" data-ver="1" id="abasrelatar">
@@ -575,13 +589,13 @@
                                                 </li>
 
                                             </ul>
-                                            <label class="checkbox checkbox-padding-left widget uib_w_338 d-margins inputsrelatado" data-uib="twitter%20bootstrap/checkbox" data-ver="1">
+                                            <label class="checkbox checkbox-padding-left widget uib_w_338 d-margins " data-uib="twitter%20bootstrap/checkbox" data-ver="1">
                                                 <input type="checkbox" id="todacolheita">Toda colheita</label>
-                                            <div class="table-thing widget uib_w_305 d-margins inputsrelatado" data-uib="twitter%20bootstrap/input" data-ver="1">
+                                            <div class="table-thing widget uib_w_305 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                                 <label class="narrow-control label-top-left" for="relatardata">Data:</label>
                                                 <input class="wide-control form-control default idatas input-lg" type="text" id="relatardata" placeholder="dd/mm/aaaa">
                                             </div>
-                                            <div class="table-thing widget uib_w_102 d-margins inputsrelatado" data-uib="twitter%20bootstrap/select" data-ver="1">
+                                            <div class="table-thing widget uib_w_102 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
                                                 <label class="narrow-control label-top-left">Unidade de medida:</label>
                                                 <select class="wide-control form-control default input-lg" id="relatarum">
                                                     <option>Kilo(s)</option>
@@ -589,20 +603,17 @@
                                                     <option>Saca(s)</option>
                                                 </select>
                                             </div>
-                                            <div class="table-thing widget uib_w_104 d-margins inputsrelatado" data-uib="twitter%20bootstrap/input" data-ver="1">
+                                            <div class="table-thing widget uib_w_104 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                                 <label class="narrow-control label-top-left" for="relatarvalor">Quantidade:</label>
                                                 <input class="wide-control form-control default nreal input-lg" type="text" placeholder="Digite um valor..." id="relatarqtd">
                                             </div>
-                                            <button class="btn widget uib_w_313 d-margins inputsrelatado btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1">Cancelar <i class="fa fa-rotate-left button-icon-right" data-position="right"></i>
-                                            </button><span class="uib_shim"></span>
+                                            <button class="btn widget uib_w_313 d-margins btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="fa fa-rotate-left button-icon-left" data-position="left"></i>Cancelar</button><span class="uib_shim"></span>
                                         </div>
                                     </div>
 
                                 </div>
-                                <button class="btn widget uib_w_105 d-margins inputsrelatado btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1">Enviar<i class="fa fa-cloud-upload button-icon-right" data-position="right"></i>
-                                </button>
-
-                                <span class="uib_shim"></span>
+                                <button class="btn widget uib_w_346 d-margins btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1" id="Enviardestinacao">Enviar<i class="fa fa-cloud-upload button-icon-right" data-position="right"></i>
+                                </button><span class="uib_shim"></span>
                             </div>
                         </div>
 
@@ -1208,12 +1219,13 @@
                                         <figcaption data-position="bottom"></figcaption>
                                     </figure>
                                 </div>
-                                <button class="btn widget uib_w_272 d-margins btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1" id="relatar"><i class="fa fa-thumbs-o-up button-icon-left" data-position="left"></i>Relatar</button>
+                                <button class="btn widget uib_w_272 d-margins btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1" id="relatarcolheita"><i class="fa fa-cubes button-icon-left" data-position="left"></i>Relatar colheita</button>
+                                <button class="btn widget uib_w_344 d-margins btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1" id="relatardestinacao"><i class="fa fa-truck button-icon-left" data-position="left"></i>Relatar destinação</button>
                                 <div class="panel-group no_wrap widget uib_w_259 d-margins" data-uib="twitter%20bootstrap/accordion" data-ver="1" id="bs-accordion-2">
                                     <div id="colapseDesc" class="colapses panel widget uib_w_260 panel-success" data-uib="twitter%20bootstrap/collapsible" data-ver="1">
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
-           <a class="accordion-toggle" data-toggle="collapse" href="#bs-accordion-group-9" data-parent="#bs-accordion-2">Descrição</a>
+           <a class="accordion-toggle" data-toggle="collapse" href="#bs-accordion-group-9" data-parent="#bs-accordion-2">Descrição<i id="iconeDesc" class="fa fa-chevron-down button-icon-right" data-position="top"></i></a>
        </h4>
                                         </div>
                                         <div id="bs-accordion-group-9" class="panel-collapse collapse">

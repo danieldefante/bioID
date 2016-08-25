@@ -138,7 +138,7 @@ function listarCultivarRecebidos(idpropriedade){
                 var a = cultivaresRecebidos[i];
                 //teste a propriedade
                 if(a.propriedade_idpropriedade === idpropriedade){
-                    var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ cultivarRelatado(a.status)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">Quantidade recebida: '+ a.qtdrecebida +'&nbsp'+ a.grandeza_cultivar +'</p><p class="list-group-item-text">data recebimento: '+a.datareceb+'</p><p class="list-group-item-text">Status: '+a.status+'</p></a>';
+                    var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ cultivarRelatado(a.status)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">Quantidade recebida: '+ a.qtdrecebida +'&nbsp'+ a.grandeza_safra +'</p><p class="list-group-item-text">data recebimento: '+a.datareceb+'</p><p class="list-group-item-text">Status da colheita: '+a.descricaostatus+'</p><p class="list-group-item-text">Status de destinação: '+a.descricaostatus+'</p></a>';
                     $("#cultivarRecebido").append(item);
                 }
                 i++;
@@ -163,7 +163,7 @@ function servArmazenarCulRecebdo(usuario){
             var i = 0;
             $.each(dados.data, function(){
                 //armazena os cultivares em um array
-                cultivaresRecebidos[i] = {nomecultivar: dados.data[i].nomecultivar, qtdrecebida: dados.data[i].qtdrecebida, grandeza_cultivar: dados.data[i].grandeza_cultivar, safra: dados.data[i].qtdrecebida, datareceb: dados.data[i].datareceb, status: dados.data[i].status, nomepropriedade: dados.data[i].nomepropriedade};
+                cultivaresRecebidos[i] = {nomecultivar: dados.data[i].nomecultivar, qtdrecebida: dados.data[i].qtdrecebida, safra: dados.data[i].safra, nomepropriedade: dados.data[i].nomepropriedade, grandeza_safra: dados.data[i].grandeza_safra, descricaostatus: dados.data[i].descricaostatus, datareceb: dados.data[i].datareceb};
                 //armazena a propriedade em um array
                 if(propriedades.length < 1){
                     propriedades[0] = {propriedade_idpropriedade: cultivaresRecebidos[i].propriedade_idpropriedade, nomepropriedade: cultivaresRecebidos[i].nomepropriedade};
@@ -258,7 +258,7 @@ function cultivarRelatado(teste){
     if(teste === 'relatada'){
         return '<span class="verde badge fa fa-thumbs-o-up"><span class="verde badge fa fa-chevron-right"> </span></span>';
 
-    }else if(teste === 'tempo expirado para relatar'){
+    }else if(teste === 'expirada'){
         return '<span class="vermelho badge fa fa-thumbs-o-down"><span class="vermelho badge fa fa-chevron-right"> </span></span>';
 
     }else{
