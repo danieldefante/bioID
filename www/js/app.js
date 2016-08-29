@@ -31,11 +31,12 @@ var papel;
 //var idpropriedade = 4;
 
 //ip do servidor
-var ipServidor = "192.168.0.3";
+//var ipServidor = "192.168.0.3";
+var ipServidor = "10.2.10.200";
 //var ipServidor = "localhost";
 
 
-//funcao mudar background aleatorio
+/*/funcao mudar background aleatorio
 function mudarBackground(){
     switch(Math.floor((Math.random() * 5) + 1)){
         case 1:{
@@ -55,7 +56,7 @@ function mudarBackground(){
         }break;
 
     }
-}
+}*/
 
 //verifica se existe sessao na localStorage
 //inicia pela ultima sessao ou abre tela de login
