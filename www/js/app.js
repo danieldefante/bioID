@@ -31,8 +31,8 @@ var papel;
 //var idpropriedade = 4;
 
 //ip do servidor
-//var ipServidor = "10.2.10.200";
-var ipServidor = "localhost";
+var ipServidor = "192.168.0.3";
+//var ipServidor = "localhost";
 
 
 //funcao mudar background aleatorio
@@ -138,7 +138,7 @@ function listarCultivarRecebidos(idpropriedade){
                 var a = cultivaresRecebidos[i];
                 //teste a propriedade
                 if(a.propriedade_idpropriedade === idpropriedade){
-                    var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ cultivarRelatado(a.status)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">Quantidade recebida: '+ a.qtdrecebida +'&nbsp'+ a.grandeza_safra +'</p><p class="list-group-item-text">data recebimento: '+a.datareceb+'</p><p class="list-group-item-text">Status da colheita: '+a.descricaostatus+'</p><p class="list-group-item-text">Status de destinação: '+a.descricaostatus+'</p></a>';
+                    var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ cultivarRelatado(a.descricaostatus)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">Quantidade recebida: '+ a.qtdrecebida +'&nbsp'+ a.grandeza_safra +'</p><p class="list-group-item-text">data recebimento: '+a.datareceb+'</p><p class="list-group-item-text">Status da colheita: '+a.descricaostatus+'</p><p class="list-group-item-text">Status de destinação: '+a.descricaostatus+'</p></a>';
                     $("#cultivarRecebido").append(item);
                 }
                 i++;

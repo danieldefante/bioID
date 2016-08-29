@@ -26,17 +26,22 @@
     var cultivarSelecionado;
 
     //papel agricultor
-    $("#colheita").hide();
-    $("#destinacao").hide();
-    $("#safra").hide();
-    $("#relatorios").hide();
-
+    function iniciarAgricultor(){
+        $('#recebidos').show();
+        $("#colheita").hide();
+        $("#destinacao").hide();
+        $("#safra").hide();
+        $("#relatorios").hide();
+    }
      //pagina gerenciador/entrevistador
-    $("#tabNovoAgricultor").hide();
-    $("#tabSafra").hide();
+     function iniciarGerEntrev(){
+        $("#tabNovoAgricultor").hide();
+        $("#tabSafra").hide();
 
-     //esconder checkbox off line
-     $("#checkOffLine").hide();
+        //esconder checkbox off line
+        $("#checkOffLine").hide();
+     }
+
 
      //esqueceu a senha
      $(document).on("click", "#esqueceuSenha", function(evt){
@@ -91,7 +96,7 @@
         /* button  .uib_w_38 */
     $(document).on("click", ".uib_w_38", function(evt)
     {
-        retornaInicioUser1();
+         iniciarAgricultor();
          return false;
     });
 
@@ -173,18 +178,19 @@
         /* button  .uib_w_45 */
     $(document).on("click", ".uib_w_45", function(evt)
     {
+        if(!escondeMenuHamburguer('bs-navbar-1')){
+             //funcao que testa se existe abas para relatar
+             if($('#colheita').is(":visible")){
+                existeDados('safra');
+             }else{
+                 $("#colheita").hide();
+                 $("#destinacao").hide();
+                 $("#safra").show();
+                 $("#recebidos").hide();
+                 $("#relatorios").hide();
 
-         //funcao que testa se existe abas para relatar
-         if($('#colheita').is(":visible")){
-            existeDados('safra');
-         }else{
-             $("#colheita").hide();
-             $("#destinacao").hide();
-             $("#safra").show();
-             $("#recebidos").hide();
-             $("#relatorios").hide();
-
-         }
+             }
+        }
 
          return false;
     });
@@ -193,6 +199,7 @@
         /* button  .uib_w_46 */
     $(document).on("click", ".uib_w_46", function(evt)
     {
+        if(!escondeMenuHamburguer('bs-navbar-1')){
          //funcao que testa se existe abas para relatar
          if($('#colheita').is(":visible")){
             existeDados('relatorios');
@@ -204,8 +211,7 @@
              $("#safra").hide();
              $("#relatorios").show();
          }
-
-
+        }
 
          return false;
     });
@@ -213,25 +219,18 @@
         /* button  .uib_w_44 */
     $(document).on("click", ".uib_w_44", function(evt)
     {
-         //funcao que testa se existe abas para relatar
-         if($('#colheita').is(":visible")){
-            existeDados('recebidos');
+        if(!escondeMenuHamburguer('bs-navbar-1')){
+             //funcao que testa se existe abas para relatar
+             if($('#colheita').is(":visible")){
+                existeDados('recebidos');
 
-         }else{
+             }else{
 
-            retornaInicioUser1();
-         }
+                iniciarAgricultor();
+             }
+        }
          return false;
     });
-
-    function retornaInicioUser1(){
-
-         $("#recebidos").show();
-         $("#colheita").hide();
-         $("#destinacao").hide();
-         $("#safra").hide();
-         $("#relatorios").hide();
-    }
 
 
         /* button  .uib_w_50 */
@@ -306,12 +305,11 @@
                         //rest popular propriedades
                         //chama o metodo que busca dados no servidor e armazena no localStorage
                         //para outro metodo acessar e criar a lista de cultivares recebidos
+                        iniciarAgricultor();
                         window.servArmazenarCulRecebdo(usuario);
                         activate_page("#page_3");
-                    }else if(window.papel === "e"){
-                        activate_page("#page_4");
-                        window.listarCultivar();
-                    }else if(window.papel === "g"){
+                    }else{
+                        iniciarGerEntrev();
                         activate_page("#page_4");
                         window.listarCultivar();
                     }
@@ -376,25 +374,40 @@
      }
 
 
-     $(document).on("click", "#page_3, #page_4", function(evt)
+     $(document).on("click", "#page_3", function(evt)
      {
-         if($('#bs-navbar-1').is(':visible')){
-            $('#bs-navbar-1').collapse('hide');
-         }else if($('#bs-navbar-2').is(':visible')){
-            $('#bs-navbar-2').collapse('hide');
-         }
-
-
+         escondeMenuHamburguer('bs-navbar-1');
          return false;
      });
 
+     $(document).on("click", "#page_4", function(evt)
+     {
+         escondeMenuHamburguer('bs-navbar-2');
+         return false;
+     });
+
+     //esconde o menu hambueguer
+     function escondeMenuHamburguer(item){
+         var esconder = false;
+         if($('#'+item).is(':visible')){
+             $('#'+item).collapse('hide');
+             esconder= true;
+         }
+         return esconder;
+     }
+
+
+
      $(document).on("click", ".sair", function(evt)
      {
+         escondeMenuHamburguer('bs-navbar-1');
+         escondeMenuHamburguer('bs-navbar-2');
+
          navigator.notification.confirm(
             'Deseja sair?', // message
             function(buttonIndex) {
                 if(buttonIndex === 2){
-                    $('.bs-navbar-menu').collapse('hide');
+
                     //chama a funcao que limpa a localStorage e abre mainpage
                     window.clearGoMainPage();
 
@@ -411,42 +424,46 @@
 
      $(document).on("click", ".configuracoes", function(evt)
      {
-          activate_page("#page_99");
+         escondeMenuHamburguer('bs-navbar-1');
+         escondeMenuHamburguer('bs-navbar-2');
+         activate_page("#page_99");
 
          return false;
      });
 
-      $(document).on("click", ".duvidas", function(evt)
-     {
-          activate_page("#page_5");
-          return false;
-     });
 
      $(document).on("click", ".sobre", function(evt)
      {
-           $(".uib_w_145").modal("toggle");
-           return false;
+
+        escondeMenuHamburguer('bs-navbar-1');
+        escondeMenuHamburguer('bs-navbar-2');
+        $(".uib_w_145").modal("toggle");
+
+        return false;
      });
 
     //organiza lista de propriedades com o click da propriedade
     $(document).on("click", ".uib_w_286 > li", function(evt)
     {
-        var propriedades = JSON.parse(localStorage.getItem("propriedades"));
-        $("#itemPropriedades").append($(this));
+        if(!escondeMenuHamburguer('bs-navbar-1')){
 
-        var propriedadeClick = $(this).text();
-        var idpropriedade;
+            var propriedades = JSON.parse(localStorage.getItem("propriedades"));
+            $("#itemPropriedades").append($(this));
 
-        var i = 0;
-        $.each(propriedades, function(){
-            if(propriedadeClick === propriedades[i].nomepropriedade){
-                idpropriedade = propriedades[i].propriedade_idpropriedade;
-                return false;
-            }
-            i++;
-        });
-        //lista os cultivares
-        window.listarCultivarRecebidos(idpropriedade);
+            var propriedadeClick = $(this).text();
+            var idpropriedade;
+
+            var i = 0;
+            $.each(propriedades, function(){
+                if(propriedadeClick === propriedades[i].nomepropriedade){
+                    idpropriedade = propriedades[i].propriedade_idpropriedade;
+                    return false;
+                }
+                i++;
+            });
+            //lista os cultivares
+            window.listarCultivarRecebidos(idpropriedade);
+        }
         return false;
     });
 
@@ -516,14 +533,21 @@
 
 
 
+    $(document).on("click", "#descricao", function(evt)
+    {
+        $('#colapseDesc').on('shown.bs.collapse', function() {
+            $("#iconeDesc").removeClass("fa-chevron-down").addClass("fa-chevron-up");
 
-     $(document).ready(function () {
+        }).on('hidden.bs.collapse', function() {
+            $("#iconeDesc").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+        });
+
+         return false;
+    });
+
+ /*    $(document).ready(function () {
         $('.colapses').click( function() {
-            $('#colapseDesc').on('shown.bs.collapse', function() {
-                $("#iconeDesc").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-            }).on('hidden.bs.collapse', function() {
-                $("#iconeDesc").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-            });
+
 
              $('#colapseNutr').on('shown.bs.collapse', function() {
                 $("#iconeNutr").removeClass("fa-chevron-down").addClass("fa-chevron-up");
@@ -557,7 +581,7 @@
             });
          });
     });
-
+*/
      $(document).on("click",".editarsocioe", function(evt)
     {
          $(".uib_w_331").modal("toggle");
@@ -568,47 +592,48 @@
         /* listitem  Batata Docess */
     $(document).on("click",".listaCultivar > a", function(evt)
     {
+        if(!escondeMenuHamburguer('bs-navbar-1')){
+            var a = $(this).attr("id");
+            //var nomeCultivar = $(this).children('h4').html();
+            //carrega item que esta no localStorage
+            var cultivaresRecebidos = JSON.parse(localStorage.getItem("cultivaresRecebidos"));
+            if(cultivaresRecebidos.length > 1){
+                cultivarSelecionado = cultivaresRecebidos[a];
 
-        var a = $(this).attr("id");
-        //var nomeCultivar = $(this).children('h4').html();
-        //carrega item que esta no localStorage
-        var cultivaresRecebidos = JSON.parse(localStorage.getItem("cultivaresRecebidos"));
-        if(cultivaresRecebidos.length > 1){
-            cultivarSelecionado = cultivaresRecebidos[a];
-
-            //hide e show os painels de cada usuario
-            if(window.papel === "e"){
-                $("#painelEstoque").show();
-                $("#desabilitado").prop('disabled', true);
-                $("#salvarEstoque").hide();
-                //some botao de relatar
-                $("#relatar").hide();
-            }else if(window.papel === "g"){
-                $("#desabilitado").prop('disabled', false);
-                $("#salvarEstoque").show();
-                $("#painelEstoque").show();
-                //some botao de relatar
-                $("#relatar").hide();
-            //usuario agricultor
-            }else{
-                $("#painelEstoque").hide();
-                //aparece botao de relatar se não foi relatado ainda a produçao do cultivar
-                if(cultivarSelecionado.descricaostatus !== "relatada" && cultivarSelecionado.descricaostatus !== "tempo expirado para relatar"){
-                    $("#relatar").show();
-                    $("#nomeCColheita").html("Relatar "+cultivarSelecionado.qtdrecebida+" de "+cultivarSelecionado.grandeza_cultivar+" de "+cultivarSelecionado.nomecultivar+':');
-
-                }else{
+                //hide e show os painels de cada usuario
+                if(window.papel === "e"){
+                    $("#painelEstoque").show();
+                    $("#desabilitado").prop('disabled', true);
+                    $("#salvarEstoque").hide();
+                    //some botao de relatar
                     $("#relatar").hide();
+                }else if(window.papel === "g"){
+                    $("#desabilitado").prop('disabled', false);
+                    $("#salvarEstoque").show();
+                    $("#painelEstoque").show();
+                    //some botao de relatar
+                    $("#relatar").hide();
+                //usuario agricultor
+                }else{
+                    $("#painelEstoque").hide();
+                    //aparece botao de relatar se não foi relatado ainda a produçao do cultivar
+                    if(cultivarSelecionado.descricaostatus !== "relatada" && cultivarSelecionado.descricaostatus !== "tempo expirado para relatar"){
+                        $("#relatar").show();
+                        $("#nomeCColheita").html("Relatar "+cultivarSelecionado.qtdrecebida+" de "+cultivarSelecionado.grandeza_cultivar+" de "+cultivarSelecionado.nomecultivar+':');
+
+                    }else{
+                        $("#relatar").hide();
+                    }
                 }
+
+
+                //renomeia os valores dos produtos
+                $("#nomeProduto").html(cultivarSelecionado.nomecultivar);
+                //muda a image do cultivar
+                $("#imgCultivar").attr("src", carregarCultivar(cultivarSelecionado.nomecultivar));
+
+                activate_page("#page_6");
             }
-
-
-            //renomeia os valores dos produtos
-            $("#nomeProduto").html(cultivarSelecionado.nomecultivar);
-            //muda a image do cultivar
-            $("#imgCultivar").attr("src", carregarCultivar(cultivarSelecionado.nomecultivar));
-
-            activate_page("#page_6");
 
     }
          return false;
@@ -659,7 +684,6 @@
          $("#colheita").show();
          $("#destinacao").hide();
          $("#recebidos").hide();
-         $("#qtdcolhida").focus();
 
          return false;
     });
@@ -820,61 +844,63 @@
         /* button  .uib_w_105 */
     $(document).on("click", ".uib_w_105", function(evt)
     {
+        if(!escondeMenuHamburguer('bs-navbar-1')){
 
-        if($('#finalizarColheita').is(':checked')){
-            navigator.notification.confirm(
-                'Deseja finalizar a safra?', // message
-                function(buttonIndex) {
-                    if(buttonIndex === 2){
-                        relatarSafra();
-                        limparcamposrelatar();
-                    }
-                },            // callback to invoke with index of button pressed
-                'Confirmação',           // title
-                ['Não', 'Sim']     // buttonLabels
-            );
-        }else{
-            if($('#qtdcolhida').val() > 0){
-                if($('#colheitaParcial').is(':checked')){
-                    navigator.notification.confirm(
-                        'Deseja enviar uma colheita parcial?', // message
-                        function(buttonIndex) {
-                            if(buttonIndex === 2){
-                                relatarSafra();
-                                limparcamposrelatar();
-                            }
-                        },            // callback to invoke with index of button pressed
-                        'Confirmação',           // title
-                        ['Não', 'Sim']     // buttonLabels
-                    );
-                }else{
-                    navigator.notification.confirm(
-                        'Deseja enviar a última colheita?', // message
-                        function(buttonIndex) {
-                            if(buttonIndex === 2){
-                                relatarSafra();
-                                limparcamposrelatar();
-                            }
-                        },            // callback to invoke with index of button pressed
-                        'Confirmação',           // title
-                        ['Não', 'Sim']     // buttonLabels
-                    );
-                }
+            if($('#finalizarColheita').is(':checked')){
+                navigator.notification.confirm(
+                    'Deseja finalizar a safra?', // message
+                    function(buttonIndex) {
+                        if(buttonIndex === 2){
+                            relatarSafra();
+                            limparcamposrelatar();
+                        }
+                    },            // callback to invoke with index of button pressed
+                    'Confirmação',           // title
+                    ['Não', 'Sim']     // buttonLabels
+                );
             }else{
-                navigator.notification.alert("Insira a quantidade colhida!",function(){
-                    $('#qtdcolhida').focus();
-                },"Alerta!", "OK");
+                if($('#qtdcolhida').val() > 0){
+                    if($('#colheitaParcial').is(':checked')){
+                        navigator.notification.confirm(
+                            'Deseja enviar uma colheita parcial?', // message
+                            function(buttonIndex) {
+                                if(buttonIndex === 2){
+                                    relatarSafra();
+                                    limparcamposrelatar();
+                                }
+                            },            // callback to invoke with index of button pressed
+                            'Confirmação',           // title
+                            ['Não', 'Sim']     // buttonLabels
+                        );
+                    }else{
+                        navigator.notification.confirm(
+                            'Deseja enviar a última colheita?', // message
+                            function(buttonIndex) {
+                                if(buttonIndex === 2){
+                                    relatarSafra();
+                                    limparcamposrelatar();
+                                }
+                            },            // callback to invoke with index of button pressed
+                            'Confirmação',           // title
+                            ['Não', 'Sim']     // buttonLabels
+                        );
+                    }
+                }else{
+                    navigator.notification.alert("Insira a quantidade colhida!",function(){
+                        $('#qtdcolhida').focus();
+                    },"Alerta!", "OK");
+                }
             }
+
+
+
+            /*var data = "nome="+$("#inome").val()+"&sobrenome="+$("#isobrenome").val()+"&apelido="+$("#iapelido").val()+"&cpf="+$("#icpf").val()+"&sexo="+$('input[name = "bs-radio-group-0"]:checked').val()+"&rg="+$("#irg").val()+"&telefone1="+$("#itelefone1").val()+"&telefone2="+$("#itelefone2").val()+ "&escolaridade_idescolaridade="+$("#iescolaridade")[0].selectedIndex+ "&estadocivil_idestadocivil="+$("#iestadocivil")[0].selectedIndex+"&nomepropriedade="+$("#inomepropriedade").val()+"&rua="+$("#irua").val()+"&numero="+$("#inumero").val()+"&bairro="+$("#ibairro").val()+"&complemento="+$("#icomplemento").val()+"&cep="+$("#icep").val()+"&cidade_idcidade="+$("#cidade")[0].selectedIndex+"&area="+$("#iarea").val()+"&unidadedemedida="+$('input[name = "bs-radio-group-2"]:checked').val()+"&areautilizavel="+$("#iareautilizavel").val()+"&unidadedemedidaau="+$('input[name = "bs-radio-group-1"]:checked').val()+"&gps_lat="+$("#igpslat").val()+"&gps_long="+$("#igpslong").val()+"&qtdedeintegrantes="+$("#iqtdintegrantes").val()+"&qtdedecriancas="+$("#iqtdcriancas").val()+"&qtdedegravidas="+$("#iqtdgravidas").val()+"&usuario="+$("#iusuario").val()+"&senha="+$("#isenha").val()+"&email="+$("#iemail").val()+"&papel=a&unidade_idunidade=2";
+
+
+            sessionStorage.clear();*/
+
+
         }
-
-
-
-        /*var data = "nome="+$("#inome").val()+"&sobrenome="+$("#isobrenome").val()+"&apelido="+$("#iapelido").val()+"&cpf="+$("#icpf").val()+"&sexo="+$('input[name = "bs-radio-group-0"]:checked').val()+"&rg="+$("#irg").val()+"&telefone1="+$("#itelefone1").val()+"&telefone2="+$("#itelefone2").val()+ "&escolaridade_idescolaridade="+$("#iescolaridade")[0].selectedIndex+ "&estadocivil_idestadocivil="+$("#iestadocivil")[0].selectedIndex+"&nomepropriedade="+$("#inomepropriedade").val()+"&rua="+$("#irua").val()+"&numero="+$("#inumero").val()+"&bairro="+$("#ibairro").val()+"&complemento="+$("#icomplemento").val()+"&cep="+$("#icep").val()+"&cidade_idcidade="+$("#cidade")[0].selectedIndex+"&area="+$("#iarea").val()+"&unidadedemedida="+$('input[name = "bs-radio-group-2"]:checked').val()+"&areautilizavel="+$("#iareautilizavel").val()+"&unidadedemedidaau="+$('input[name = "bs-radio-group-1"]:checked').val()+"&gps_lat="+$("#igpslat").val()+"&gps_long="+$("#igpslong").val()+"&qtdedeintegrantes="+$("#iqtdintegrantes").val()+"&qtdedecriancas="+$("#iqtdcriancas").val()+"&qtdedegravidas="+$("#iqtdgravidas").val()+"&usuario="+$("#iusuario").val()+"&senha="+$("#isenha").val()+"&email="+$("#iemail").val()+"&papel=a&unidade_idunidade=2";
-
-
-        sessionStorage.clear();*/
-
-
 
          return false;
     });
@@ -932,50 +958,50 @@
      });
 
      $(document).on("click", ".uib_w_340 > label", function(evt){
+         if(!escondeMenuHamburguer('bs-navbar-1')){
+             var id = $(this).children('input').attr('id');
 
-           var id = $(this).children('input').attr('id');
-
-         if(id === "colheitaParcial"){
-             $('#colheitaParcial').prop('checked', true);
-             $('#ultimaColheita').prop('checked', false);
-             $('#finalizarColheita').prop('checked', false);
-             $('.uib_w_319').show();
-             $('.uib_w_337').show();
-         }else if(id === 'ultimaColheita'){
-             navigator.notification.confirm(
-                 'Toda sua safra foi realmente colhida?', // message
-                 function(buttonIndex) {
-                     if(buttonIndex === 2){
-                        $('#colheitaParcial').prop('checked', false);
-                        $('#ultimaColheita').prop('checked', true);
-                        $('#finalizarColheita').prop('checked', false);
-                        $('.uib_w_319').show();
-                        $('.uib_w_337').show();
-                     }
-                 },            // callback to invoke with index of button pressed
-                 'Confirmação',           // title
-                 ['Não', 'Sim']     // buttonLabels
-            );
+             if(id === "colheitaParcial"){
+                 $('#colheitaParcial').prop('checked', true);
+                 $('#ultimaColheita').prop('checked', false);
+                 $('#finalizarColheita').prop('checked', false);
+                 $('.uib_w_319').show();
+                 $('.uib_w_337').show();
+             }else if(id === 'ultimaColheita'){
+                 navigator.notification.confirm(
+                     'Toda sua safra foi realmente colhida?', // message
+                     function(buttonIndex) {
+                         if(buttonIndex === 2){
+                            $('#colheitaParcial').prop('checked', false);
+                            $('#ultimaColheita').prop('checked', true);
+                            $('#finalizarColheita').prop('checked', false);
+                            $('.uib_w_319').show();
+                            $('.uib_w_337').show();
+                         }
+                     },            // callback to invoke with index of button pressed
+                     'Confirmação',           // title
+                     ['Não', 'Sim']     // buttonLabels
+                );
 
 
-         }else{
-             navigator.notification.confirm(
-                 'Deseja somente finalizar a safra?', // message
-                 function(buttonIndex) {
-                     if(buttonIndex === 2){
-                         $('#colheitaParcial').prop('checked', false);
-                         $('#ultimaColheita').prop('checked', false);
-                         $('#finalizarColheita').prop('checked', true);
-                         $('.uib_w_319').hide();
-                         $('.uib_w_337').hide();
-                     }
-                 },            // callback to invoke with index of button pressed
-                 'Confirmação',           // title
-                 ['Não', 'Sim']     // buttonLabels
-            );
+             }else{
+                 navigator.notification.confirm(
+                     'Deseja somente finalizar a safra?', // message
+                     function(buttonIndex) {
+                         if(buttonIndex === 2){
+                             $('#colheitaParcial').prop('checked', false);
+                             $('#ultimaColheita').prop('checked', false);
+                             $('#finalizarColheita').prop('checked', true);
+                             $('.uib_w_319').hide();
+                             $('.uib_w_337').hide();
+                         }
+                     },            // callback to invoke with index of button pressed
+                     'Confirmação',           // title
+                     ['Não', 'Sim']     // buttonLabels
+                );
 
-         }
-
+             }
+        }
          return false;
      });
 
