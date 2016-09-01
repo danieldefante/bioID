@@ -14,8 +14,8 @@
         $('#irg').mask('0.000.000.000');
         $('.telefone').mask('(00) 00000-0000');
         $('.numeros').mask('0#');
-        $("#inome").mask('a',{'translation': {'a': {pattern: /[A-Za-zçÇãÃâÂáÁéÉíÍõÕôÔ-]/, optional: true, recursive: true}}});
-        $(".palavras").mask('a',{'translation': {'a': {pattern: /[A-Za-zçÇãÃâÂáÁéÉíÍõÕôÔ-\s]/, optional: true, recursive: true}}});
+        $("#inome").mask('a',{'translation': {'a': {pattern: /[A-Za-zçÇãÃâÂáÁéÉíÍõÕôÔ]/, optional: true, recursive: true}}});
+        $(".palavras").mask('a',{'translation': {'a': {pattern: /[A-Za-zçÇãÃâÂáÁéÉíÍõÕôÔ\s]/, optional: true, recursive: true}}});
         $("#iusuario").mask('a',{'translation': {'a': {pattern: /[A-Za-z0-9]/, optional: true, recursive: true}}});
         $('.nreal').mask('0', {'translation': {0: {pattern: /[0-9.]/, optional: true, recursive: true}}});
         $('.idatas').mask('00/00/0000');
@@ -284,7 +284,7 @@
             //cria um json para a requisicao post
             var data = usuario+"&senha="+$("#inputSenha").val();
 
-            $.post("http://"+window.ipServidor+":8080/Projeto_BioID-war/servico/pessoa/validacao", data, function(dados){
+            $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/pessoa/validacao", data, function(dados){
                 //teste da requisicao no banco esta correta
                 if(dados.sucesso){
                    //guarda dados do usuario no local storge
@@ -738,7 +738,7 @@
             var data = "nome="+$("#inome").val()+"&sobrenome="+$("#isobrenome").val()+"&apelido="+$("#iapelido").val()+"&cpf="+$("#icpf").val()+"&sexo="+$('input[name = "bs-radio-group-0"]:checked').val()+"&rg="+$("#irg").val()+"&datanascimento="+$("#idatanascimento").val()+"&telefone1="+$("#itelefone1").val()+"&telefone2="+$("#itelefone2").val()+ "&escolaridade_idescolaridade="+($("#iescolaridade")[0].selectedIndex+1)+ "&estadocivil_idestadocivil="+($("#iestadocivil")[0].selectedIndex+1)+"&nomepropriedade="+$("#inomepropriedade").val()+"&rua="+$("#irua").val()+"&numero="+$("#inumero").val()+"&bairro="+$("#ibairro").val()+"&complemento="+$("#icomplemento").val()+"&cep="+$("#icep").val()+"&cidade_idcidade="+($("#cidade")[0].selectedIndex+1)+"&area="+$("#iarea").val()+"&unidadedemedida="+$('input[name = "bs-radio-group-2"]:checked').val()+"&areautilizavel="+$("#iareautilizavel").val()+"&unidadedemedidaau="+$('input[name = "bs-radio-group-1"]:checked').val()+"&gps_lat="+$("#igpslat").val()+"&gps_long="+$("#igpslong").val()+"&qtdedeintegrantes="+$("#iqtdintegrantes").val()+"&qtdedecriancas="+$("#iqtdcriancas").val()+"&qtdedegravidas="+$("#iqtdgravidas").val()+"&usuario="+$("#iusuario").val()+"&senha="+$("#isenha").val()+"&email="+$("#iemail").val()+"&papel=a&unidade_idunidade=2";
 
 
-            $.post("http://"+window.ipServidor+":8080/Projeto_BioID-war/servico/pessoa/inseriragricultor", data, function(dados){
+            $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/pessoa/inseriragricultor", data, function(dados){
 
                 //se cadastrado entao vai para pagina inicial
                 if(dados.sucesso){
