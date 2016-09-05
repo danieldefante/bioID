@@ -31,8 +31,8 @@ var papel;
 //var idpropriedade = 4;
 
 //ip do servidor
-var ipServidor = "192.168.0.7:8080";
-//var ipServidor = "10.2.10.229:8080";
+//var ipServidor = "192.168.0.7:8080";
+var ipServidor = "10.2.10.200:8080";
 //var ipServidor = "localhost";
 
 
@@ -139,7 +139,8 @@ function listarCultivarRecebidos(idpropriedade){
                 var a = cultivaresRecebidos[i];
                 //teste a propriedade
                 if(a.propriedade_idpropriedade === idpropriedade){
-                    var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ prazoRelatar(a.prazo_colheita, a.prazo_destinacao)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">Data recebimento: '+a.datareceb+'</p><p class="list-group-item-text">Quantidade recebida: '+ a.qtdrecebida +'&nbsp'+ a.grandeza_recebida +'</p><p class="list-group-item-text">Status da colheita: '+a.prazo_colheita+'</p><p class="list-group-item-text">Status de destinação: '+a.prazo_destinacao+'</p></a>';
+                    /*var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ prazoRelatar(a.prazo_colheita, a.prazo_destinacao)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">Data recebimento: '+a.datareceb+'</p><p class="list-group-item-text">Quantidade recebida: '+ a.qtdrecebida +'&nbsp'+ a.grandeza_recebida +'</p><p class="list-group-item-text">Status da colheita: '+a.prazo_colheita+'</p><p class="list-group-item-text">Status de destinação: '+a.prazo_destinacao+'</p></a>';*/
+                      var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ prazoRelatar(a.statussafra_idstatussafra)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">Status da colheita: '+a.prazo_colheita+'</p><p class="list-group-item-text">Status de destinação: '+a.prazo_destinacao+'</p></a>';
                     $("#cultivarRecebido").append(item);
                 }
                 i++;
@@ -154,6 +155,8 @@ function listarCultivarRecebidos(idpropriedade){
 
 //servico de busca dos dados no servidor, consome dados de internet e armazena no localStorage
 function servArmazenarCulRecebdo(usuario){
+
+
     var cultivaresRecebidos = [];
     var propriedades = [];
     var cultivares = [];
@@ -174,7 +177,7 @@ function servArmazenarCulRecebdo(usuario){
                                           prazo_colheita: dados.cultivaresrecebidos[i].prazo_colheita,
                                           qtddestinada: dados.cultivaresrecebidos[i].qtddestinada,
                                           prazo_destinacao: dados.cultivaresrecebidos[i].prazo_destinacao,
-                                          idsafra: dados.cultivaresrecebidos[i].idsafra};
+                                          idsafra: dados.cultivaresrecebidos[i].idsafra, statussafra_idstatussafra: dados.cultivaresrecebidos[i].statussafra_idstatussafra};
                 //armazena a propriedade em um array
                 if(propriedades.length < 1){
                     propriedades[0] = {propriedade_idpropriedade: cultivaresRecebidos[i].propriedade_idpropriedade, nomepropriedade: cultivaresRecebidos[i].nomepropriedade};
@@ -204,10 +207,13 @@ function servArmazenarCulRecebdo(usuario){
     })
     .done(function(){
         //armazena no localstorage
+        localStorage.removeItem("cultivaresRecebidos");
         localStorage.setItem("cultivaresRecebidos", JSON.stringify(cultivaresRecebidos));
         //armazena propriedades no localstorage
+        localStorage.removeItem("propriedades");
         localStorage.setItem("propriedades", JSON.stringify(propriedades));
         //armazena imagens no localstorage
+        localStorage.removeItem("cultivares");
         localStorage.setItem("cultivares", JSON.stringify(cultivares));
         //chama o metodo que popula o item de propriedades
         listarPropriedades();
@@ -265,22 +271,16 @@ function listarCultivar(){
 }
 
 
-function prazoRelatar(a, b){
+function prazoRelatar(status){
 
-    if(a === 'Colheita relatada'){
-        if(b === 'Destinação relatada'){
-            return '<span class="verde badge fa fa-thumbs-o-up"><span class="verde badge fa fa-chevron-right"> </span></span>';
-        }else if(b === 'Destinação expirada'){
-            return '<span class="vermelho badge fa fa-thumbs-o-down"><span class="vermelho badge fa fa-chevron-right"> </span></span>';
-        }else{
-            return '<span class="amarelo badge fa fa-chevron-right"> </span>';
-        }
-
-    }else if(a === 'Colheita expirada'){
+    if(status === 7 || status === 8){
         return '<span class="vermelho badge fa fa-thumbs-o-down"><span class="vermelho badge fa fa-chevron-right"> </span></span>';
-
+    }else if(status === 6 ){
+        return '<span class="verde badge fa fa-thumbs-o-up"><span class="verde badge fa fa-chevron-right"> </span></span>';
+    }else if(status === 1){
+         return '<span class="laranja badge fa fa-hand-o-right"> <span class="laranja badge fa fa-chevron-right"> </span></span>';
     }else{
-        return '<span class="amarelo badge fa fa-chevron-right"> </span>';
+        return '<span class="amarelo badge fa fa-hand-o-up"> <span class="amarelo badge fa fa-chevron-right"> </span></span>';
     }
 
 }

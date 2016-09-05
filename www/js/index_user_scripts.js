@@ -133,7 +133,7 @@
                 function(buttonIndex) {
                     if(buttonIndex === 2){
 
-                        //limpa os abas relatar
+                        /*/limpa os abas relatar
                         var novoItem = $("#novoabarelatar");
                         $("#abasrelatar").empty();
                         $("#abasrelatar").append(novoItem);
@@ -155,7 +155,7 @@
                         $('#idestinacao').append('<option>Merenda Escolar</option>');
                         $('#idestinacao').append('<option>Doação</option>');
                         $('#idestinacao').append('<option>Perda</option>');
-
+*/
                         //abre as box corretos
                         $("#colheita").hide();
                         $("#destinacao").hide();
@@ -593,40 +593,63 @@
     $(document).on("click",".listaCultivar > a", function(evt)
     {
         if(!escondeMenuHamburguer('bs-navbar-1')){
+
             var a = $(this).attr("id");
-            //var nomeCultivar = $(this).children('h4').html();
             //carrega item que esta no localStorage
             var cultivaresRecebidos = JSON.parse(localStorage.getItem("cultivaresRecebidos"));
-            if(cultivaresRecebidos.length > 1){
+            if(cultivaresRecebidos.length > 0){
                 cultivarSelecionado = cultivaresRecebidos[a];
-
+                //guarda o id da safra no session storage
+                sessionStorage.setItem("idsafra", cultivarSelecionado.idsafra);
+                sessionStorage.setItem("idstatussafra", cultivarSelecionado.statussafra_idstatussafra);
                 //hide e show os painels de cada usuario
                 if(window.papel === "e"){
                     $("#painelEstoque").show();
                     $("#desabilitado").prop('disabled', true);
                     $("#salvarEstoque").hide();
+                    $("#statuscultivar").hide();
                     //some botao de relatar
-                    $("#relatar").hide();
+                    //$("#relatar").hide();
                 }else if(window.papel === "g"){
                     $("#desabilitado").prop('disabled', false);
                     $("#salvarEstoque").show();
                     $("#painelEstoque").show();
+                    $("#statuscultivar").hide();
                     //some botao de relatar
-                    $("#relatar").hide();
+                   // $("#relatar").hide();
                 //usuario agricultor
                 }else{
+
+                    $("#statuscultivar").show();
                     $("#painelEstoque").hide();
                     //aparece botao de relatar se não foi relatado ainda a produçao do cultivar
-                    if(cultivarSelecionado.prazo_colheita !== "Colheita expirada"){
-                        $(".uib_w_272").show();
-                        /*$("#nomeCColheita").html("Relatar "+cultivarSelecionado.qtdrecebida+" de "+cultivarSelecionado.grandeza_cultivar+" de "+cultivarSelecionado.nomecultivar+':');*/
 
-                    }else{
-                        $(".uib_w_272").hide();
+
+
+
+                    switch(cultivarSelecionado.statussafra_idstatussafra) {
+                        case 1:
+                        case 2:
+                        case 3:
+                            $(".uib_w_272").show();
+                            $(".uib_w_344").show();
+                            break;
+                        case 6:
+                        case 7:
+                        case 8:
+                            $(".uib_w_272").hide();
+                            $(".uib_w_344").hide();
+                            break;
+                        case 4:
+                        case 5:
+                            $(".uib_w_272").hide();
+                            $(".uib_w_344").show();
+                            break;
                     }
+
+                    //aparece botao destinacao
                     if(cultivarSelecionado.prazo_destinacao !== "Destinação expirada"){
                         $(".uib_w_344").show();
-                        /*$("#nomeCColheita").html("Relatar "+cultivarSelecionado.qtdrecebida+" de "+cultivarSelecionado.grandeza_cultivar+" de "+cultivarSelecionado.nomecultivar+':');*/
 
                     }else{
                         $(".uib_w_344").hide();
@@ -638,8 +661,11 @@
                 $("#nomeProduto").html(cultivarSelecionado.nomecultivar);
                 //muda a image do cultivar
                 $("#imgCultivar").attr("src", carregarCultivar(cultivarSelecionado.nomecultivar));
+                //carega os valores da safra, destinacao e datas de recebimento
+                $("#statuscultivar").html("<p>Safra: "+cultivarSelecionado.safra+"</p><p>Data recebimento: "+cultivarSelecionado.datareceb+"</p><p>Quantidade recebida: "+cultivarSelecionado.qtdrecebida+" "+cultivarSelecionado.grandeza_recebida+"</p><p>Quantidade colhida: "+cultivarSelecionado.qtdcolhida+" kilo(s)</p><p>Status colheita: "+cultivarSelecionado.prazo_colheita+"</p><p>Quantidade destinada: "+cultivarSelecionado.qtddestinada+" (kilo(s)</p><p>Status destinação: "+cultivarSelecionado.prazo_destinacao+"</p>");
 
                 activate_page("#page_6");
+                $("#page_6").scrollTop(0);
             }
 
     }
@@ -671,11 +697,15 @@
         /* button  .uib_w_242 */
     $(document).on("click", ".uib_w_242", function(evt)
     {
-         /*global activate_page */
+        /*global activate_page */
         if(window.papel === "a"){
             activate_page("#page_3");
+            $("#page_3").scrollTop(0);
+            sessionStorage.removeItem("idsafra");
+            sessionStorage.removeItem("idstatussafra");
         }else if(window.papel === "g" || window.papel === "e" || window.papel === "d"){
             activate_page("#page_4");
+            //$("#page_4").scrollTop(0);
         }else{
             window.clearGoMainPage();
         }
@@ -691,6 +721,7 @@
          $("#colheita").show();
          $("#destinacao").hide();
          $("#recebidos").hide();
+
 
          return false;
     });
@@ -843,79 +874,115 @@
     $(document).on("click", ".uib_w_105", function(evt)
     {
         if(!escondeMenuHamburguer('bs-navbar-1')){
+            var msg;
 
-            if($('#finalizarColheita').is(':checked')){
-                navigator.notification.confirm(
-                    'Deseja finalizar a safra?', // message
-                    function(buttonIndex) {
-                        if(buttonIndex === 2){
-                            relatarSafra();
-                            limparcamposrelatar();
-                        }
-                    },            // callback to invoke with index of button pressed
-                    'Confirmação',           // title
-                    ['Não', 'Sim']     // buttonLabels
-                );
+            if($('#relatarPerda').is(':checked')){
+                relatarSafra('Deseja somente relatar perda de safra?', testeStatusSafra());
+            }else if($('#finalizarColheita').is(':checked')){
+                relatarSafra('Deseja realmente finalizar a safra?', testeStatusSafra());
             }else{
-                if($('#qtdcolhida').val() > 0){
-                    if($('#colheitaParcial').is(':checked')){
-                        navigator.notification.confirm(
-                            'Deseja enviar uma colheita parcial?', // message
-                            function(buttonIndex) {
-                                if(buttonIndex === 2){
-                                    relatarSafra();
-                                    limparcamposrelatar();
-                                }
-                            },            // callback to invoke with index of button pressed
-                            'Confirmação',           // title
-                            ['Não', 'Sim']     // buttonLabels
-                        );
-                    }else{
-                        navigator.notification.confirm(
-                            'Deseja enviar a última colheita?', // message
-                            function(buttonIndex) {
-                                if(buttonIndex === 2){
-                                    relatarSafra();
-                                    limparcamposrelatar();
-                                }
-                            },            // callback to invoke with index of button pressed
-                            'Confirmação',           // title
-                            ['Não', 'Sim']     // buttonLabels
-                        );
-                    }
-                }else{
+                if($('#qtdcolhida').val() < 0){
                     navigator.notification.alert("Insira a quantidade colhida!",function(){
                         $('#qtdcolhida').focus();
                     },"Alerta!", "OK");
+                }else if($('#datacolheita').val() === ""){
+                    navigator.notification.alert("Insira uma data de colheita!",function(){
+                        $('#datacolheita').focus();
+                    },"Alerta!", "OK");
+                }else{
+                    if($('#ultimaColheita').is(':checked')){
+                        relatarSafra('Deseja realmente relatar a ultima colheita da safra?', testeStatusSafra());
+                    }else{
+                        relatarSafra('Deseja realmente relatar a colheita parcial da safra?', testeStatusSafra());
+                    }
                 }
             }
-
-
-
-            /*var data = "nome="+$("#inome").val()+"&sobrenome="+$("#isobrenome").val()+"&apelido="+$("#iapelido").val()+"&cpf="+$("#icpf").val()+"&sexo="+$('input[name = "bs-radio-group-0"]:checked').val()+"&rg="+$("#irg").val()+"&telefone1="+$("#itelefone1").val()+"&telefone2="+$("#itelefone2").val()+ "&escolaridade_idescolaridade="+$("#iescolaridade")[0].selectedIndex+ "&estadocivil_idestadocivil="+$("#iestadocivil")[0].selectedIndex+"&nomepropriedade="+$("#inomepropriedade").val()+"&rua="+$("#irua").val()+"&numero="+$("#inumero").val()+"&bairro="+$("#ibairro").val()+"&complemento="+$("#icomplemento").val()+"&cep="+$("#icep").val()+"&cidade_idcidade="+$("#cidade")[0].selectedIndex+"&area="+$("#iarea").val()+"&unidadedemedida="+$('input[name = "bs-radio-group-2"]:checked').val()+"&areautilizavel="+$("#iareautilizavel").val()+"&unidadedemedidaau="+$('input[name = "bs-radio-group-1"]:checked').val()+"&gps_lat="+$("#igpslat").val()+"&gps_long="+$("#igpslong").val()+"&qtdedeintegrantes="+$("#iqtdintegrantes").val()+"&qtdedecriancas="+$("#iqtdcriancas").val()+"&qtdedegravidas="+$("#iqtdgravidas").val()+"&usuario="+$("#iusuario").val()+"&senha="+$("#isenha").val()+"&email="+$("#iemail").val()+"&papel=a&unidade_idunidade=2";
-
-
-            sessionStorage.clear();*/
-
-
         }
 
-         return false;
+        return false;
     });
 
-    function limparcamposrelatar(){
+    function testeStatusSafra(){
+        var valor;
+        var idstatus = JSON.parse(sessionStorage.getItem("idstatussafra"));
+
+        if(idstatus === 1){
+            valor = 2;
+        }else if(idstatus === 2){
+            valor = 4;
+        }else{
+            valor = 5;
+        }
+
+        return valor;
+    }
+
+    function relatarSafra(msg, valorCheckbox){
+
+        navigator.notification.confirm(
+            msg, // message
+            function(buttonIndex) {
+                if(buttonIndex === 2){
+                    var data = "idsafra="+sessionStorage.getItem("idsafra")+"&ultimadatacolheita="+$("#datacolheita").val()+"&qtdcolhida="+$("#qtdcolhida").val()+"&statussafra_idstatussafra="+valorCheckbox;
+
+                    $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/relatarcolheita", data, function(dados){
+                        //se safra foi relatada
+                        if(dados.sucesso){
+                            navigator.notification.alert("Colheita relatada!", function(){},"Alerta!", "OK");
+
+                        }else{
+                           navigator.notification.alert("Colheita não relatada!", function(){},"Erro!", "OK");
+
+                        }
+                    },"json")
+                    //Tratamento de erro da requisicao servico RESt login
+                    .fail(function(){
+                        navigator.notification.confirm(
+                            'Colheita não enviada!',
+                            function() {
+                                //limpa a tela e vai para a pagina inicial
+                                window.clearGoMainPage();
+                            },
+                            'Erro',
+                            ['OK']
+                        );
+                    })
+                    .done(function(){
+                        limparcamposrelatar();
+                        //atualiza o local storage
+                        window.servArmazenarCulRecebdo(JSON.parse(localStorage.getItem("logSession")).usuario);
+                    });
+                    }
+                },            // callback to invoke with index of button pressed
+                'Confirmação',           // title
+                ['Não', 'Sim']     // buttonLabels
+            );
+        }
+
+     function limparcamposrelatar(){
+        $('#datacolheita').val("");
         $('#qtdcolhida').val("");
         $('#umcolheita').val("Kilo(s)");
-        $('#colheitaParcial').prop( "checked", true);
-        //$('#ultimaColheita').prop( "checked", false);
-        //$('#finalizarColheita').prop( "checked", false);
+        $('#colheitaParcial').prop("checked", true);
         $('.uib_w_319').show();
         $('.uib_w_337').show();
-        activate_page("#page_6");
-    }
-    function relatarSafra(){
+        $('.uib_w_350').show();
 
+        //mostra a lista novamente, dos cultivares recebidos
+        $("#colheita").hide();
+        $("#destinacao").hide();
+        $("#relatorios").hide();
+        $("#recebidos").show();
+        $("#page_3").scrollTop(0);
     }
+
+
+
+
+
+
+
+
      /*/funcao de guardar na memoria dados do input quantidade colhida
      $('#qtdcolhida').focusout(function() {
          //guarda valor na memoria
@@ -963,6 +1030,8 @@
                  $('#colheitaParcial').prop('checked', true);
                  $('#ultimaColheita').prop('checked', false);
                  $('#finalizarColheita').prop('checked', false);
+                 $('#relatarPerda').prop('checked', false);
+                 $('.uib_w_350').show();
                  $('.uib_w_319').show();
                  $('.uib_w_337').show();
              }else if(id === 'ultimaColheita'){
@@ -973,6 +1042,8 @@
                             $('#colheitaParcial').prop('checked', false);
                             $('#ultimaColheita').prop('checked', true);
                             $('#finalizarColheita').prop('checked', false);
+                            $('#relatarPerda').prop('checked', false);
+                            $('.uib_w_350').show();
                             $('.uib_w_319').show();
                             $('.uib_w_337').show();
                          }
@@ -981,15 +1052,34 @@
                      ['Não', 'Sim']     // buttonLabels
                 );
 
+             }else if(id === "finalizarColheita"){
+                 navigator.notification.confirm(
+                     'Deseja somente finalizar a safra, sem colheita?', // message
+                     function(buttonIndex) {
+                         if(buttonIndex === 2){
+                            $('#colheitaParcial').prop('checked', false);
+                            $('#ultimaColheita').prop('checked', false);
+                            $('#finalizarColheita').prop('checked', true);
+                            $('#relatarPerda').prop('checked', false);
+                            $('.uib_w_350').hide();
+                            $('.uib_w_319').hide();
+                            $('.uib_w_337').hide();
+                         }
+                     },            // callback to invoke with index of button pressed
+                     'Confirmação',           // title
+                     ['Não', 'Sim']     // buttonLabels
+                );
 
              }else{
                  navigator.notification.confirm(
-                     'Deseja somente finalizar a safra?', // message
+                     'Deseja relatar a perda de sua safra?', // message
                      function(buttonIndex) {
                          if(buttonIndex === 2){
                              $('#colheitaParcial').prop('checked', false);
                              $('#ultimaColheita').prop('checked', false);
-                             $('#finalizarColheita').prop('checked', true);
+                             $('#finalizarColheita').prop('checked', false);
+                             $('#relatarPerda').prop('checked', true);
+                             $('.uib_w_350').hide();
                              $('.uib_w_319').hide();
                              $('.uib_w_337').hide();
                          }
