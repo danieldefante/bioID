@@ -617,12 +617,19 @@
                 }else{
                     $("#painelEstoque").hide();
                     //aparece botao de relatar se não foi relatado ainda a produçao do cultivar
-                    if(cultivarSelecionado.descricaostatus !== "relatada" && cultivarSelecionado.descricaostatus !== "tempo expirado para relatar"){
-                        $("#relatar").show();
-                        $("#nomeCColheita").html("Relatar "+cultivarSelecionado.qtdrecebida+" de "+cultivarSelecionado.grandeza_cultivar+" de "+cultivarSelecionado.nomecultivar+':');
+                    if(cultivarSelecionado.prazo_colheita !== "Colheita expirada"){
+                        $(".uib_w_272").show();
+                        /*$("#nomeCColheita").html("Relatar "+cultivarSelecionado.qtdrecebida+" de "+cultivarSelecionado.grandeza_cultivar+" de "+cultivarSelecionado.nomecultivar+':');*/
 
                     }else{
-                        $("#relatar").hide();
+                        $(".uib_w_272").hide();
+                    }
+                    if(cultivarSelecionado.prazo_destinacao !== "Destinação expirada"){
+                        $(".uib_w_344").show();
+                        /*$("#nomeCColheita").html("Relatar "+cultivarSelecionado.qtdrecebida+" de "+cultivarSelecionado.grandeza_cultivar+" de "+cultivarSelecionado.nomecultivar+':');*/
+
+                    }else{
+                        $(".uib_w_344").hide();
                     }
                 }
 
