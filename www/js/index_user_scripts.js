@@ -183,6 +183,9 @@
              if($('#colheita').is(":visible")){
                 existeDados('safra');
              }else{
+                 //lista as safras
+                 window.listarsafras();
+
                  $("#colheita").hide();
                  $("#destinacao").hide();
                  $("#safra").show();

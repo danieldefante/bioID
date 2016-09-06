@@ -160,6 +160,7 @@ function servArmazenarCulRecebdo(usuario){
     var cultivaresRecebidos = [];
     var propriedades = [];
     var cultivares = [];
+    var safra = [];
 
     $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/listarrecebidos", usuario, function(dados){
         //armazena no localStorge
@@ -184,6 +185,14 @@ function servArmazenarCulRecebdo(usuario){
                 }else if(propriedades[propriedades.length - 1].nomepropriedade != cultivaresRecebidos[i].nomepropriedade){
                     propriedades[propriedades.length] = {propriedade_idpropriedade: cultivaresRecebidos[i].propriedade_idpropriedade, nomepropriedade: cultivaresRecebidos[i].nomepropriedade};
                 }
+
+                //armazena a safra em um array
+                if(safra.length < 1){
+                    safra[0] = {safra: cultivaresRecebidos[i].safra};
+                }else if(safra[safra.length - 1].safra != cultivaresRecebidos[i].safra){
+                    safra[safra.length] = {safra: cultivaresRecebidos[i].safra};
+                }
+
                 //salvar imagem
                 //imagens[i] = dados.i
 
@@ -215,6 +224,9 @@ function servArmazenarCulRecebdo(usuario){
         //armazena imagens no localstorage
         localStorage.removeItem("cultivares");
         localStorage.setItem("cultivares", JSON.stringify(cultivares));
+        //armazena safra no localstorage
+        localStorage.removeItem("safra");
+        localStorage.setItem("safra", JSON.stringify(safra));
         //chama o metodo que popula o item de propriedades
         listarPropriedades();
 
@@ -278,9 +290,9 @@ function prazoRelatar(status){
     }else if(status === 6 ){
         return '<span class="verde badge fa fa-thumbs-o-up"><span class="verde badge fa fa-chevron-right"> </span></span>';
     }else if(status === 1){
-         return '<span class="laranja badge fa fa-hand-o-right"> <span class="laranja badge fa fa-chevron-right"> </span></span>';
+         return ' <span class="laranja badge fa fa-chevron-right"> </span>';
     }else{
-        return '<span class="amarelo badge fa fa-hand-o-up"> <span class="amarelo badge fa fa-chevron-right"> </span></span>';
+        return ' <span class="amarelo badge fa fa-chevron-right"> </span>';
     }
 
 }
@@ -289,4 +301,23 @@ function prazoRelatar(status){
 function clearGoMainPage(){
     window.activate_page("#mainpage");
     localStorage.clear();
+}
+
+function listarsafras(){
+    if(localStorage.getItem("safra")){
+        var safra = JSON.parse(localStorage.getItem("safra"));
+        var item;
+        var i = 0;
+        $.each(safra, function(){
+            item ='<div class="panel widget panel-success uib_w_356" data-uib="twitter%20bootstrap/collapsible" data-ver="1"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" href="#bs-accordion-group-'+i+'" data-parent="#bs-accordion-4">Safra : '+safra[i].safra+'</a></h4></div><div id="bs-accordion-group-'+i+'" class="panel-collapse collapse"><div class="panel-body"><div class="col uib_col_93 single-col" data-uib="layout/col" data-ver="0"><div class="widget-container content-area vertical-col"><span class="uib_shim"></span></div></div></div></div></div>';
+
+            $(".uib_w_353").append(item);
+
+            i++;
+        });
+
+
+    }
+
+
 }
