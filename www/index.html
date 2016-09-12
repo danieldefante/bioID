@@ -580,18 +580,18 @@
 
                                     <div class="col uib_col_88 single-col" data-uib="layout/col" data-ver="0">
                                         <div class="widget-container content-area vertical-col">
-                                            <ul class="nav widget uib_w_308 d-margins footer-bg nav-tabs" role="tablist" data-uib="twitter%20bootstrap/tab_bar" data-ver="1" id="abasrelatar">
-                                                <li role="presentation" class="widget uib_w_309" data-uib="twitter%20bootstrap/tab_item" data-ver="1" id="novoabarelatar"><a role="tab" data-toggle="tab"><span class=" fa fa-plus"></span>Novo</a>
+                                            <ul class="nav widget uib_w_308 d-margins footer-bg nav-tabs" role="tablist" data-uib="twitter%20bootstrap/tab_bar" data-ver="1">
+                                                <li role="presentation" class="widget uib_w_309" data-uib="twitter%20bootstrap/tab_item" data-ver="1" id="novoAbaDestinacao"><a role="tab" data-toggle="tab"><span class=" fa fa-plus"></span>Novo</a>
                                                 </li>
 
                                             </ul>
-                                            <label class="checkbox checkbox-padding-left widget uib_w_338 d-margins " data-uib="twitter%20bootstrap/checkbox" data-ver="1">
+                                            <label class="checkbox checkbox-padding-left widget uib_w_338 d-margins camposDestinacao" data-uib="twitter%20bootstrap/checkbox" data-ver="1">
                                                 <input type="checkbox" id="todacolheita">Toda colheita</label>
-                                            <div class="table-thing widget uib_w_305 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
+                                            <div class="table-thing widget uib_w_305 d-margins camposDestinacao" data-uib="twitter%20bootstrap/input" data-ver="1">
                                                 <label class="narrow-control label-top-left" for="relatardata">Data:</label>
                                                 <input class="wide-control form-control default idatas input-lg" type="text" id="relatardata" placeholder="dd/mm/aaaa">
                                             </div>
-                                            <div class="table-thing widget uib_w_102 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
+                                            <div class="table-thing widget uib_w_102 d-margins camposDestinacao" data-uib="twitter%20bootstrap/select" data-ver="1">
                                                 <label class="narrow-control label-top-left">Unidade de medida:</label>
                                                 <select class="wide-control form-control default input-lg" id="relatarum">
                                                     <option>Kilo(s)</option>
@@ -599,16 +599,16 @@
                                                     <option>Saca(s)</option>
                                                 </select>
                                             </div>
-                                            <div class="table-thing widget uib_w_104 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
+                                            <div class="table-thing widget uib_w_104 d-margins camposDestinacao" data-uib="twitter%20bootstrap/input" data-ver="1">
                                                 <label class="narrow-control label-top-left" for="relatarvalor">Quantidade:</label>
                                                 <input class="wide-control form-control default nreal input-lg" type="text" placeholder="Digite um valor..." id="relatarqtd">
                                             </div>
-                                            <button class="btn widget uib_w_313 d-margins btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="fa fa-rotate-left button-icon-left" data-position="left"></i>Cancelar</button><span class="uib_shim"></span>
+                                            <button class="btn widget uib_w_313 d-margins btn-lg btn-warning camposDestinacao" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="fa fa-rotate-left button-icon-left" data-position="left"></i>Cancelar</button><span class="uib_shim"></span>
                                         </div>
                                     </div>
 
                                 </div>
-                                <button class="btn widget uib_w_346 d-margins btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1" id="Enviardestinacao">Enviar<i class="fa fa-cloud-upload button-icon-right" data-position="right"></i>
+                                <button class="btn widget uib_w_346 d-margins btn-lg btn-warning camposDestinacao" data-uib="twitter%20bootstrap/button" data-ver="1" id="Enviardestinacao">Enviar<i class="fa fa-cloud-upload button-icon-right" data-position="right"></i>
                                 </button><span class="uib_shim"></span>
                             </div>
                         </div>
@@ -674,6 +674,11 @@
                         </div>
                         <div class="col uib_col_52 single-col" data-uib="layout/col" data-ver="0">
                             <div class="widget-container content-area vertical-col">
+                                <ul class="nav widget uib_w_357 d-margins footer-bg nav-tabs" role="tablist" data-uib="twitter%20bootstrap/tab_bar" data-ver="1">
+                                    <li role="presentation" class="widget uib_w_358 active" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">Sem propriedades cadastradas</a>
+                                    </li>
+
+                                </ul>
 
                                 <div class="panel-group no_wrap widget uib_w_320 d-margins" data-uib="twitter%20bootstrap/accordion" data-ver="1" id="bs-accordion-3">
                                     <div class="panel widget uib_w_321 panel-default" data-uib="twitter%20bootstrap/collapsible" data-ver="1">
@@ -905,13 +910,12 @@
                             <h4 class="modal-title" style="color:#fff"><span class="fa fa-info-circle"></span>&nbsp;Resposta</h4>
                         </div>
 
-
                         <div class="modal-body">
                             <div class="col uib_col_86 single-col" data-uib="layout/col" data-ver="0">
                                 <div class="widget-container content-area vertical-col">
                                     <div class="table-thing widget uib_w_332 d-margins" data-uib="twitter%20bootstrap/text_area" data-ver="1">
                                         <label class="narrow-control"></label>
-                                        <textarea rows="5" class="wide-control form-control" wrap="soft" id=textoResposta></textarea>
+                                        <textarea rows="5" class="wide-control form-control" wrap="soft" id="textoResposta"></textarea>
                                     </div>
                                     <span class="uib_shim"></span>
                                 </div>

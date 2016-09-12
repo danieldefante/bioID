@@ -32,8 +32,8 @@ var papel;
 
 //ip do servidor
 //var ipServidor = "192.168.0.7:8080";
-//var ipServidor = "10.2.10.200:8080";
-var ipServidor = "localhost:8080";
+var ipServidor = "10.2.10.200:8080";
+//var ipServidor = "localhost:8080";
 
 
 /*/funcao mudar background aleatorio
@@ -203,6 +203,8 @@ function servArmazenarCulRecebdo(usuario){
             propriedades = dados.propriedades;
 
             safras = dados.safras;
+
+            //perguntas = dados.perguntas;
         }else{
             navigator.notification.confirm(
             'Erro de busca!',
@@ -238,6 +240,9 @@ function servArmazenarCulRecebdo(usuario){
         //armazena safra no localstorage
         localStorage.removeItem("safras");
         localStorage.setItem("safras", JSON.stringify(safras));
+        //armazena safra no localstorage
+        //localStorage.removeItem("perguntas");
+        //localStorage.setItem("perguntas", JSON.stringify(perguntas));
         //chama o metodo que popula o item de propriedades
         listarPropriedades();
         //chama o metodo que lista as safras
@@ -251,20 +256,25 @@ function servArmazenarCulRecebdo(usuario){
 //funcao que organiza e lista as propriedades
 function listarPropriedades(){
     var item;
+    var itemP;
     $("#itemPropriedades").empty();
+    $(".uib_w_357").empty();
     var propriedades = JSON.parse(localStorage.getItem("propriedades"));
     if(propriedades.length > 0){
         var i = 0;
         $.each(propriedades, function(){
             item = '<li id="propriedade'+i+'" role="presentation" class="widget uib_w_287" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i].nomepropriedade+'</a></li>';
 
-            $("#itemPropriedades").append(item);
+            itemP = '<li id="Ppropriedade'+i+'" role="presentation" class="widget uib_w_358" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i].nomepropriedade+'</a></li>';
 
+            $("#itemPropriedades").append(item);
+            $(".uib_w_357").append(itemP);
             i++;
         });
 
         //marca o ultima propriedade como ativa
         $('#propriedade'+ (i-1)).addClass("active");
+        $('#Ppropriedade'+ (i-1)).addClass("active");
         //chama a funcao de listar cultivares recebidos
         listarCultivarRecebidos(propriedades[i-1].propriedade_idpropriedade);
 
