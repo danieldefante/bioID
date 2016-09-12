@@ -32,8 +32,8 @@ var papel;
 
 //ip do servidor
 //var ipServidor = "192.168.0.7:8080";
-var ipServidor = "10.2.10.200:8080";
-//var ipServidor = "localhost";
+//var ipServidor = "10.2.10.200:8080";
+var ipServidor = "localhost:8080";
 
 
 /*/funcao mudar background aleatorio
@@ -139,8 +139,7 @@ function listarCultivarRecebidos(idpropriedade){
                 var a = cultivaresRecebidos[i];
                 //teste a propriedade
                 if(a.propriedade_idpropriedade === idpropriedade){
-                    /*var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ prazoRelatar(a.prazo_colheita, a.prazo_destinacao)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">Data recebimento: '+a.datareceb+'</p><p class="list-group-item-text">Quantidade recebida: '+ a.qtdrecebida +'&nbsp'+ a.grandeza_recebida +'</p><p class="list-group-item-text">Status da colheita: '+a.prazo_colheita+'</p><p class="list-group-item-text">Status de destinação: '+a.prazo_destinacao+'</p></a>';*/
-                      var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ prazoRelatar(a.statussafra_idstatussafra)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">Status da colheita: '+a.prazo_colheita+'</p><p class="list-group-item-text">Status de destinação: '+a.prazo_destinacao+'</p></a>';
+                      var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ prazoRelatar(a.statussafra_idstatussafra)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">'+statusColheita(a.statussafra_idstatussafra)+ a.prazo_colheita+'</p><p class="list-group-item-text">'+statusDestinacao(a.statussafra_idstatussafra)+a.prazo_destinacao+'</p></a>';
                     $("#cultivarRecebido").append(item);
                 }
                 i++;
@@ -152,6 +151,36 @@ function listarCultivarRecebidos(idpropriedade){
     }
 }
 
+function prazoRelatar(status){
+
+    if(status === 7 || status === 8){
+        return '<span class="vermelho badge fa fa-thumbs-o-down"><span class="vermelho badge fa fa-chevron-right"> </span></span>';
+    }else if(status === 6 ){
+        return '<span class="verde badge fa fa-thumbs-o-up"><span class="verde badge fa fa-chevron-right"> </span></span>';
+    }else if(status === 1){
+         return ' <span class="laranja badge fa fa-chevron-right"> </span>';
+    }else{
+        return ' <span class="amarelo badge fa fa-chevron-right"> </span>';
+    }
+
+}
+
+function statusColheita(statussafra){
+    if(statussafra <= 3){
+        return 'Relatar colheita até: ';
+    }else{
+        return 'Colheita ';
+    }
+
+}
+function statusDestinacao(statussafra){
+    if(statussafra <= 5){
+        return 'Relatar destinação até: ';
+    }else{
+        return 'Destinação ';
+    }
+
+}
 
 //servico de busca dos dados no servidor, consome dados de internet e armazena no localStorage
 function servArmazenarCulRecebdo(usuario){
@@ -160,47 +189,29 @@ function servArmazenarCulRecebdo(usuario){
     var cultivaresRecebidos = [];
     var propriedades = [];
     var cultivares = [];
-    var safra = [];
+    var safras = [];
 
     $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/listarrecebidos", usuario, function(dados){
         //armazena no localStorge
         if(dados.sucesso){
-            var i = 0;
-            $.each(dados.cultivaresrecebidos, function(){
-                //armazena os cultivares em um array
-                cultivaresRecebidos[i] = {nomepropriedade: dados.cultivaresrecebidos[i].nomepropriedade,
-                                          safra: dados.cultivaresrecebidos[i].safra,
-                                          nomecultivar: dados.cultivaresrecebidos[i].nomecultivar,
-                                          datareceb: dados.cultivaresrecebidos[i].datareceb,
-                                          qtdrecebida: dados.cultivaresrecebidos[i].qtdrecebida,
-                                          grandeza_recebida: dados.cultivaresrecebidos[i].grandeza_recebida,
-                                          qtdcolhida: dados.cultivaresrecebidos[i].qtdcolhida,
-                                          prazo_colheita: dados.cultivaresrecebidos[i].prazo_colheita,
-                                          qtddestinada: dados.cultivaresrecebidos[i].qtddestinada,
-                                          prazo_destinacao: dados.cultivaresrecebidos[i].prazo_destinacao,
-                                          idsafra: dados.cultivaresrecebidos[i].idsafra, statussafra_idstatussafra: dados.cultivaresrecebidos[i].statussafra_idstatussafra};
-                //armazena a propriedade em um array
-                if(propriedades.length < 1){
-                    propriedades[0] = {propriedade_idpropriedade: cultivaresRecebidos[i].propriedade_idpropriedade, nomepropriedade: cultivaresRecebidos[i].nomepropriedade};
-                }else if(propriedades[propriedades.length - 1].nomepropriedade != cultivaresRecebidos[i].nomepropriedade){
-                    propriedades[propriedades.length] = {propriedade_idpropriedade: cultivaresRecebidos[i].propriedade_idpropriedade, nomepropriedade: cultivaresRecebidos[i].nomepropriedade};
-                }
 
-                //armazena a safra em um array
-                if(safra.length < 1){
-                    safra[0] = {safra: cultivaresRecebidos[i].safra};
-                }else if(safra[safra.length - 1].safra != cultivaresRecebidos[i].safra){
-                    safra[safra.length] = {safra: cultivaresRecebidos[i].safra};
-                }
-
-                //salvar imagem
-                //imagens[i] = dados.i
-
-                i++;
-            });
-
+            //armazena os cultivares recebidos
+            cultivaresRecebidos = dados.cultivaresrecebidos;
             //armazena as imagens dos cultivares em um array
             cultivares = dados.cultivares;
+
+            propriedades = dados.propriedades;
+
+            safras = dados.safras;
+        }else{
+            navigator.notification.confirm(
+            'Erro de busca!',
+            function() {
+                clearGoMainPage();
+            },
+            'Erro',
+            ['OK']
+        );
         }
     }, "json")
     //Tratamento de erro da requisicao servico RESt login
@@ -225,11 +236,12 @@ function servArmazenarCulRecebdo(usuario){
         localStorage.removeItem("cultivares");
         localStorage.setItem("cultivares", JSON.stringify(cultivares));
         //armazena safra no localstorage
-        localStorage.removeItem("safra");
-        localStorage.setItem("safra", JSON.stringify(safra));
+        localStorage.removeItem("safras");
+        localStorage.setItem("safras", JSON.stringify(safras));
         //chama o metodo que popula o item de propriedades
         listarPropriedades();
-
+        //chama o metodo que lista as safras
+        listarSafras();
 
     });
 
@@ -259,7 +271,7 @@ function listarPropriedades(){
     }else{
         $("#cultivarRecebido").empty();
 
-        item = '<a id="1" class="list-group-item allow-badge widget uib_w_267" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-rotate-left"> </span><h4 class="list-group-item-heading">Atualizar lista</h4><p class="list-group-item-text">data recebimento/quantidade</p></a>';
+        item = '<a class="list-group-item allow-badge widget uib_w_267" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-rotate-left"> </span><h4 class="list-group-item-heading">Atualizar lista</h4><p class="list-group-item-text">data recebimento/quantidade</p></a>';
 
         $("#cultivarRecebido").append(item);
 
@@ -273,7 +285,7 @@ function listarCultivar(){
         var a = dados.data;
         var qnt = a.length;
         for(var i=0; i<qnt; i++){
-            var item ='<a id="1" class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+ a[i].nomecultivar +'</h4><p class="list-group-item-text">500 kilos</p></a>';
+            var item ='<a class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+ a[i].nomecultivar +'</h4><p class="list-group-item-text">500 kilos</p></a>';
 
             $("#cultivarUnidade").append(item);
         }
@@ -283,19 +295,6 @@ function listarCultivar(){
 }
 
 
-function prazoRelatar(status){
-
-    if(status === 7 || status === 8){
-        return '<span class="vermelho badge fa fa-thumbs-o-down"><span class="vermelho badge fa fa-chevron-right"> </span></span>';
-    }else if(status === 6 ){
-        return '<span class="verde badge fa fa-thumbs-o-up"><span class="verde badge fa fa-chevron-right"> </span></span>';
-    }else if(status === 1){
-         return ' <span class="laranja badge fa fa-chevron-right"> </span>';
-    }else{
-        return ' <span class="amarelo badge fa fa-chevron-right"> </span>';
-    }
-
-}
 
 //limpa a memoria do app e redireciona para tela de login
 function clearGoMainPage(){
@@ -303,21 +302,53 @@ function clearGoMainPage(){
     localStorage.clear();
 }
 
-function listarsafras(){
-    if(localStorage.getItem("safra")){
-        var safra = JSON.parse(localStorage.getItem("safra"));
+function listarSafras(){
+    if(localStorage.getItem("safras")){
+        var safras = JSON.parse(localStorage.getItem("safras"));
         var item;
         var i = 0;
-        $.each(safra, function(){
-            item ='<div class="panel widget panel-success uib_w_356" data-uib="twitter%20bootstrap/collapsible" data-ver="1"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" href="#bs-accordion-group-'+i+'" data-parent="#bs-accordion-4">Safra : '+safra[i].safra+'</a></h4></div><div id="bs-accordion-group-'+i+'" class="panel-collapse collapse"><div class="panel-body"><div class="col uib_col_93 single-col" data-uib="layout/col" data-ver="0"><div class="widget-container content-area vertical-col"><span class="uib_shim"></span></div></div></div></div></div>';
+        $(".uib_w_354").remove();
+        $(".uib_w_355").remove();
+        $(".uib_w_356").remove();
+
+        $.each(safras, function(){
+            item ='<div class="panel widget panel-success" data-uib="twitter%20bootstrap/collapsible" data-ver="1"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" href="#bs-accordion-group-'+i+'" data-parent="#bs-accordion-1">Safra : '+safras[i].safra+'</a></h4></div><div id="bs-accordion-group-'+i+'" class="panel-collapse collapse"><div class="panel-body"><div class="col uib_col_91 single-col" data-uib="layout/col" data-ver="0"><div class="widget-container content-area vertical-col"><div class="list-group widget safra_'+i+' d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1"></div><span class="uib_shim"></span></div></div></div></div></div>';
+
+
 
             $(".uib_w_353").append(item);
 
+            listarCultivarSafras(safras[i].safra, i);
             i++;
         });
 
 
+    }else{
+        navigator.notification.confirm(
+            'Não existe safras!',
+            function() {
+                //clearGoMainPage();
+            },
+            'Erro',
+            ['OK']
+        );
     }
+function listarCultivarSafras(safra, classSafra){
+    var cultivaresRecebidos = JSON.parse(localStorage.getItem("cultivaresRecebidos"));
+    var item;
+    var a;
+    var i = 0;
 
+    $.each(cultivaresRecebidos, function(){
+        if(safra === cultivaresRecebidos[i].safra){
+            a = cultivaresRecebidos[i];
+            item ='<a class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="as list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Data recebimento: '+a.datareceb+'</p><p class="list-group-item-text">Propriedade: '+a.nomepropriedade+'</p><p class="list-group-item-text">Quantidade recebida: '+a.qtdrecebida+' '+a.grandeza_recebida+'</p><p class="list-group-item-text">'+statusColheita(a.statussafra_idstatussafra)+ a.prazo_colheita+'</p><p class="list-group-item-text">Quantidade colhida: '+a.qtdcolhida+' kilo(s)</p><p class="list-group-item-text">'+statusDestinacao(a.statussafra_idstatussafra)+a.prazo_destinacao+'</p><p class="list-group-item-text">Quantidade destinada: '+a.qtddestinada+' kilo(s)</p></a>';
+
+            $(".safra_"+classSafra).append(item);
+        }
+    i++;
+    });
+
+}
 
 }

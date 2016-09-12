@@ -184,7 +184,7 @@
                 existeDados('safra');
              }else{
                  //lista as safras
-                 window.listarsafras();
+                 //window.listarsafras();
 
                  $("#colheita").hide();
                  $("#destinacao").hide();
@@ -358,6 +358,8 @@
                 navigator.notification.confirm(
                     'Sem conexão com o servidor!',
                     function() {
+                        //limpa o campo senha
+                        $("#inputSenha").val('');
                         //limpa a tela e vai para a pagina inicial
                         window.clearGoMainPage();
                     },
@@ -585,12 +587,7 @@
          });
     });
 */
-     $(document).on("click",".editarsocioe", function(evt)
-    {
-         $(".uib_w_331").modal("toggle");
 
-         return false;
-    });
 
         /* listitem  Batata Docess */
     $(document).on("click",".listaCultivar > a", function(evt)
@@ -1335,6 +1332,27 @@
          $("#colheita").hide();
          $("#recebidos").hide();
          //$("#qtdcolhida").focus();
+
+         return false;
+    });
+
+    /*$(document).on("click", '.uib_w_353 .panel-title .panel-success', function(evt){
+        $(this).removeClass('panel-success');
+        $(this).addClass('panel-warning');
+        return false;
+    });*/
+
+    $(document).on("click", '#okresposta', function(evt){
+
+        $('.uib_w_327 p').text($('#textoResposta').val());
+        return false;
+    });
+
+    $(document).on("click",".editarsocioe", function(evt)
+    {
+         window.console.log($('.uib_w_327 p').text());
+         $('#textoResposta').val('');
+         $(".uib_w_331").modal("toggle");
 
          return false;
     });
