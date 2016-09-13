@@ -8,6 +8,10 @@
  function register_event_handlers()
  {
 
+     function c(msg){
+         window.console.log(msg);
+     }
+
      $(document).ready(function(){
         $('#icpf').mask('000.000.000-00');//, {reverse: true});
         $('#icep').mask('00000-000');
@@ -23,7 +27,7 @@
      });
 
      //variavel responsavel por armazenar cultivar selecionado
-    var cultivarSelecionado;
+    //var cultivarSelecionado;
 
     //papel agricultor
     function iniciarAgricultor(){
@@ -32,6 +36,7 @@
         $("#destinacao").hide();
         $("#safra").hide();
         $("#relatorios").hide();
+        $("#page_3").scrollTop(0);
     }
      //pagina gerenciador/entrevistador
      function iniciarGerEntrev(){
@@ -126,62 +131,17 @@
     });
 
 
-     function existeDados(atalhoClicado){
-
-            navigator.notification.confirm(
-                'Sua colheita não foi relatada! Deseja realmente cancelar?', // message
-                function(buttonIndex) {
-                    if(buttonIndex === 2){
-
-                        /*/limpa os abas relatar
-                        var novoItem = $("#novoabarelatar");
-                        $("#abasrelatar").empty();
-                        $("#abasrelatar").append(novoItem);
-                        $('#qtdcolhida').val('');
-                        $("#umcolheita").val("Kilo(s)");
-
-                        if($('#todacolheita').is(':checked')){
-                            $('#todacolheita').prop( "checked", false);
-                            $('#relatarqtd').prop('disabled', false);
-                            $("#relatarum").prop('disabled', false);
-                        }
-
-
-                        //limpa o combobox no modal e inseri novamente
-                        $('#idestinacao').empty();
-                        $('#idestinacao').append('<option>Consumo</option>');
-                        $('#idestinacao').append('<option>Replantio</option>');
-                        $('#idestinacao').append('<option>Venda</option>');
-                        $('#idestinacao').append('<option>Merenda Escolar</option>');
-                        $('#idestinacao').append('<option>Doação</option>');
-                        $('#idestinacao').append('<option>Perda</option>');
-*/
-                        //abre as box corretos
-                        $("#colheita").hide();
-                        $("#destinacao").hide();
-                        $("#safra").hide();
-                        $("#recebidos").hide();
-                        $("#relatorios").hide();
-                        $("#"+atalhoClicado).show();
-
-                        //limpa o sessionStorage
-                        window.sessionStorage.clear();
-                    }
-               },            // callback to invoke with index of button pressed
-                'Confirmação',           // title
-                ['Não', 'Sim']     // buttonLabels
-            );
-
-
-    }
-
         /* button  .uib_w_45 */
     $(document).on("click", ".uib_w_45", function(evt)
     {
-        if(!escondeMenuHamburguer('bs-navbar-1')){
-             //funcao que testa se existe abas para relatar
-             if($('#colheita').is(":visible")){
-                existeDados('safra');
+
+             if(!testesDeNavegacao){
+                $("#colheita").hide();
+                $("#destinacao").hide();
+                $("#safra").hide();
+                $("#recebidos").hide();
+                $("#relatorios").hide();
+                //$("#"+atalhoClicado).show();
              }else{
                  //lista as safras
                  //window.listarsafras();
@@ -193,7 +153,7 @@
                  $("#relatorios").hide();
 
              }
-        }
+
 
          return false;
     });
@@ -205,7 +165,7 @@
         if(!escondeMenuHamburguer('bs-navbar-1')){
          //funcao que testa se existe abas para relatar
          if($('#colheita').is(":visible")){
-            existeDados('relatorios');
+            //existeDados('relatorios');
 
          }else{
              $("#recebidos").hide();
@@ -222,18 +182,40 @@
         /* button  .uib_w_44 */
     $(document).on("click", ".uib_w_44", function(evt)
     {
-        if(!escondeMenuHamburguer('bs-navbar-1')){
-             //funcao que testa se existe abas para relatar
-             if($('#colheita').is(":visible")){
-                existeDados('recebidos');
-
-             }else{
-
-                iniciarAgricultor();
-             }
+        var a = testesDeNavegacao();
+        window.console.log(a);
+        if(a){
+            window.sessionStorage.clear();
+            iniciarAgricultor();
         }
          return false;
     });
+
+
+     function testesDeNavegacao(){
+         var teste = false;
+         if(!escondeMenuHamburguer('bs-navbar-1')){
+            if(sessionStorage.getItem('indiceSelecionado')){
+                navigator.notification.confirm(
+                    'O cultivar não foi relatado, Deseja realmente cancelar?', // message
+                     function(buttonIndex){
+                         if(buttonIndex === 2){
+                            //limpa o sessionStorage
+                            //window.sessionStorage.clear();
+                            //iniciarAgricultor();
+                            teste = true;
+                         }
+                     },            // callback to invoke with index of button pressed
+                    'Confirmação',           // title
+                    ['Não','Sim']     // buttonLabels
+                );
+            }else{
+                teste = true;
+            }
+         }
+         return teste;
+     }
+
 
 
         /* button  .uib_w_50 */
@@ -598,7 +580,7 @@
             //carrega item que esta no localStorage
             var cultivaresRecebidos = JSON.parse(localStorage.getItem("cultivaresRecebidos"));
             if(cultivaresRecebidos.length > 0){
-                cultivarSelecionado = cultivaresRecebidos[a];
+                var cultivarSelecionado = cultivaresRecebidos[a];
                 //guarda o id da safra no session storage
                 sessionStorage.setItem("indiceSelecionado", a);
                 //hide e show os painels de cada usuario
@@ -1002,14 +984,17 @@
                 $('#relatarqtd').prop('disabled', false);
                 $('#relatarqtd').val('');
                 $('#relatarum').prop('disabled', false);
+                $('#relatarum').val('Kilo(s)');
                 $('#novoAbaDestinacao').show();
             }else{
                 navigator.notification.confirm(
-                     'TOda a safra vai para a Destinação?', // message
+                     'Toda a safra será destinada?', // message
                      function(buttonIndex) {
                          if(buttonIndex === 2){
                             $('#todacolheita').prop( "checked", true);
+                            $('#relatarqtd').val(retornarValCultivares());
                             $('#relatarqtd').prop('disabled', true);
+                            $('#relatarum').val('Kilo(s)');
                             $('#relatarum').prop('disabled', true);
                             $('#novoAbaDestinacao').hide();
                          }
@@ -1028,6 +1013,16 @@
 
          return false;
      });
+
+
+
+     function retornarValCultivares(){
+         var i = sessionStorage.getItem('indiceSelecionado');
+         var cultivar = JSON.parse(localStorage.getItem("cultivaresRecebidos"));
+         var valor = cultivar[i].qtdcolhida;
+         return valor;
+     }
+
 
      $(document).on("click", ".uib_w_340 > label", function(evt){
          if(!escondeMenuHamburguer('bs-navbar-1')){
@@ -1112,177 +1107,153 @@
     $(document).on("click", ".uib_w_308 > li", function(evt)
     {
         var abaClicada = $(this).attr("id");
-
-        if($(".uib_w_308 li").length > 1 ){
-            salvarAbaDestinacao(abaClicada);
-        }else{
-
-         //&& abaClicada === "novoAbaDestinacao"){
-            $(".uib_w_310").modal("toggle");
-            $("#"+abaClicada).removeClass("active");
-
-
-        }
-
-        //mostra o label de toda colheita
-        labelColheitaTotal();
-
-
-
-
-
-        /*/testa se foi populado o input de quantidade colhida
-        if($('#qtdcolhida').val() > 0 && sessionStorage.getItem("qtdcolhida") === $('#qtdcolhida').val()){
-
-            //primeira destinacao
-            if($("#abasrelatar li").length === 1 ){
-                $(".uib_w_310").modal("toggle");
-            }else if($('#relatardata').val() !== ''){
+        if($(".uib_w_308 li").length > 1 && $('.camposDestinacao').is(':visible')){
+            if($('#relatardata').val() !== ''){
                 if($('#relatarqtd').val() !== ''){
-                    //testa se o checkbox esta ativo
-                    if(!$('#todacolheita').is(':checked')){
-                        if($('#idestinacao option').length < 1 && abaClicada === "novoabarelatar"){
-                            navigator.notification.alert("Todas as destinações estão abertas!",function(){
-                                $("#novoabarelatar").removeClass("active");
-                                //$(".inputsrelatado").hide();
-                            },"Alerta!:", "OK");
-                        }else{
-                            //verifica e guarda dados na sessionStorage
-                            verificaAba(abaClicada);
-                            //cria uma nova destinacao, abre o modal
-                            if(abaClicada === "novoabarelatar"){
-                                $(".uib_w_310").modal("toggle");
-                            //salva e carrega dados das abas
-                            }else{
-                                $(".uib_w_308").append($(this));
-                            }
+                    salvarAbaDestinacao(abaClicada);
 
-                        }
+                    if(abaClicada === "novoAbaDestinacao"){
+                        $(".uib_w_310").modal("toggle");
+                        $("#"+abaClicada).removeClass("active");
+
                     }else{
-                        navigator.notification.alert("O item toda colheita está marcado!",function(){
-                            $("#"+sessionStorage.getItem("abaAnterior")).addClass("active");
-                            $("#"+abaClicada).removeClass("active");
-                        },"Alerta!", "OK");
+                        carredaDadosDestinacao(abaClicada);
+                        $(".uib_w_308").append($(this));
                     }
-
                 }else{
+                    $("#"+sessionStorage.getItem("abaSelecionada")).addClass("active");
+                    $("#"+abaClicada).removeClass("active");
                     navigator.notification.alert("Insira uma quantidade para navegar nas abas!",function(){
                         $('#relatarqtd').focus();
-                        $("#"+abaClicada).removeClass("active");
-                        $("#"+sessionStorage.getItem("abaAnterior")).addClass("active");
                     },"Alerta!", "OK");
                 }
-            }else{
+             }else{
+                $("#"+sessionStorage.getItem("abaSelecionada")).addClass("active");
+                $("#"+abaClicada).removeClass("active");
                 navigator.notification.alert("Insira uma data para navegar nas abas!",function(){
                     $('#relatardata').focus();
-                    $("#"+abaClicada).removeClass("active");
-                    $("#"+sessionStorage.getItem("abaAnterior")).addClass("active");
                 },"Alerta!", "OK");
+
             }
 
-        }else{
-            navigator.notification.alert("Insira uma quantidade antes de criar uma nova destinação!",function(){
-                $('#qtdcolhida').focus();
-                $("#novoabarelatar").removeClass("active");
-            },"Alerta!", "OK");
-        }*/
 
+        }else if(abaClicada === "novoAbaDestinacao"){
+            $(".uib_w_310").modal("toggle");
+            $("#"+abaClicada).removeClass("active");
+        }else{
+            //somente carrega
+            $('.camposDestinacao').show();
+            carredaDadosDestinacao(abaClicada);
+            sessionStorage.setItem("abaSelecionada", abaClicada);
+        }
+        //mostra o label de toda colheita
+        labelColheitaTotal();
 
         return false;
 
     });
      function salvarAbaDestinacao(abaClicada){
-         if($('#relatardata').val() !== ''){
-             if($('#relatarqtd').val() !== ''){
-                 //guarda os valores
-                 var campos = [];
-                 var i = sessionStorage.getItem("abaAnterior");
 
-                 if(sessionStorage.getItem("camposDestinacao")){
-                    campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
+         //guarda os valores
+         var campos = [];
+         var abaSelecionada = sessionStorage.getItem("abaSelecionada");
+         var i = sessionStorage.getItem("nAbas");
+         var idcarregar;
 
-                    campos[campos.length] = {idaba:i,
-                    datarelatada: $("#relatardata").val(),
-                    um: $("#relatarum").val(),
-                    valor: $("#relatarqtd").val()};
+         if(sessionStorage.getItem("camposDestinacao")){
+            campos = JSON.parse(sessionStorage.getItem("camposDestinacao"));
 
-                }else{
-                    campos[0] = {idaba: i,
-                    datarelatada: $("#relatardata").val(),
-                    um: $("#relatarum").val(),
-                    valor: $("#relatarqtd").val()};
+            if(campos.length < $(".uib_w_308 li").length - 1 ){
+                campos[campos.length] = {idaba: 'abaDestinacao'+i,
+                datarelatada: $("#relatardata").val(),
+                um: $("#relatarum").val(),
+                valor: $("#relatarqtd").val()};
+                c('menor');
+            }else{
+                var j = 0;
+                $.each(campos, function(){
+                    if(campos[j].idaba === abaSelecionada ){
+                        campos[j] = {idaba: abaSelecionada,
+                        datarelatada: $("#relatardata").val(),
+                        um: $("#relatarum").val(),
+                        valor: $("#relatarqtd").val()};
+
+                    }
+                    j++;
+                });
 
 
-                }
-
-                 sessionStorage.setItem("camposrelatar", JSON.stringify(campos));
-
-                 $("#"+abaClicada).removeClass("active");
-                 $(".uib_w_310").modal("toggle");
-                 $("#relatardata").val('');
-                 $("#relatarum").val('Kilo(s)');
-                 $("#relatarqtd").val('');
-
-             }else{
-                $("#abaDestinacao"+sessionStorage.getItem("abaAnterior")).addClass("active");
-                $("#"+abaClicada).removeClass("active");
-                navigator.notification.alert("Insira uma quantidade para navegar nas abas!",function(){
-                    $('#relatarqtd').focus();
-                },"Alerta!", "OK");
             }
-         }else{
-            $("#abaDestinacao"+sessionStorage.getItem("abaAnterior")).addClass("active");
-            $("#"+abaClicada).removeClass("active");
-            navigator.notification.alert("Insira uma data para navegar nas abas!",function(){
-                $('#relatardata').focus();
-            },"Alerta!", "OK");
 
+
+        }else{
+            campos[0] = {idaba: 'abaDestinacao'+i,
+            datarelatada: $("#relatardata").val(),
+            um: $("#relatarum").val(),
+            valor: $("#relatarqtd").val()};
         }
+
+
+         sessionStorage.setItem("camposDestinacao", JSON.stringify(campos));
+         if(abaClicada !== 'novoAbaDestinacao'){
+             sessionStorage.setItem("abaSelecionada", abaClicada);
+         }
+
      }
+
+     function carredaDadosDestinacao(abaClicada){
+        var campos = JSON.parse(sessionStorage.getItem("camposDestinacao"));
+
+        var i = 0;
+        $.each(campos, function(){
+            if(campos[i].idaba === abaClicada ){
+                $("#relatardata").val(campos[i].datarelatada);
+                $("#relatarum").val(campos[i].um);
+                $("#relatarqtd").val(campos[i].valor);
+                return false;
+            }
+
+            i++;
+        });
+
+
+
+     }
+
      //botao no modal de destinacao
     $(document).on("click", "#okmodal", function(evt)
     {
         var i;
-        if(sessionStorage.getItem("abaAnterior")){
-            i = sessionStorage.getItem("abaAnterior");
-            sessionStorage.setItem("abaAnterior", ++i);
+        if(sessionStorage.getItem("nAbas")){
+            i = sessionStorage.getItem("nAbas");
+            i++;
+            sessionStorage.setItem("nAbas", i);
         }else{
             i = 0;
-            sessionStorage.setItem("abaAnterior", i);
+            sessionStorage.setItem("nAbas", i);
         }
 
 
         var item ='<li role="presentation" class="widget uib_w_309 active" data-uib="twitter%20bootstrap/tab_item" data-ver="1" id="abaDestinacao'+i+'"><a role="tab" data-toggle="tab">'+ $('#idestinacao').val()+'</a></li>';
-        $(".uib_w_308").append(item);
+        $('.uib_w_308').append(item);
+
+        sessionStorage.setItem("abaSelecionada", 'abaDestinacao'+i);
+
+        $("#relatardata").val('');
+        $("#relatarum").val('Kilo(s)');
+        $("#relatarqtd").val('');
 
         $('.camposDestinacao').show();
         labelColheitaTotal();
-        /*
-        sessionStorage.setItem("abaAnterior", $('#idestinacao option:selected').val());
 
-
-        var item ='<li role="presentation" class="widget uib_w_309 active" data-uib="twitter%20bootstrap/tab_item" data-ver="1" id="'+$('#idestinacao option:selected').val()+'"><a role="tab" data-toggle="tab">'+ $('#idestinacao').val()+'</a></li>';
-
-        $("#abasrelatar").append(item);
-        //exclui o item do combobox
-        $('#idestinacao option:selected').remove();
-
-
-        //$(".inputsrelatado").show();
-        //limpa os campos
-        $('#relatardata').val('');
-        $('#relatarqtd').val('');
-        $("#novoabarelatar").removeClass("active");
-        $('#relatardata').focus();
-*/
         return false;
     });
 
     $(document).on("click", "#cancelamodal", function(evt)
     {
-
+        //sessionStorage.setItem("abaAnterior", 'novoabarelatar');
         $("#novoabarelatar").removeClass("active");
-        //$(".inputsrelatado").hide();
+        $('.camposDestinacao').hide();
          return false;
     });
 
@@ -1294,40 +1265,34 @@
             'Deseja realmente excluir essa destinção?', // message
             function(buttonIndex) {
                 if(buttonIndex === 2){
-                    var abaClicada = $(".uib_w_308 .active").attr("id");
-                    var campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
+                    var abaSelecionada = $(".uib_w_308 .active").attr("id");
+                    var campos = JSON.parse(sessionStorage.getItem("camposDestinacao"));
+
                     var novoCampos = [];
                     var i = 0;
                     $.each(campos, function(){
                         //adiciona todos os dados da memoria menos os que vai ser excluido
-                        if(campos[i].idaba !== abaClicada){
+                        if(campos[i].idaba !== abaSelecionada){
                             novoCampos[novoCampos.length] = campos[i];
                         }
                     i++;
                     });
 
 
-                    sessionStorage.setItem("camposrelatar", JSON.stringify(novoCampos));
-                    $('#idestinacao').append('<option>'+$(".uib_w_308 .active").text()+'</option>');
+                    sessionStorage.setItem("camposDestinacao", JSON.stringify(novoCampos));
+                    //$('#idestinacao').append('<option>'+$(".uib_w_308 .active").text()+'</option>');
 
                     $(".uib_w_308 .active").remove();
-                    //$(".inputsrelatado").hide();
                     //desativa o checkbox e os inputs
                     $('#todacolheita').prop( "checked", false);
                     $('#relatarqtd').prop('disabled', false);
                     $('#relatarum').prop('disabled', false);
                     $("#relatarum").val("Kilo(s)");
-                    //
-                    //adiciona uma data para navegar
 
-                    if($("#abasrelatar li").length === 1 ){
-                        sessionStorage.removeItem("abaAnterior");
-                    }else{
-                        sessionStorage.setItem("abaAnterior", novoCampos[novoCampos.length - 1].idaba);
-                        $('#relatardata').val(novoCampos[novoCampos.length - 1].datarelatada);
-                        $('#relatarqtd').val(novoCampos[novoCampos.length - 1].valor);
-                        $('#relatarum').val(novoCampos[novoCampos.length - 1].um);
-                    }
+
+                    //deixa invisivel os campos
+                    $('.camposDestinacao').hide();
+                    //labelColheitaTotal();
 
                 }
            },            // callback to invoke with index of button pressed
@@ -1338,86 +1303,7 @@
         return false;
     });
 
-    /*function guardarcamposrel(){
 
-        var i = sessionStorage.getItem("abaAnterior");
-        var campos = [];
-        if(sessionStorage.getItem("camposrelatar")){
-
-            campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
-
-            campos[campos.length] = {idaba:i,
-            datarelatada: $("#relatardata").val(),
-            um: $("#relatarum").val(),
-            valor: $("#relatarqtd").val()};
-
-        }else{
-            campos[0] = {idaba: i,
-            datarelatada: $("#relatardata").val(),
-            um: $("#relatarum").val(),
-            valor: $("#relatarqtd").val()};
-
-
-        }
-
-        sessionStorage.setItem("camposrelatar", JSON.stringify(campos));
-
-    }
-
-
-    function verificaAba(abaClicada){
-        var teste = false;
-
-        var indiceAba;
-        var campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
-        var abaAnterior = sessionStorage.getItem("abaAnterior");
-        var campoAba;
-        var i = 0;
-        //percorre a sessao storage para verificar se existe o id
-        $.each(campos, function(){
-            if(abaAnterior === campos[i].idaba){
-                indiceAba = i;
-                teste = true;
-            }
-            i++;
-        });
-
-        // cria e grava informacoes no sessionStorage
-        if(!teste){
-            guardarcamposrel();
-        //atualiza o sessionStorage
-        }else{
-            campos[indiceAba].datarelatada =  $("#relatardata").val();
-            campos[indiceAba].um =  $("#relatarum").val();
-            campos[indiceAba].valor =  $("#relatarqtd").val();
-            sessionStorage.setItem("camposrelatar", JSON.stringify(campos));
-        }
-
-        //atualiza a variavel campos com os dados anteriores
-        campos = JSON.parse(sessionStorage.getItem("camposrelatar"));
-
-        i = 0;
-        $.each(campos, function(){
-
-            if(abaClicada === campos[i].idaba){
-                $("#relatardata").val(campos[i].datarelatada);
-                $("#relatarum").val(campos[i].um);
-                $("#relatarqtd").val(campos[i].valor);
-                //mostra os campos
-                //$(".inputsrelatado").show();
-            }
-            i++;
-
-        });
-
-        //grava a aba clicada na sessionstorage
-        if(abaClicada !== "novoabarelatar"){
-            sessionStorage.setItem("abaAnterior", abaClicada);
-        }
-
-
-
-    }*/
 
         /* button  #relatardestinacao */
     $(document).on("click", ".uib_w_344", function(evt)
@@ -1425,7 +1311,7 @@
 
         var i = sessionStorage.getItem('indiceSelecionado');
         var cultivaresRecebidos = JSON.parse(localStorage.getItem("cultivaresRecebidos"));
-
+        //deixa os botoes enviar e cancelar ocultos
 
          activate_page("#page_3");
          $("#destinacao").show();
@@ -1481,6 +1367,26 @@
 
         return false;
     });
+
+
+
+        /* button  .uib_w_346 */
+    $(document).on("click", ".uib_w_346", function(evt)
+    {
+        navigator.notification.confirm(
+            'Deseja realmente enviar as destinações?', // message
+            function(buttonIndex) {
+                if(buttonIndex === 2){
+                    iniciarAgricultor();
+
+                }
+           },            // callback to invoke with index of button pressed
+            'Confirmação',           // title
+            ['Não', 'Sim']     // buttonLabels
+        );
+         return false;
+    });
+
 
     $(document).on("click",".editarsocioe", function(evt)
     {
