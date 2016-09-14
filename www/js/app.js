@@ -263,18 +263,21 @@ function listarPropriedades(){
     if(propriedades.length > 0){
         var i = 0;
         $.each(propriedades, function(){
-            item = '<li id="propriedade'+i+'" role="presentation" class="widget uib_w_287" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i].nomepropriedade+'</a></li>';
+            item = '<li role="presentation" class="widget uib_w_287" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i].nomepropriedade+'</a></li>';
 
-            itemP = '<li id="Ppropriedade'+i+'" role="presentation" class="widget uib_w_358" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i].nomepropriedade+'</a></li>';
+            itemP = '<li role="presentation" class="widget uib_w_358" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i].nomepropriedade+'</a></li>';
 
             $(".uib_w_286").append(item);
             $(".uib_w_357").append(itemP);
             i++;
         });
 
+
         //marca o ultima propriedade como ativa
-        $('#propriedade'+ (i-1)).addClass("active");
-        $('#Ppropriedade'+ (i-1)).addClass("active");
+        $('.uib_w_287').last().addClass("active");
+        $('.uib_w_358').last().addClass("active");
+
+
         //chama a funcao de listar cultivares recebidos
         listarCultivarRecebidos(propriedades[i-1].nomepropriedade);
 

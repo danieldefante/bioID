@@ -232,6 +232,15 @@
          }
      }
 
+
+         /* button  .uib_w_50 */
+    $(document).on("click", ".uib_w_358", function(evt)
+    {
+        $('.uib_w_357').append($(this));
+         return false;
+    });
+
+
         /* button  .uib_w_50 */
     $(document).on("click", ".uib_w_50", function(evt)
     {
