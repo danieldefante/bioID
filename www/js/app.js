@@ -31,8 +31,8 @@ var papel;
 //var idpropriedade = 4;
 
 //ip do servidor
-var ipServidor = "192.168.0.7:8080";
-//var ipServidor = "10.2.10.200:8080";
+//var ipServidor = "192.168.0.7:8080";
+var ipServidor = "10.2.10.200:8080";
 //var ipServidor = "localhost:8080";
 
 
@@ -322,7 +322,7 @@ function listarSafras(){
         $(".uib_w_356").remove();
 
         $.each(safras, function(){
-            item ='<div class="panel widget panel-success" data-uib="twitter%20bootstrap/collapsible" data-ver="1"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" href="#bs-accordion-group-'+i+'" data-parent="#bs-accordion-1">Safra : '+safras[i].safra+'</a></h4></div><div id="bs-accordion-group-'+i+'" class="panel-collapse collapse"><div class="panel-body"><div class="col uib_col_91 single-col" data-uib="layout/col" data-ver="0"><div class="widget-container content-area vertical-col"><div class="list-group widget safra_'+i+' d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1"></div><span class="uib_shim"></span></div></div></div></div></div>';
+            item ='<div class="panel widget panel-success collapseSafras" data-uib="twitter%20bootstrap/collapsible" data-ver="1"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" href="#bs-accordion-group-s'+i+'" data-parent="#bs-accordion-1">Safra : '+safras[i].safra+'<i id="iconeSafra_'+i+'" class="fa fa-chevron-down button-icon-right" data-position="top"></i></a></h4></div><div id="bs-accordion-group-s'+i+'" class="panel-collapse collapse"><div class="panel-body"><div class="col uib_col_91 single-col" data-uib="layout/col" data-ver="0"><div class="widget-container content-area vertical-col"><div class="list-group widget safra_'+i+' d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1"></div><span class="uib_shim"></span></div></div></div></div></div>';
 
 
 

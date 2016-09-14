@@ -534,57 +534,6 @@
 
 
 
-    $(document).on("click", "#descricao", function(evt)
-    {
-        $('#colapseDesc').on('shown.bs.collapse', function() {
-            $("#iconeDesc").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-
-        }).on('hidden.bs.collapse', function() {
-            $("#iconeDesc").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-        });
-
-         return false;
-    });
-
- /*    $(document).ready(function () {
-        $('.colapses').click( function() {
-
-
-             $('#colapseNutr').on('shown.bs.collapse', function() {
-                $("#iconeNutr").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-            }).on('hidden.bs.collapse', function() {
-                $("#iconeNutr").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-            });
-
-             $('#colapseAjuda').on('shown.bs.collapse', function() {
-                $("#iconeAjuda").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-            }).on('hidden.bs.collapse', function() {
-                $("#iconeAjuda").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-            });
-
-            //destinaçao
-            $('#colapseConsumo').on('shown.bs.collapse', function() {
-                $("#iconeConsumo").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-            }).on('hidden.bs.collapse', function() {
-                $("#iconeConsumo").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-            });
-
-             $('#colapseDistrib').on('shown.bs.collapse', function() {
-                $("#iconeDistrib").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-            }).on('hidden.bs.collapse', function() {
-                $("#iconeDistrib").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-            });
-
-             $('#colapseReplant').on('shown.bs.collapse', function() {
-                $("#iconeReplant").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-            }).on('hidden.bs.collapse', function() {
-                $("#iconeReplant").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-            });
-         });
-    });
-*/
-
-
         /* listitem  Batata Docess */
     $(document).on("click",".listaCultivar > a", function(evt)
     {
@@ -634,17 +583,18 @@
                             $(".uib_w_272").show();
                             $(".uib_w_344").show();
                             break;
+                        case 4:
+                        case 5:
+                            $(".uib_w_272").hide();
+                            $(".uib_w_344").show();
+                            break;
                         case 6:
                         case 7:
                         case 8:
                             $(".uib_w_272").hide();
                             $(".uib_w_344").hide();
                             break;
-                        case 4:
-                        case 5:
-                            $(".uib_w_272").hide();
-                            $(".uib_w_344").show();
-                            break;
+
                     }
 
                 }
@@ -736,27 +686,6 @@
 
 
 
-
-    /*$(document).on("click", ".uib_w_140", function(evt)
-    {
-        navigator.notification.alert("Trabalhando off-line algumas informações que dependem do servidor podem sofrer alterações(Exemplo: O estoque da sua unidade), trabalhe sempre on-line se possível. A colheita de informações é armazenada em lotes na memória do aparelho e precisa ser repassada ao servidor, seu lote espirará no prazo de 2 dias e suas informações serão perdidas, conecte-se em uma rede e repasse suas informaçõe antes de espirar. Bom trabalho!", function(){},"Alerta!", "OK");
-         return false;
-    });
-*/
-
-
-
-        /* button  pegar
-    $(document).on("click", ".uib_w_279", function(evt)
-    {
-        $("#testeImg").attr("src", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAU1QTFRFNjtAQEVK////bG9zSk9T/v7+/f39/f3+9vf3O0BETlJWNzxB/Pz8d3t+TFFVzM3O1NXX7u/vUldbRElNs7W3v8HCmZyeRkpPW19j8vLy7u7vvsDC9PT1cHR3Oj9Eo6WnxsjJR0tQOD1Bj5KVgYSHTVFWtri50dLUtLa4YmZqOT5D8vPzRUpOkZOWc3Z64uPjr7Gzuru95+jpX2NnaGxwPkNHp6mrioyPlZeadXh8Q0hNPEBFyszNh4qNc3d6eHx/OD1Cw8XGXGBkfoGEra+xxcbIgoaJu72/m52ggoWIZ2tu8/P0wcLE+vr7kZSXgIOGP0NIvr/BvL6/QUZKP0RJkpWYpKaoqKqtVVldmJqdl5qcZWhstbe5bHB0bnJ1UVVZwsTF5ubnT1RYcHN3oaSm3N3e3NzdQkdLnJ+h9fX1TlNX+Pj47/DwwsPFVFhcEpC44wAAAShJREFUeNq8k0VvxDAQhZOXDS52mRnKzLRlZmZm+v/HxmnUOlFaSz3su4xm/BkGzLn4P+XimOJZyw0FKufelfbfAe89dMmBBdUZ8G1eCJMba69Al+AABOOm/7j0DDGXtQP9bXjYN2tWGQfyA1Yg1kSu95x9GKHiIOBXLcAwUD1JJSBVfUbwGGi2AIvoneK4bCblSS8b0RwwRAPbCHx52kH60K1b9zQUjQKiULbMDbulEjGha/RQQFDE0/ezW8kR3C3kOJXmFcSyrcQR7FDAi55nuGABZkT5hqpk3xughDN7FOHHHd0LLU9qtV7r7uhsuRwt6pEJJFVLN4V5CT+SErpXt81DbHautkpBeHeaqNDRqUA0Uo5GkgXGyI3xDZ/q/wJMsb7/pwADAGqZHDyWkHd1AAAAAElFTkSuQmCC");
-
-
-         return false;
-    });
-
-
-*/
         /* button  .uib_w_30 */
     $(document).on("click", ".uib_w_30", function(evt)
     {
@@ -1332,11 +1261,6 @@
          return false;
     });
 
-    /*$(document).on("click", '.uib_w_353 .panel-title .panel-success', function(evt){
-        $(this).removeClass('panel-success');
-        $(this).addClass('panel-warning');
-        return false;
-    });*/
 
     $(document).on("click", '#okresposta', function(evt){
         navigator.notification.confirm(
@@ -1409,19 +1333,68 @@
     });
 
 
-    //colapse ajuda, abrir com o toque
-    $(document).on("click",".uib_w_262", function(evt)
+    //colapse descricao, abrir com o toque
+    $(document).on("click",".uib_w_260", function(evt)
     {
+        $("#bs-accordion-group-9").collapse('toggle');
 
-        $('#bs-accordion-group-11').on('shown.bs.collapse', function() {
-            $("#bs-accordion-group-11").modal("hide");
+        $('.uib_w_260').on('shown.bs.collapse', function() {
+            $("#iconeDesc").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+
         }).on('hidden.bs.collapse', function() {
-            $("#bs-accordion-group-11").modal("show");
+            $("#iconeDesc").removeClass("fa-chevron-up").addClass("fa-chevron-down");
         });
 
+         return false;
+    });
 
+    //colapse valor nutricional, abrir com o toque
+    $(document).on("click",".uib_w_261", function(evt)
+    {
+        $("#bs-accordion-group-10").collapse('toggle');
+
+        $('.uib_w_261').on('shown.bs.collapse', function() {
+            $("#iconeNutr").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+
+        }).on('hidden.bs.collapse', function() {
+            $("#iconeNutr").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+        });
 
          return false;
+    });
+
+     //colapse ajuda, abrir com o toque
+    $(document).on("click",".uib_w_262", function(evt)
+    {
+        $("#bs-accordion-group-11").collapse('toggle');
+
+        $('.uib_w_262').on('shown.bs.collapse', function() {
+            $("#iconeAjuda").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+
+        }).on('hidden.bs.collapse', function() {
+            $("#iconeAjuda").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+        });
+
+         return false;
+    });
+
+    //colapse ajuda, abrir com o toque
+    $(document).on("click",".collapseSafras .panel-heading", function(evt)
+    {
+        var idCollapse = $(this).children('h4').children('a').attr('href');
+        var iconeCollapse = $(this).children('h4').children('a').children('i').attr('id');
+
+        $(idCollapse).collapse('toggle');
+
+        c(iconeCollapse);
+        $(idCollapse).on('shown.bs.collapse', function() {
+            $("#"+iconeCollapse).removeClass("fa-chevron-down").addClass("fa-chevron-up");
+
+        }).on('hidden.bs.collapse', function() {
+            $("#"+iconeCollapse).removeClass("fa-chevron-up").addClass("fa-chevron-down");
+        });
+
+        return false;
     });
 
     }
