@@ -31,8 +31,8 @@ var papel;
 //var idpropriedade = 4;
 
 //ip do servidor
-//var ipServidor = "192.168.0.7:8080";
-var ipServidor = "10.2.10.200:8080";
+var ipServidor = "192.168.0.7:8080";
+//var ipServidor = "10.2.10.200:8080";
 //var ipServidor = "localhost:8080";
 
 

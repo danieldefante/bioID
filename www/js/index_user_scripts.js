@@ -131,21 +131,18 @@
     });
 
 
-        /* button  .uib_w_45 */
+        /* button  botao socioe */
     $(document).on("click", ".uib_w_45", function(evt)
     {
-
-             if(!testesDeNavegacao){
-                $("#colheita").hide();
-                $("#destinacao").hide();
-                $("#safra").hide();
-                $("#recebidos").hide();
-                $("#relatorios").hide();
-                //$("#"+atalhoClicado).show();
+        if(!escondeMenuHamburguer('bs-navbar-1')){
+            if(sessionStorage.getItem('indiceSelecionado')){
+                navigator.notification.confirm(
+                    'O cultivar não foi relatado, Deseja realmente cancelar?', // message
+                     testeButtonSafras,            // callback to invoke with index of button pressed
+                    'Confirmação',           // title
+                    ['Não','Sim']     // buttonLabels
+                );
              }else{
-                 //lista as safras
-                 //window.listarsafras();
-
                  $("#colheita").hide();
                  $("#destinacao").hide();
                  $("#safra").show();
@@ -153,70 +150,87 @@
                  $("#relatorios").hide();
 
              }
+         }
 
+         return false;
+    });
+    function testeButtonSafras(buttonIndex){
+         if(buttonIndex === 2){
+             //limpa o sessionStorage
+             window.sessionStorage.clear();
+             $("#colheita").hide();
+             $("#destinacao").hide();
+             $("#safra").show();
+             $("#recebidos").hide();
+             $("#relatorios").hide();
+         }
+     }
+
+        /* button  safras */
+    $(document).on("click", ".uib_w_46", function(evt)
+    {
+
+        if(!escondeMenuHamburguer('bs-navbar-1')){
+            if(sessionStorage.getItem('indiceSelecionado')){
+                navigator.notification.confirm(
+                    'O cultivar não foi relatado, Deseja realmente cancelar?', // message
+                     testeButtonSocioEco,            // callback to invoke with index of button pressed
+                    'Confirmação',           // title
+                    ['Não','Sim']     // buttonLabels
+                );
+             }else{
+                 $("#recebidos").hide();
+                 $("#colheita").hide();
+                 $("#destinacao").hide();
+                 $("#safra").hide();
+                 $("#relatorios").show();
+
+             }
+         }
 
          return false;
     });
 
-
-        /* button  .uib_w_46 */
-    $(document).on("click", ".uib_w_46", function(evt)
-    {
-        if(!escondeMenuHamburguer('bs-navbar-1')){
-         //funcao que testa se existe abas para relatar
-         if($('#colheita').is(":visible")){
-            //existeDados('relatorios');
-
-         }else{
+     function testeButtonSocioEco(buttonIndex){
+         if(buttonIndex === 2){
+             //limpa o sessionStorage
+             window.sessionStorage.clear();
              $("#recebidos").hide();
              $("#colheita").hide();
              $("#destinacao").hide();
              $("#safra").hide();
              $("#relatorios").show();
          }
-        }
+     }
 
-         return false;
-    });
 
-        /* button  .uib_w_44 */
+    /* button  atalho recebidos */
     $(document).on("click", ".uib_w_44", function(evt)
     {
-        var a = testesDeNavegacao();
-        window.console.log(a);
-        if(a){
-            window.sessionStorage.clear();
-            iniciarAgricultor();
-        }
-         return false;
-    });
-
-
-     function testesDeNavegacao(){
-         var teste = false;
-         if(!escondeMenuHamburguer('bs-navbar-1')){
+        if(!escondeMenuHamburguer('bs-navbar-1')){
             if(sessionStorage.getItem('indiceSelecionado')){
                 navigator.notification.confirm(
                     'O cultivar não foi relatado, Deseja realmente cancelar?', // message
-                     function(buttonIndex){
-                         if(buttonIndex === 2){
-                            //limpa o sessionStorage
-                            //window.sessionStorage.clear();
-                            //iniciarAgricultor();
-                            teste = true;
-                         }
-                     },            // callback to invoke with index of button pressed
+                     testeButtonRecebidos,            // callback to invoke with index of button pressed
                     'Confirmação',           // title
                     ['Não','Sim']     // buttonLabels
                 );
             }else{
-                teste = true;
+                iniciarAgricultor();
             }
          }
-         return teste;
+
+         return false;
+    });
+
+
+     function testeButtonRecebidos(buttonIndex){
+         if(buttonIndex === 2){
+            //limpa o sessionStorage
+            window.sessionStorage.clear();
+            iniciarAgricultor();
+         }
      }
-
-
 
         /* button  .uib_w_50 */
     $(document).on("click", ".uib_w_50", function(evt)
@@ -583,6 +597,8 @@
                 var cultivarSelecionado = cultivaresRecebidos[a];
                 //guarda o id da safra no session storage
                 sessionStorage.setItem("indiceSelecionado", a);
+                //guarda o id da safra no sessionStorage
+                sessionStorage.setItem("idsafra", cultivarSelecionado.idsafra);
                 //hide e show os painels de cada usuario
                 if(window.papel === "e"){
                     $("#painelEstoque").show();
@@ -610,6 +626,9 @@
 
                     switch(cultivarSelecionado.statussafra_idstatussafra) {
                         case 1:
+                            $(".uib_w_272").show();
+                            $(".uib_w_344").hide();
+                            break;
                         case 2:
                         case 3:
                             $(".uib_w_272").show();
@@ -694,7 +713,7 @@
          $("#colheita").show();
          $("#destinacao").hide();
          $("#recebidos").hide();
-
+         $("#page_3").scrollTop(0);
 
          return false;
     });
@@ -850,23 +869,25 @@
             var msg;
 
             if($('#relatarPerda').is(':checked')){
-                relatarSafra('Deseja somente relatar perda de safra?', testeStatusSafra());
+                relatarSafra('Deseja somente relatar perda de safra?', 8);
             }else if($('#finalizarColheita').is(':checked')){
-                relatarSafra('Deseja realmente finalizar a safra?', testeStatusSafra());
+                relatarSafra('Deseja somente finalizar a safra?', 8);
             }else{
-                if($('#qtdcolhida').val() < 0){
+
+                if($('#datacolheita').val() === ""){
+                    navigator.notification.alert("Insira a data da colheita!",function(){
+                        $('#datacolheita').focus();
+                    },"Alerta!", "OK");
+                }else if($('#qtdcolhida').val() === ""){
                     navigator.notification.alert("Insira a quantidade colhida!",function(){
                         $('#qtdcolhida').focus();
                     },"Alerta!", "OK");
-                }else if($('#datacolheita').val() === ""){
-                    navigator.notification.alert("Insira uma data de colheita!",function(){
-                        $('#datacolheita').focus();
-                    },"Alerta!", "OK");
+
                 }else{
                     if($('#ultimaColheita').is(':checked')){
-                        relatarSafra('Deseja realmente relatar a ultima colheita da safra?', testeStatusSafra());
+                        relatarSafra('Deseja realmente relatar a ultima colheita da safra?', 4);
                     }else{
-                        relatarSafra('Deseja realmente relatar a colheita parcial da safra?', testeStatusSafra());
+                        relatarSafra('Deseja realmente relatar a colheita parcial da safra?', 2);
                     }
                 }
             }
@@ -875,28 +896,16 @@
         return false;
     });
 
-    function testeStatusSafra(){
-        var valor;
-        var idstatus = JSON.parse(sessionStorage.getItem("idstatussafra"));
 
-        if(idstatus === 1){
-            valor = 2;
-        }else if(idstatus === 2){
-            valor = 4;
-        }else{
-            valor = 5;
-        }
-
-        return valor;
-    }
-
-    function relatarSafra(msg, valorCheckbox){
+    function relatarSafra(msg, statussafra){
 
         navigator.notification.confirm(
             msg, // message
             function(buttonIndex) {
                 if(buttonIndex === 2){
-                    var data = "idsafra="+sessionStorage.getItem("idsafra")+"&ultimadatacolheita="+$("#datacolheita").val()+"&qtdcolhida="+$("#qtdcolhida").val()+"&statussafra_idstatussafra="+valorCheckbox;
+                    var data = "idsafra="+sessionStorage.getItem("idsafra")+"&ultimadatacolheita="+$("#datacolheita").val()+"&qtdcolhida="+$("#qtdcolhida").val()+"&statussafra_idstatussafra="+statussafra;
+
+                    c(data);
 
                     $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/relatarcolheita", data, function(dados){
                         //se safra foi relatada
@@ -1396,6 +1405,22 @@
 
          $(".uib_w_331").modal("toggle");
          $('#textoResposta').focus();
+         return false;
+    });
+
+
+    //colapse ajuda, abrir com o toque
+    $(document).on("click",".uib_w_262", function(evt)
+    {
+
+        $('#bs-accordion-group-11').on('shown.bs.collapse', function() {
+            $("#bs-accordion-group-11").modal("hide");
+        }).on('hidden.bs.collapse', function() {
+            $("#bs-accordion-group-11").modal("show");
+        });
+
+
+
          return false;
     });
 
