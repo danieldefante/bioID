@@ -449,21 +449,22 @@
         if(!escondeMenuHamburguer('bs-navbar-1')){
 
             var propriedades = JSON.parse(localStorage.getItem("propriedades"));
-            $("#itemPropriedades").append($(this));
+            $(".uib_w_286").append($(this));
 
-            var propriedadeClick = $(this).text();
-            var idpropriedade;
+            var abaNomeProp = $(this).text();
+
 
             var i = 0;
             $.each(propriedades, function(){
-                if(propriedadeClick === propriedades[i].nomepropriedade){
-                    idpropriedade = propriedades[i].propriedade_idpropriedade;
+                //c(propriedades[i].nomepropriedade);
+                if(abaNomeProp === propriedades[i].nomepropriedade){
+                    //lista os cultivares
+                    window.listarCultivarRecebidos(abaNomeProp);
                     return false;
                 }
                 i++;
             });
-            //lista os cultivares
-            window.listarCultivarRecebidos(idpropriedade);
+
         }
         return false;
     });

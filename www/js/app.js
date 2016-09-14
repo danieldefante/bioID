@@ -122,7 +122,7 @@ function carregaDados(){
 }
 
 //lista os cultivares recebidos contidos no localStorage de cada propriedade
-function listarCultivarRecebidos(idpropriedade){
+function listarCultivarRecebidos(nomePropriedade){
     try{
 
         $("#cultivarRecebido").empty();
@@ -138,7 +138,7 @@ function listarCultivarRecebidos(idpropriedade){
             $.each(cultivaresRecebidos, function(){
                 var a = cultivaresRecebidos[i];
                 //teste a propriedade
-                if(a.propriedade_idpropriedade === idpropriedade){
+                if(a.nomepropriedade === nomePropriedade){
                       var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ prazoRelatar(a.statussafra_idstatussafra)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">'+statusColheita(a.statussafra_idstatussafra)+ a.prazo_colheita+'</p><p class="list-group-item-text">'+statusDestinacao(a.statussafra_idstatussafra)+a.prazo_destinacao+'</p></a>';
                     $("#cultivarRecebido").append(item);
                 }
@@ -257,7 +257,7 @@ function servArmazenarCulRecebdo(usuario){
 function listarPropriedades(){
     var item;
     var itemP;
-    $("#itemPropriedades").empty();
+    $(".uib_w_286").empty();
     $(".uib_w_357").empty();
     var propriedades = JSON.parse(localStorage.getItem("propriedades"));
     if(propriedades.length > 0){
@@ -267,7 +267,7 @@ function listarPropriedades(){
 
             itemP = '<li id="Ppropriedade'+i+'" role="presentation" class="widget uib_w_358" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i].nomepropriedade+'</a></li>';
 
-            $("#itemPropriedades").append(item);
+            $(".uib_w_286").append(item);
             $(".uib_w_357").append(itemP);
             i++;
         });
@@ -276,7 +276,7 @@ function listarPropriedades(){
         $('#propriedade'+ (i-1)).addClass("active");
         $('#Ppropriedade'+ (i-1)).addClass("active");
         //chama a funcao de listar cultivares recebidos
-        listarCultivarRecebidos(propriedades[i-1].propriedade_idpropriedade);
+        listarCultivarRecebidos(propriedades[i-1].nomepropriedade);
 
     }else{
         $("#cultivarRecebido").empty();
