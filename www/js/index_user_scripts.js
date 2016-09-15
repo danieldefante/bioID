@@ -40,11 +40,8 @@
     }
      //pagina gerenciador/entrevistador
      function iniciarGerEntrev(){
-        $("#tabNovoAgricultor").hide();
-        $("#tabSafra").hide();
-
-        //esconder checkbox off line
-        $("#checkOffLine").hide();
+        $(".uib_w_361").hide();
+        $(".uib_w_116").hide();
      }
 
 
@@ -242,9 +239,18 @@
 
 
         /* button  .uib_w_50 */
-    $(document).on("click", ".uib_w_50", function(evt)
+    $(document).on("click", ".uib_w_360", function(evt)
     {
         activate_page("#page_2");
+         return false;
+    });
+
+             /* button  .uib_w_50 */
+    $(document).on("click", ".uib_w_50", function(evt)
+    {
+        $('.uib_w_361').show();
+        $(".uib_w_116").hide();
+        $(".uib_w_123").hide();
          return false;
     });
 
@@ -252,23 +258,26 @@
     $(document).on("click", ".uib_w_51", function(evt)
     {
          retornaInicioUser3();
+
          return false;
     });
 
         /* button  .uib_w_52 */
     $(document).on("click", ".uib_w_52", function(evt)
     {
-         $("#tabSafra").show();
-         $("#estoque").hide();
+         $(".uib_w_116").show();
+         $(".uib_w_123").hide();
+         $('.uib_w_361').hide();
 
          return false;
     });
 
      function retornaInicioUser3(){
 
-         $("#estoque").show();
-         window.listarCultivar();
-         $("#tabSafra").hide();
+         $(".uib_w_123").show();
+         $('.uib_w_361').hide();
+         //window.listarCultivar();
+         $(".uib_w_116").hide();
      }
 
     $("#inputSenha").keypress(function(e){
@@ -319,7 +328,7 @@
                     }else{
                         iniciarGerEntrev();
                         activate_page("#page_4");
-                        window.listarCultivar();
+                        //window.listarCultivar();
                     }
 
 
