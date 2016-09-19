@@ -32,9 +32,10 @@ var papel;
 
 //ip do servidor
 //var ipServidor = "192.168.0.7:8080";
-var ipServidor = "10.2.10.200:8080";
+//var ipServidor = "10.2.10.200:8080";
 //var ipServidor = "localhost:8080";
-
+var ipServidor = "187.19.101.252:8082";
+//var ipServidor = "10.1.2.52:8080";
 
 /*/funcao mudar background aleatorio
 function mudarBackground(){
@@ -110,7 +111,7 @@ function carregaDados(){
         }else if(papel === "g" || papel === "e" || papel === "d"){
             //usuario gerenciador e entrevistador
             window.activate_page("#page_4");
-            listarCultivar();
+            //window.listarCultivar();
         }else{
             clearGoMainPage();
         }
@@ -205,7 +206,7 @@ function servArmazenarCulRecebdo(usuario){
             safras = dados.safras;
 
             //perguntas = dados.perguntas;
-        }else{
+        }/*else{
             navigator.notification.confirm(
             'Erro de busca!',
             function() {
@@ -214,7 +215,7 @@ function servArmazenarCulRecebdo(usuario){
             'Erro',
             ['OK']
         );
-        }
+        }*/
     }, "json")
     //Tratamento de erro da requisicao servico RESt login
     .fail(function(){
@@ -291,23 +292,79 @@ function listarPropriedades(){
         navigator.notification.alert("Nenhum cultivar foi recebido!",function(){},"Alerta","OK");
     }
 }
-function listarCultivar(){
-    $("#cultivarUnidade").empty();
 
-    $.get("http://"+window.ipServidor+":8080/Projeto_BioID-war/servico/cultivar/listar", function(dados){
-        var a = dados.data;
-        var qnt = a.length;
-        for(var i=0; i<qnt; i++){
-            var item ='<a class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+ a[i].nomecultivar +'</h4><p class="list-group-item-text">500 kilos</p></a>';
+function listarEstoque(idunidade){
 
-            $("#cultivarUnidade").append(item);
+    var data = "idunidade="+idunidade;
+
+    $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/unidade/listarestoque", data, function(dados){
+
+        if(dados.sucesso){
+            var estoque = dados.estoque;
+            localStorage.setItem('estoque', JSON.stringify(estoque));
+            $('.uib_w_127').empty();
+            var item;
+            var i = 0;
+            $.each(estoque, function(){
+
+                item = '<a id="culEstoque"'+ i +' class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+estoque[i].nomecultivar+'</h4><p class="list-group-item-text">Quantidade no Estoque: '+parseFloat(estoque[i].quantidade.toFixed(2))+' '+estoque[i].grandeza+'</p></a>';
+
+                $('.uib_w_127').append(item);
+                i++;
+            });
         }
+    },"json")
+    //Tratamento de erro da requisicao servico RESt login
+    .fail(function(){
+        navigator.notification.confirm(
+            'Sem conexão com o servidor!',
+            function() {
+                window.clearGoMainPage();
+            },
+            'Erro',
+            ['OK']
+        );
 
-    }, "json");
+
+    });
 
 }
 
+function listarAgricultoresUnidade(){
+    var idunidade = 2;
+    var data = "idunidade="+idunidade;
 
+    $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/unidade/listarAgricultoresUnidade", data, function(dados){
+
+        if(dados.sucesso){
+            var listaAgricultores = dados.listaAgricultores;
+            localStorage.setItem('listaAgricultores', JSON.stringify(listaAgricultores));
+            $('.uib_w_118').empty();
+            var item;
+            var i = 0;
+            $.each(listaAgricultores, function(){
+
+                item = '<a class="list-group-item allow-badge widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+listaAgricultores[i].nome+'</h4><p class="list-group-item-text"> '+listaAgricultores[i].sobrenome+'</p></a>';
+
+                $('.uib_w_118').append(item);
+                i++;
+            });
+        }
+    },"json")
+    //Tratamento de erro da requisicao servico RESt login
+    .fail(function(){
+        navigator.notification.confirm(
+            'Sem conexão com o servidor!',
+            function() {
+                window.clearGoMainPage();
+            },
+            'Erro',
+            ['OK']
+        );
+
+
+    });
+}
 
 //limpa a memoria do app e redireciona para tela de login
 function clearGoMainPage(){
@@ -320,9 +377,11 @@ function listarSafras(){
         var safras = JSON.parse(localStorage.getItem("safras"));
         var item;
         var i = 0;
-        $(".uib_w_354").remove();
-        $(".uib_w_355").remove();
-        $(".uib_w_356").remove();
+        //$(".uib_w_354").remove();
+        //$(".uib_w_355").remove();
+        //$(".uib_w_356").remove();
+
+        $(".uib_w_353").empty();
 
         $.each(safras, function(){
             item ='<div class="panel widget panel-success collapseSafras" data-uib="twitter%20bootstrap/collapsible" data-ver="1"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" href="#bs-accordion-group-s'+i+'" data-parent="#bs-accordion-1">Safra : '+safras[i].safra+'<i id="iconeSafra_'+i+'" class="fa fa-chevron-down button-icon-right" data-position="top"></i></a></h4></div><div id="bs-accordion-group-s'+i+'" class="panel-collapse collapse"><div class="panel-body"><div class="col uib_col_91 single-col" data-uib="layout/col" data-ver="0"><div class="widget-container content-area vertical-col"><div class="list-group widget safra_'+i+' d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1"></div><span class="uib_shim"></span></div></div></div></div></div>';
@@ -363,5 +422,6 @@ function listarCultivarSafras(safra, classSafra){
     });
 
 }
+
 
 }

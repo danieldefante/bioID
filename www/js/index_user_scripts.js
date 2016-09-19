@@ -268,6 +268,7 @@
          $(".uib_w_116").show();
          $(".uib_w_123").hide();
          $('.uib_w_361').hide();
+         window.listarAgricultoresUnidade();
 
          return false;
     });
@@ -307,9 +308,11 @@
                    //guarda dados do usuario no local storge
                     var logSession = JSON.stringify({
                         usuario:  usuario,
+                        idunidade: dados.idunidade,
                         idSession: dados.idSession,
                         logTempo: dados.logTempo,
                         papel: dados.papel
+
                     });
                     localStorage.setItem("logSession", logSession);
 
@@ -326,9 +329,11 @@
                         window.servArmazenarCulRecebdo(usuario);
                         activate_page("#page_3");
                     }else{
+                        window.listarEstoque(dados.idunidade);
+                        //c(dados.idunidade);
                         iniciarGerEntrev();
                         activate_page("#page_4");
-                        //window.listarCultivar();
+
                     }
 
 
@@ -391,6 +396,10 @@
          }
 
      }
+
+
+
+
 
 
      $(document).on("click", "#page_3", function(evt)
@@ -1282,7 +1291,7 @@
 
 
     $(document).on("click", '#okresposta', function(evt){
-        navigator.notification.confirm(
+        /*navigator.notification.confirm(
             'Deseja realmente modificar essa resposta?', // message
             function(buttonIndex) {
                 if(buttonIndex === 2){
@@ -1315,7 +1324,7 @@
            },            // callback to invoke with index of button pressed
             'Confirmação',           // title
             ['Não', 'Sim']     // buttonLabels
-        );
+        );*/
 
         return false;
     });
