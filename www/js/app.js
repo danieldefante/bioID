@@ -34,8 +34,8 @@ var papel;
 //var ipServidor = "192.168.0.7:8080";
 //var ipServidor = "10.2.10.200:8080";
 //var ipServidor = "localhost:8080";
-var ipServidor = "187.19.101.252:8082";
-//var ipServidor = "10.1.2.52:8080";
+//var ipServidor = "187.19.101.252:8082";
+var ipServidor = "10.1.2.52:8080";
 
 /*/funcao mudar background aleatorio
 function mudarBackground(){

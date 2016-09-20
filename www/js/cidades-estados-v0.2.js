@@ -1,9 +1,4 @@
-/**
- * Escrito por DGmike
- * http://dgmike.com.br/cidades-estados-js
- */
 
-/* Dom Ready */
 window.onDomReady = function dgDomReady(fn){
 	if(document.addEventListener)	//W3C
 		document.addEventListener("DOMContentLoaded", fn, false);

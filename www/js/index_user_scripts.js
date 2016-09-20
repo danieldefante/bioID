@@ -398,10 +398,6 @@
      }
 
 
-
-
-
-
      $(document).on("click", "#page_3", function(evt)
      {
          escondeMenuHamburguer('bs-navbar-1');
@@ -416,8 +412,9 @@
 
      //esconde o menu hambueguer
      function escondeMenuHamburguer(item){
+
          var esconder = false;
-         if($('#'+item).is(':visible')){
+         if($('#'+item).is(':visible') && $('.botaoMenu').is(':visible')){
              $('#'+item).collapse('hide');
              esconder= true;
          }
@@ -717,12 +714,11 @@
         /* button  .uib_w_30 */
     $(document).on("click", ".uib_w_30", function(evt)
     {
-        //teste se existe campos nulos
-        //if($("#inome").val() !== ""){
+
         var teste = testeCamposNulos();
 
         if(teste[0]){
-            var data = "nome="+$("#inome").val()+"&sobrenome="+$("#isobrenome").val()+"&apelido="+$("#iapelido").val()+"&cpf="+$("#icpf").val()+"&sexo="+$('input[name = "bs-radio-group-0"]:checked').val()+"&rg="+$("#irg").val()+"&datanascimento="+$("#idatanascimento").val()+"&telefone1="+$("#itelefone1").val()+"&telefone2="+$("#itelefone2").val()+ "&escolaridade_idescolaridade="+($("#iescolaridade")[0].selectedIndex+1)+ "&estadocivil_idestadocivil="+($("#iestadocivil")[0].selectedIndex+1)+"&nomepropriedade="+$("#inomepropriedade").val()+"&rua="+$("#irua").val()+"&numero="+$("#inumero").val()+"&bairro="+$("#ibairro").val()+"&complemento="+$("#icomplemento").val()+"&cep="+$("#icep").val()+"&cidade_idcidade="+($("#cidade")[0].selectedIndex+1)+"&area="+$("#iarea").val()+"&unidadedemedida="+$('input[name = "bs-radio-group-2"]:checked').val()+"&areautilizavel="+$("#iareautilizavel").val()+"&unidadedemedidaau="+$('input[name = "bs-radio-group-1"]:checked').val()+"&gps_lat="+$("#igpslat").val()+"&gps_long="+$("#igpslong").val()+"&qtdedeintegrantes="+$("#iqtdintegrantes").val()+"&qtdedecriancas="+$("#iqtdcriancas").val()+"&qtdedegravidas="+$("#iqtdgravidas").val()+"&usuario="+$("#iusuario").val()+"&senha="+$("#isenha").val()+"&email="+$("#iemail").val()+"&papel=a&unidade_idunidade=2";
+            var data = "nome="+$("#inome").val()+"&sobrenome="+$("#isobrenome").val()+"&apelido="+$("#iapelido").val()+"&cpf="+$("#icpf").val()+"&sexo="+$('input[name = "bs-radio-group-0"]:checked').val()+"&rg="+$("#irg").val()+"&datanascimento="+$("#idatanascimento").val()+"&telefone1="+$("#itelefone1").val()+"&telefone2="+$("#itelefone2").val()+ "&escolaridade_idescolaridade="+($("#iescolaridade")[0].selectedIndex+1)+ "&estadocivil_idestadocivil="+($("#iestadocivil")[0].selectedIndex+1)+"&nomepropriedade="+$("#inomepropriedade").val()+"&rua="+$("#irua").val()+"&numero="+$("#inumero").val()+"&bairro="+$("#ibairro").val()+"&complemento="+$("#icomplemento").val()+"&cep="+$("#icep").val()+"&cidade_idcidade="+verificarIDCidade()+"&area="+$("#iarea").val()+"&unidadedemedida="+$('input[name = "bs-radio-group-2"]:checked').val()+"&areautilizavel="+$("#iareautilizavel").val()+"&unidadedemedidaau="+$('input[name = "bs-radio-group-1"]:checked').val()+"&gps_lat="+$("#igpslat").val()+"&gps_long="+$("#igpslong").val()+"&qtdedeintegrantes="+$("#iqtdintegrantes").val()+"&qtdedecriancas="+$("#iqtdcriancas").val()+"&qtdedegravidas="+$("#iqtdgravidas").val()+"&usuario="+$("#iusuario").val()+"&senha="+$("#isenha").val()+"&email="+$("#iemail").val()+"&papel=a&unidade_idunidade=2";
 
 
             $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/pessoa/inseriragricultor", data, function(dados){
@@ -733,6 +729,7 @@
                     navigator.notification.alert(dados.mensagem, function(){
                         $(".camposcadastro").val("");
                         activate_page("#page_1");
+                        $("#inputUsuario").val();
                         $("#inputUsuario").focus();
 
                     },"Alerta!", "OK");
@@ -799,6 +796,96 @@
 
         return retorno;
     }
+    function verificarIDCidade(){
+        var i = $("#estado")[0].selectedIndex;
+        switch(i){
+            case 2:
+                i = $("#cidade")[0].selectedIndex + 22;
+            break;
+            case 3:
+                i = $("#cidade")[0].selectedIndex+124;
+            break;
+            case 4:
+                i = $("#cidade")[0].selectedIndex+186;
+            break;
+            case 5:
+                i = $("#cidade")[0].selectedIndex + 202;
+            break;
+            case 6:
+                i = $("#cidade")[0].selectedIndex+619;
+            break;
+            case 7:
+                i = $("#cidade")[0].selectedIndex+803;
+            break;
+            case 8:
+                i = $("#cidade")[0].selectedIndex + 805;
+            break;
+            case 9:
+                i = $("#cidade")[0].selectedIndex+882;
+            break;
+            case 10:
+                i = $("#cidade")[0].selectedIndex+1128;
+            break;
+            case 11:
+                i = $("#cidade")[0].selectedIndex + 1345;
+            break;
+            case 12:
+                i = $("#cidade")[0].selectedIndex+2198;
+            break;
+            case 13:
+                i = $("#cidade")[0].selectedIndex+2275;
+            break;
+                case 14:
+                i = $("#cidade")[0].selectedIndex+2414;
+            break;
+            case 15:
+               i = $("#cidade")[0].selectedIndex+2554;
+            break;
+                case 16:
+                i = $("#cidade")[0].selectedIndex + 2780;
+            break;
+            case 17:
+                i = $("#cidade")[0].selectedIndex+2965;
+            break;
+            case 18:
+                i = $("#cidade")[0].selectedIndex+3187;
+            break;
+            case 19:
+                i = $("#cidade")[0].selectedIndex + 3586;
+            break;
+            case 20:
+                i = $("#cidade")[0].selectedIndex+3678;
+            break;
+            case 21:
+                i = $("#cidade")[0].selectedIndex+3845;
+            break;
+            case 22:
+                i = $("#cidade")[0].selectedIndex+3897;
+            break;
+            case 23:
+                i = $("#cidade")[0].selectedIndex+3912;
+            break;
+                case 24:
+                i = $("#cidade")[0].selectedIndex + 4409;
+            break;
+            case 25:
+                i = $("#cidade")[0].selectedIndex+4701;
+            break;
+            case 26:
+                i = $("#cidade")[0].selectedIndex+4776;
+            break;
+            case 27:
+                i = $("#cidade")[0].selectedIndex+5421;
+            break;
+            default:
+                i = $("#cidade")[0].selectedIndex+1;
+
+        }
+
+
+        return i;
+    }//);
+
     //funcao de alerta campos nulos
     function alertaCampoNulo(msg, campo){
         navigator.notification.confirm(
