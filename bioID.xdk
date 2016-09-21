@@ -6,7 +6,7 @@
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "jsapp/template-blank-cordova-ad-project/sample.zip",
       "projectGuid": "45101c27-9c57-422a-a257-01ff97b98657",
-      "lastModifiedDate": 1474387993761,
+      "lastModifiedDate": 1474401207201,
       "creationDate": 1466424083911
     },
     "XDK-app-designer": "true",
@@ -134,7 +134,7 @@
         "isActive_": true,
         "certificateId_": "qLZAmv2hWkKgFfjfkqlT7g2",
         "appName_": "bioID",
-        "appID_": "br.org.fundetec.bioid",
+        "appID_": "br.org.fundetec.bio_id",
         "appAccess_": {
           "mode": "whitelist",
           "network": [
@@ -205,10 +205,10 @@
         "excludedLibraries_": "",
         "cordovaCLIVersion_": "5.4.1",
         "crosswalkVersion_": "16",
-        "appVersion_": "1.0.2",
+        "appVersion_": "0.0.1",
         "appAuthor_": "daniel defante",
         "appDescription_": "Aplicação para a rastriabilidade de produtos biofortificados",
-        "appVersionCode_": "2"
+        "appVersionCode_": "1"
       },
       "iOS": {
         "platform_": "ios",

@@ -42,9 +42,74 @@
      function iniciarGerEntrev(){
         $(".uib_w_361").hide();
         $(".uib_w_116").hide();
+        $(".uib_w_378").hide();
      }
 
+     //lista os cultivares por propriedade, metodo entrevistador
+     $(document).on("click", ".uib_w_118 > a", function(evt){
 
+        var data = 'idpessoa='+1+'&idunidade='+2;
+
+        $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/backupentrevista", data, function(dados){
+            //teste da requisicao no banco esta correta
+            if(dados.sucesso){
+
+                listarBkpEstrevistaP(dados.propriedades);
+                listarBkpEstrevistaC(dados.itementrevista);
+            }
+
+        },"json")
+        //Tratamento de erro da requisicao servico RESt login
+        .fail(function(){
+            navigator.notification.confirm(
+                'Sem conexão com o servidor!',
+                function() {
+                    //limpa a tela e vai para a pagina inicial
+                    window.clearGoMainPage();
+                },
+                'Erro',
+                ['OK']
+            );
+
+
+        });
+
+
+
+
+
+
+         $(".uib_w_378").show();
+         $(".uib_w_116").hide();
+     });
+
+     function listarBkpEstrevistaP(propriedades){
+         $('.uib_col_98').empty();
+         var item;
+         var i=0;
+         $.each(propriedades, function(){
+
+             item ='<a class="list-group-item allow-badge widget uib_w_382" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+propriedades[i].nomepropriedade+'</h4><p class="list-group-item-text">List item</p></a>';
+
+
+             $('.uib_col_98').append(item);
+             i++;
+         });
+     }
+
+     function listarBkpEstrevistaC(cultivares){
+        // $('.uib_col_98').empty();
+         var item;
+         var i=0;
+         $.each(cultivares, function(){
+
+             item ='<a class="list-group-item allow-badge widget uib_w_382" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+cultivares[i].nomecultivar+'</h4><p class="list-group-item-text">List item</p></a>';
+
+
+             //$('.uib_w_382').append(item);
+             i++;
+         });
+     }
      //esqueceu a senha
      $(document).on("click", "#esqueceuSenha", function(evt){
          navigator.notification.alert("suporte_bioid@fundetec.org.br",function(){},"Contato:", "Sair");
@@ -480,7 +545,7 @@
 
             var i = 0;
             $.each(propriedades, function(){
-                //c(propriedades[i].nomepropriedade);
+
                 if(abaNomeProp === propriedades[i].nomepropriedade){
                     //lista os cultivares
                     window.listarCultivarRecebidos(abaNomeProp);
@@ -949,8 +1014,6 @@
                 if(buttonIndex === 2){
                     var data = "idsafra="+sessionStorage.getItem("idsafra")+"&ultimadatacolheita="+$("#datacolheita").val()+"&qtdcolhida="+$("#qtdcolhida").val()+"&statussafra_idstatussafra="+statussafra;
 
-                    c(data);
-
                     $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/relatarcolheita", data, function(dados){
                         //se safra foi relatada
                         if(dados.sucesso){
@@ -1221,7 +1284,7 @@
                 datarelatada: $("#relatardata").val(),
                 um: $("#relatarum").val(),
                 valor: $("#relatarqtd").val()};
-                c('menor');
+
             }else{
                 var j = 0;
                 $.each(campos, function(){
