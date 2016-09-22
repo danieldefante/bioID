@@ -48,7 +48,7 @@
      //lista os cultivares por propriedade, metodo entrevistador
      $(document).on("click", ".uib_w_118 > a", function(evt){
 
-        var data = 'usuario='+1+'&idunidade='+2;
+        var data = 'usuario='+$(this).children('.usuarioOculto').text()+'&idunidade='+2;
 
         $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/backupentrevista", data, function(dados){
             //teste da requisicao no banco esta correta

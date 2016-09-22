@@ -34,8 +34,8 @@ var papel;
 //var ipServidor = "192.168.0.7:8080";
 //var ipServidor = "10.2.10.200:8080";
 //var ipServidor = "localhost:8080";
-//var ipServidor = "187.19.101.252:8082";
-var ipServidor = "10.1.2.52:8080";
+var ipServidor = "187.19.101.252:8082";
+//var ipServidor = "10.1.2.52:8080";
 
 /*/funcao mudar background aleatorio
 function mudarBackground(){
@@ -344,11 +344,16 @@ function listarAgricultoresUnidade(){
             var i = 0;
             $.each(listaAgricultores, function(){
 
-                item = '<a class="list-group-item allow-badge widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+listaAgricultores[i].nome+'</h4><p class="list-group-item-text"> '+listaAgricultores[i].sobrenome+'</p><p class="list-group-item-text"> '+listaAgricultores[i].usuario+'</p></a>';
+                item = '<a class="list-group-item allow-badge widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+listaAgricultores[i].nome+'</h4><p class="list-group-item-text"> '+listaAgricultores[i].sobrenome+'</p><p class="list-group-item-text usuarioOculto">'+listaAgricultores[i].usuario+'</p></a>';
+
+
+                //window.console.log('usuario='+listaAgricultores[i].usuario+'&idunidade='+2);
+
 
                 $('.uib_w_118').append(item);
                 i++;
             });
+            $('.usuarioOculto').hide();
         }
     },"json")
     //Tratamento de erro da requisicao servico RESt login
