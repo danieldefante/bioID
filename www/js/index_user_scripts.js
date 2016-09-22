@@ -48,14 +48,14 @@
      //lista os cultivares por propriedade, metodo entrevistador
      $(document).on("click", ".uib_w_118 > a", function(evt){
 
-        var data = 'idpessoa='+1+'&idunidade='+2;
+        var data = 'usuario='+1+'&idunidade='+2;
 
         $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/backupentrevista", data, function(dados){
             //teste da requisicao no banco esta correta
             if(dados.sucesso){
 
-                listarBkpEstrevistaP(dados.propriedades);
-                listarBkpEstrevistaC(dados.itementrevista);
+                listarBkpEstrevistaP(dados);
+
             }
 
         },"json")
@@ -83,32 +83,34 @@
          $(".uib_w_116").hide();
      });
 
-     function listarBkpEstrevistaP(propriedades){
-         $('.uib_col_98').empty();
+     function listarBkpEstrevistaP(dados){
+         var propriedades = dados.propriedades;
+         $('.uib_w_380').empty();
          var item;
          var i=0;
          $.each(propriedades, function(){
 
-             item ='<a class="list-group-item allow-badge widget uib_w_382" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+propriedades[i].nomepropriedade+'</h4><p class="list-group-item-text">List item</p></a>';
+             item ='<a class="list-group-item allow-badge propriedadeBackup widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-unchecked" ></span>&nbsp;&nbsp;&nbsp;'+propriedades[i].nomepropriedade+'</h4><div><p class="list-group-item-text">Telefone:</p><p class="list-group-item-text">Rua:</p><p class="list-group-item-text">Bairro:</p><p class="list-group-item-text">Numero:</p><p class="list-group-item-text">Cidade:</p><p class="list-group-item-text">Latitude:</p><p class="list-group-item-text">Logitude:</p>'+listarBkpEstrevistaC(dados.itementrevista, propriedades[i].nomepropriedade)+'</div></a>';
 
 
-             $('.uib_col_98').append(item);
+             $('.uib_w_380').append(item);
              i++;
          });
      }
 
-     function listarBkpEstrevistaC(cultivares){
-        // $('.uib_col_98').empty();
-         var item;
+     function listarBkpEstrevistaC(cultivares, nomepropriedade){
+
+         var item = '';// = '<p class="list-group-item-text">Cultivares Recebidos:</p> ';
          var i=0;
          $.each(cultivares, function(){
+             if(cultivares[i].nomepropriedade === nomepropriedade){
+                item = item.concat('<pre class="list-group-item-text">'+cultivares[i].nomecultivar+'<p>Qtd recebida: '+cultivares[i].qtdrecebida+' '+cultivares[i].grandeza_recebida+'</p></pre>');
 
-             item ='<a class="list-group-item allow-badge widget uib_w_382" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+cultivares[i].nomecultivar+'</h4><p class="list-group-item-text">List item</p></a>';
-
-
-             //$('.uib_w_382').append(item);
+             }
              i++;
          });
+
+         return item;
      }
      //esqueceu a senha
      $(document).on("click", "#esqueceuSenha", function(evt){
@@ -116,6 +118,27 @@
      });
 
 
+$(document).on("click", ".propriedadeBackup", function(evt){
+
+    if($(this).children('h4').children('span').hasClass('glyphicon-unchecked')){
+        $(this).children('h4').children('span').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+        $(this).children('div').hide();
+    }else{
+        $(this).children('h4').children('span').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+        $(this).children('div').show();
+    }
+     /*navigator.notification.confirm(
+        'Deseja armazenar temporariamente essa propriedade?', // message
+        function(buttonIndex) {
+            if(buttonIndex === 2){
+
+
+            }
+       },            // callback to invoke with index of button pressed
+        'Confirmação',           // title
+        ['Não', 'Sim']     // buttonLabels
+    );*/
+});
         /* button  .uib_w_3 */
     $(document).on("click", ".uib_w_3", function(evt)
     {
@@ -316,6 +339,7 @@
         $('.uib_w_361').show();
         $(".uib_w_116").hide();
         $(".uib_w_123").hide();
+        $(".uib_w_378").hide();
          return false;
     });
 
@@ -333,6 +357,7 @@
          $(".uib_w_116").show();
          $(".uib_w_123").hide();
          $('.uib_w_361').hide();
+         $(".uib_w_378").hide();
          window.listarAgricultoresUnidade();
 
          return false;
@@ -344,6 +369,7 @@
          $('.uib_w_361').hide();
          //window.listarCultivar();
          $(".uib_w_116").hide();
+         $(".uib_w_378").hide();
      }
 
     $("#inputSenha").keypress(function(e){

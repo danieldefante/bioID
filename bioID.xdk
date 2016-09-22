@@ -6,7 +6,7 @@
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "jsapp/template-blank-cordova-ad-project/sample.zip",
       "projectGuid": "45101c27-9c57-422a-a257-01ff97b98657",
-      "lastModifiedDate": 1474401207201,
+      "lastModifiedDate": 1474555411502,
       "creationDate": 1466424083911
     },
     "XDK-app-designer": "true",
@@ -290,7 +290,7 @@
         "runtime_": "W3C",
         "name_": "WebApp",
         "preferences_": {},
-        "isActive_": false,
+        "isActive_": true,
         "certificateId_": "",
         "appName_": "bioID",
         "appID_": "not.yet.specified",
