@@ -92,7 +92,7 @@ function verificarDataLogin(){
             clearGoMainPage();
         //o app foi aberto antes de 7 dias, entao carrega informacoes da localStorage
         }else{
-            papel = JSON.parse(localStorage.getItem("logSession")).papel;
+
             carregaDados();
         }
     }catch(e){
@@ -104,6 +104,9 @@ function verificarDataLogin(){
 //carrega os dados de cada usuario
 function carregaDados(){
     try{
+        var dadosSessao = JSON.parse(localStorage.getItem("logSession"));
+        papel = dadosSessao.papel;
+
         if(papel === "a"){
             //usuario agricultor
             window.activate_page("#page_3");
@@ -111,7 +114,8 @@ function carregaDados(){
         }else if(papel === "g" || papel === "e" || papel === "d"){
             //usuario gerenciador e entrevistador
             window.activate_page("#page_4");
-            //window.listarCultivar();
+            window.iniciarGerEntrev();
+            listarEstoque(dadosSessao.idunidade);
         }else{
             clearGoMainPage();
         }
