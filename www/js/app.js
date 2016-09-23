@@ -404,6 +404,7 @@ function clearGoMainPage(){
 
 function listarSafras(){
     if(localStorage.getItem("safras")){
+        window.console.log('chama a list safra');
         var safras = JSON.parse(localStorage.getItem("safras"));
         var item;
         var i = 0;
