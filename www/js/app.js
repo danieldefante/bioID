@@ -129,11 +129,13 @@ function carregaDados(){
             window.activate_page("#page_3");
             iniciarAgricultor();
             listarPropriedades();
+            listarSafras();
         }else if(papel === "g" || papel === "e" || papel === "d"){
             //usuario gerenciador e entrevistador
             window.activate_page("#page_4");
             iniciarGerEntrev();
             listarEstoque(dadosSessao.idunidade);
+            listarAgricultoresUnidade();
         }else{
             clearGoMainPage();
         }
