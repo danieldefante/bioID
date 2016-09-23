@@ -47,6 +47,11 @@
 
      //lista os cultivares por propriedade, metodo entrevistador
      $(document).on("click", ".uib_w_118 > a", function(evt){
+        $('.uib_w_380').empty();
+
+          $('.uib_w_380').append('<a class="list-group-item allow-badge propriedadeBackup widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-refresh" ></span>&nbsp;&nbsp;&nbsp;Carregando...</h4></a>');
+         //$('.uib_w_384').hide();
+
 
         var data = 'usuario='+$(this).children('.usuarioOculto').text()+'&idunidade='+2;
 
@@ -123,9 +128,11 @@ $(document).on("click", ".propriedadeBackup", function(evt){
     if($(this).children('h4').children('span').hasClass('glyphicon-unchecked')){
         $(this).children('h4').children('span').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
         $(this).children('div').hide();
+        //$('.uib_w_384').show();
     }else{
         $(this).children('h4').children('span').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
         $(this).children('div').show();
+        //$('.uib_w_384').hide();
     }
      /*navigator.notification.confirm(
         'Deseja armazenar temporariamente essa propriedade?', // message
