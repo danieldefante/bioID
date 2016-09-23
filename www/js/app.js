@@ -59,6 +59,23 @@ function mudarBackground(){
     }
 }*/
 
+//papel agricultor
+function iniciarAgricultor(){
+    $('#recebidos').show();
+    $("#colheita").hide();
+    $("#destinacao").hide();
+    $("#safra").hide();
+    $("#relatorios").hide();
+    $("#page_3").scrollTop(0);
+}
+
+ //pagina gerenciador/entrevistador
+ function iniciarGerEntrev(){
+    $(".uib_w_361").hide();
+    $(".uib_w_116").hide();
+    $(".uib_w_378").hide();
+ }
+
 //verifica se existe sessao na localStorage
 //inicia pela ultima sessao ou abre tela de login
 function verificaSession(){
@@ -110,11 +127,12 @@ function carregaDados(){
         if(papel === "a"){
             //usuario agricultor
             window.activate_page("#page_3");
+            iniciarAgricultor();
             listarPropriedades();
         }else if(papel === "g" || papel === "e" || papel === "d"){
             //usuario gerenciador e entrevistador
             window.activate_page("#page_4");
-            window.iniciarGerEntrev();
+            iniciarGerEntrev();
             listarEstoque(dadosSessao.idunidade);
         }else{
             clearGoMainPage();
@@ -125,6 +143,7 @@ function carregaDados(){
     }
 
 }
+
 
 //lista os cultivares recebidos contidos no localStorage de cada propriedade
 function listarCultivarRecebidos(nomePropriedade){
@@ -431,6 +450,8 @@ function listarCultivarSafras(safra, classSafra){
     });
 
 }
+
+
 
 
 }

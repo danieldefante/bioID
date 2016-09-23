@@ -26,24 +26,6 @@
         $("#iemail").mask('a',{'translation': {'a': {pattern: /[A-Za-z@-_.0-9]/, optional: true, recursive: true}}});
      });
 
-     //variavel responsavel por armazenar cultivar selecionado
-    //var cultivarSelecionado;
-
-    //papel agricultor
-    function iniciarAgricultor(){
-        $('#recebidos').show();
-        $("#colheita").hide();
-        $("#destinacao").hide();
-        $("#safra").hide();
-        $("#relatorios").hide();
-        $("#page_3").scrollTop(0);
-    }
-     //pagina gerenciador/entrevistador
-     function iniciarGerEntrev(){
-        $(".uib_w_361").hide();
-        $(".uib_w_116").hide();
-        $(".uib_w_378").hide();
-     }
 
      //lista os cultivares por propriedade, metodo entrevistador
      $(document).on("click", ".uib_w_118 > a", function(evt){
@@ -193,7 +175,7 @@ $(document).on("click", ".propriedadeBackup", function(evt){
         /* button  .uib_w_38 */
     $(document).on("click", ".uib_w_38", function(evt)
     {
-         iniciarAgricultor();
+         window.iniciarAgricultor();
          return false;
     });
 
@@ -308,7 +290,7 @@ $(document).on("click", ".propriedadeBackup", function(evt){
                     ['Não','Sim']     // buttonLabels
                 );
             }else{
-                iniciarAgricultor();
+                window.iniciarAgricultor();
             }
          }
 
@@ -320,7 +302,7 @@ $(document).on("click", ".propriedadeBackup", function(evt){
          if(buttonIndex === 2){
             //limpa o sessionStorage
             window.sessionStorage.clear();
-            iniciarAgricultor();
+            window.iniciarAgricultor();
          }
      }
 
@@ -423,13 +405,13 @@ $(document).on("click", ".propriedadeBackup", function(evt){
                         //rest popular propriedades
                         //chama o metodo que busca dados no servidor e armazena no localStorage
                         //para outro metodo acessar e criar a lista de cultivares recebidos
-                        iniciarAgricultor();
+                        window.iniciarAgricultor();
                         window.servArmazenarCulRecebdo(usuario);
                         activate_page("#page_3");
                     }else{
                         window.listarEstoque(dados.idunidade);
                         //c(dados.idunidade);
-                        iniciarGerEntrev();
+                        window.iniciarGerEntrev();
                         activate_page("#page_4");
 
                     }
@@ -1521,7 +1503,7 @@ $(document).on("click", ".propriedadeBackup", function(evt){
             'Deseja realmente enviar as destinações?', // message
             function(buttonIndex) {
                 if(buttonIndex === 2){
-                    iniciarAgricultor();
+                    window.iniciarAgricultor();
 
                 }
            },            // callback to invoke with index of button pressed
