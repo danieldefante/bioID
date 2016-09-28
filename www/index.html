@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
     <!--
   * Please see the included README.md file for license terms and conditions.
   -->
@@ -72,6 +72,24 @@
         <script type="application/javascript" src="js/jquery.mask.min.js"></script>
         <script type="application/javascript" src="xdk/appdesigner/js/rest-of-space.js"></script>
 
+
+        <!--script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script-->
+        <script type="text/javascript" src="js/jquery-ui.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(e) {
+            $("#idatanascimento").datepicker({
+            dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+            dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+            dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+            monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+            monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+            dateFormat: 'dd/mm/yy',
+            nextText: 'Próximo',
+            prevText: 'Anterior'
+                });
+            });
+        </script>
+        <link href="css/jquery-ui.css" rel="stylesheet" />
     </head>
 
     <body>
@@ -267,8 +285,9 @@
                                 </div>
                                 <div class="table-thing widget uib_w_17 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="idatanascimento">Data de nascimento:</label>
-                                    <input class="wide-control form-control default camposcadastro idatas input-lg" type="text" id="idatanascimento" placeholder="dd/mm/aaaa">
+                                    <input class="wide-control form-control default camposcadastro input-lg" type="text" id="idatanascimento">
                                 </div>
+
                                 <div class="table-thing widget uib_w_18 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="irg">RG:</label>
                                     <input class="wide-control form-control default input-lg camposcadastro" type="text" placeholder="Digite seu RG..." id="irg">
@@ -336,7 +355,7 @@
                                 </div>
                                 <div class="table-thing widget uib_w_21 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="inumero">Numero:</label>
-                                    <input class="wide-control form-control default numeros camposcadastro input-lg" type="text" placeholder="Digite o numero..." id="inumero">
+                                    <input class="wide-control form-control default numeros camposcadastro input-lg" type="number" placeholder="Digite o numero..." id="inumero">
                                 </div>
                                 <div class="table-thing widget uib_w_295 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="ibairro">Bairro:</label>
@@ -367,7 +386,7 @@
 
                                 <div class="table-thing widget uib_w_177 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="iarea">Área total:</label>
-                                    <input class="wide-control form-control default input-lg nreal camposcadastro" type="text" placeholder="Digite a área total..." id="iarea">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="number" step="any" placeholder="Digite a área total..." id="iarea">
                                 </div>
                                 <fieldset class="widget uib_w_178 d-margins" data-uib="twitter%20bootstrap/radio_group" data-ver="1" data-child-name="bs-radio-group-2">
                                     <label class="radio radio-padding-left widget uib_w_179" data-uib="twitter%20bootstrap/radio_button" data-ver="1">
@@ -379,7 +398,7 @@
                                 </fieldset>
                                 <div class="table-thing widget uib_w_296 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="iareautilizavel">Área utilizável:</label>
-                                    <input class="wide-control form-control default input-lg nreal camposcadastro" type="text" placeholder="Digite a área utilizável..." id="iareautilizavel">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="number" step="any" placeholder="Digite a área utilizável..." id="iareautilizavel">
                                 </div>
                                 <fieldset class="widget uib_w_297 d-margins" data-uib="twitter%20bootstrap/radio_group" data-ver="1" data-child-name="bs-radio-group-1">
                                     <label class="radio radio-padding-left widget uib_w_298" data-uib="twitter%20bootstrap/radio_button" data-ver="1">
@@ -469,7 +488,7 @@
                             <div class="widget-container content-area vertical-col">
                                 <div class="table-thing widget uib_w_161 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="iusuario">Usuário:</label>
-                                    <input class="wide-control form-control default input-lg camposcadastro" type="text" placeholder="Digite um usuário..." id="iusuario" maxlength="45">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="text" placeholder="Digite um usuário..." id="iusuario">
                                 </div>
                                 <div class="table-thing widget uib_w_236 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="iemail">Email</label>
