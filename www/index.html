@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
     <!--
   * Please see the included README.md file for license terms and conditions.
   -->
@@ -71,7 +71,6 @@
         <script type="application/javascript" src="js/cidades-estados-v0.2.js"></script>
         <script type="application/javascript" src="js/jquery.mask.min.js"></script>
         <script type="application/javascript" src="xdk/appdesigner/js/rest-of-space.js"></script>
-
 
         <!--script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui.js"></script>
@@ -285,16 +284,16 @@
                                 </div>
                                 <div class="table-thing widget uib_w_17 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="idatanascimento">Data de nascimento:</label>
-                                    <input class="wide-control form-control default camposcadastro input-lg" type="date" id="idatanascimento">
+                                    <input class="wide-control form-control default camposcadastro input-lg" type="date" placeholder="dd/mm/aaaa" id="idatanascimento">
                                 </div>
 
                                 <div class="table-thing widget uib_w_18 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="irg">RG:</label>
-                                    <input class="wide-control form-control default input-lg camposcadastro" type="number" placeholder="0000000000" id="irg">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="tel" placeholder="00000.000-0" id="irg">
                                 </div>
                                 <div class="table-thing widget uib_w_19 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="icpf">CPF:</label>
-                                    <input class="wide-control form-control default input-lg camposcadastro" type="number" placeholder="000.000.000-00" id="icpf">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="tel" placeholder="000.000.000-00" id="icpf">
                                 </div>
                                 <fieldset class="widget uib_w_27 d-margins" data-uib="twitter%20bootstrap/radio_group" data-ver="1" data-child-name="bs-radio-group-0">
                                     <label class="radio radio-padding-left widget uib_w_28" data-uib="twitter%20bootstrap/radio_button" data-ver="1">
@@ -304,11 +303,11 @@
                                 </fieldset>
                                 <div class="table-thing widget uib_w_170 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="itelefone1">Telefone1:</label>
-                                    <input class="wide-control form-control default telefone camposcadastro input-lg" type="tel" id="itelefone1" placeholder="(00) 00000-0000">
+                                    <input class="wide-control form-control default telefone camposcadastro input-lg" type="tel" id="itelefone1" placeholder="(DDD) 00000-0000">
                                 </div>
                                 <div class="table-thing widget uib_w_171 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="itelefone2">Telefone2:</label>
-                                    <input class="wide-control form-control default telefone camposcadastro input-lg" type="tel" placeholder="(00) 00000-0000" id="itelefone2">
+                                    <input class="wide-control form-control default telefone camposcadastro input-lg" type="tel" placeholder="(DDD) 00000-0000" id="itelefone2">
                                 </div>
                                 <div class="table-thing widget uib_w_304 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
                                     <label class="narrow-control label-top-left">Escolaridade:</label>
@@ -367,7 +366,7 @@
                                 </div>
                                 <div class="table-thing widget uib_w_302 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="icep">Cep:</label>
-                                    <input class="wide-control form-control default camposcadastro input-lg" type="text" placeholder="xx.xxx-xxx" id="icep">
+                                    <input class="wide-control form-control default camposcadastro input-lg" type="tel" placeholder="00.000-000" id="icep">
                                 </div>
                                 <div class="table-thing widget uib_w_167 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
                                     <label class="narrow-control label-top-left">País:</label>
@@ -464,7 +463,7 @@
                                 </div>
                                 <div class="table-thing widget uib_w_175 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="iqtdgravidas">Número de mulheres grávidas ou amamentando:</label>
-                                    <input class="wide-control form-control default input-lg numeros camposcadastro" type="number" placeholder="Digite a quantidade..." id="iqtdgravidas" min="0">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="number" placeholder="Digite a quantidade..." id="iqtdgravidas" min="0">
                                 </div>
                                 <span class="uib_shim"></span>
                             </div>
@@ -488,7 +487,7 @@
                             <div class="widget-container content-area vertical-col">
                                 <div class="table-thing widget uib_w_161 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="iusuario">Usuário:</label>
-                                    <input class="wide-control form-control default input-lg camposcadastro" type="text" placeholder="Digite um usuário..." id="iusuario">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="text" placeholder="Digite um usuário..." id="iusuario" maxlength="12">
                                 </div>
                                 <div class="table-thing widget uib_w_236 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="iemail">Email</label>
@@ -496,11 +495,11 @@
                                 </div>
                                 <div class="table-thing widget uib_w_162 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="isenha">Senha:</label>
-                                    <input class="wide-control form-control default input-lg camposcadastro" type="password" placeholder="Digite uma senha..." id="isenha" maxlength="45">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="password" placeholder="Digite uma senha..." id="isenha" maxlength="20">
                                 </div>
                                 <div class="table-thing widget uib_w_237 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="ireescrevasenha">Reescreva sua senha:</label>
-                                    <input class="wide-control form-control default input-lg camposcadastro" type="password" placeholder="Digite sua senha..." id="ireescrevasenha" maxlength="45">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="password" placeholder="Digite sua senha..." id="ireescrevasenha" maxlength="20">
                                 </div>
                                 <button class="btn widget uib_w_30 d-margins btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1">Cadastrar <i class="glyphicon glyphicon-ok button-icon-right" data-position="right"></i>
                                 </button><span class="uib_shim"></span>
@@ -794,55 +793,9 @@
                                     </div>
                                     <div class="col uib_col_15 single-col" data-uib="layout/col" data-ver="0">
                                         <div class="widget-container content-area vertical-col">
-                                            <div class="panel-group no_wrap widget uib_w_353 d-margins" data-uib="twitter%20bootstrap/accordion" data-ver="1" id="bs-accordion-1">
-                                                <div class="panel widget panel-default uib_w_354" data-uib="twitter%20bootstrap/collapsible" data-ver="1">
-                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title">
-           <a class="accordion-toggle" data-toggle="collapse" href="#bs-accordion-group-0" data-parent="#bs-accordion-0">Collapsible</a>
-       </h4>
-                                                    </div>
-                                                    <div id="bs-accordion-group-0" class="panel-collapse collapse">
-                                                        <div class="panel-body">
-                                                            <div class="col uib_col_91 single-col" data-uib="layout/col" data-ver="0">
-                                                                <div class="widget-container content-area vertical-col">
-                                                                    <span class="uib_shim"></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="panel widget panel-default uib_w_355" data-uib="twitter%20bootstrap/collapsible" data-ver="1">
-                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title">
-           <a class="accordion-toggle" data-toggle="collapse" href="#bs-accordion-group-1" data-parent="#bs-accordion-0">Collapsible</a>
-       </h4>
-                                                    </div>
-                                                    <div id="bs-accordion-group-1" class="panel-collapse collapse">
-                                                        <div class="panel-body">
-                                                            <div class="col uib_col_92 single-col" data-uib="layout/col" data-ver="0">
-                                                                <div class="widget-container content-area vertical-col">
-                                                                    <span class="uib_shim"></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="panel widget panel-default uib_w_356" data-uib="twitter%20bootstrap/collapsible" data-ver="1">
-                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title">
-           <a class="accordion-toggle" data-toggle="collapse" href="#bs-accordion-group-2" data-parent="#bs-accordion-0">Collapsible</a>
-       </h4>
-                                                    </div>
-                                                    <div id="bs-accordion-group-2" class="panel-collapse collapse">
-                                                        <div class="panel-body">
-                                                            <div class="col uib_col_93 single-col" data-uib="layout/col" data-ver="0">
-                                                                <div class="widget-container content-area vertical-col">
-                                                                    <span class="uib_shim"></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="list-group widget uib_w_353 d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1"><a class="list-group-item allow-badge widget " data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge glyphicon glyphicon-ok"> </span>
+                                            <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;&nbsp;Carregando...</h4>
+                                            </a>
                                             </div>
                                             <span class="uib_shim"></span>
                                         </div>

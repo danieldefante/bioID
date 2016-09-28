@@ -13,17 +13,18 @@
      }
 
      $(document).ready(function(){
-        $('#icpf').mask('000.000.000-00');//, {reverse: true});
-        $('#icep').mask('00000-000');
-        $('#irg').mask('0.000.000.000');
-        $('.telefone').mask('(00) 00000-0000');
-        $('#inome').mask('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',{'translation': {'a': {pattern: /[A-Za-zçÇãÃâÂáÁàÀéÉíÍõÕôÔúÚ]/}}});
-        $(".palavras").mask('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',{'translation': {'a': {pattern: /[A-Za-zçÇãÃâÂáÁàÀéÉíÍõÕôÔúÚ\s]/}}});
-        //$("#iusuario").mask('a',{'translation': {'a': {pattern: /[A-Za-z0-9]/, optional: true, recursive: true}}});
+       // $('.numerosInt').mask('n',{'translation': {'n': {pattern: /[0123456789]/, optional: true, recursive: true}}});
+        $('#icpf').mask('000.000.000-00');//,{'translation': {'u': {pattern: /[0123456789.-]/, optional: true, recursive: true}}};
 
-        $("#iemail").mask('a',{'translation': {'a': {pattern: /[A-Za-z@-_.0-9]/}}});
-
-
+        $('#irg').mask('00000.000-0', {reverse: true});
+        $('#icep').mask('00000-000', {reverse: true});
+        $('.telefone').mask('(00) #0000-0000');
+        $('#inome').mask('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',{'translation': {'a': {pattern: /[A-Za-zçÇãÃâÂáÁàÀéÉíÍõÕôÔúÚ]/}}});
+        $(".palavras").mask('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',{'translation': {'a': {pattern: /[A-Za-zçÇãÃâÂáÁàÀéÉíÍõÕôÔúÚ\s]/}}});
+        $("#iusuario").mask('aaaaaaaaaaaaaaa',{'translation': {'a': {pattern: /[A-Za-z0-9_-]/, optional: true, recursive: true}}});
+        $("#irua").mask('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',{'translation': {'a': {pattern: /[A-Za-z0-9çÇãÃâÂáÁàÀéÉíÍõÕôÔúÚ'\s]/, optional: true, recursive: true}}});
+        //$("#iemail").mask('a',{'translation': {'a': {pattern: /[A-Za-z@-_.0-9]/}}});
+        $("#iemail").mask('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',{'translation': {'a': {pattern: /[A-Za-z@-_.0-9]/, optional: true, recursive: true}}});
 
      });
 
@@ -798,10 +799,10 @@ $(document).on("click", ".propriedadeBackup", function(evt){
 
         var teste = testeCamposNulos();
 
-        //if(teste){
+        if(teste[0]){
             var data = "nome="+$("#inome").val()+"&sobrenome="+$("#isobrenome").val()+"&apelido="+$("#iapelido").val()+"&cpf="+$("#icpf").val()+"&sexo="+$('input[name = "bs-radio-group-0"]:checked').val()+"&rg="+$("#irg").val()+"&datanascimento="+$("#idatanascimento").val()+"&telefone1="+$("#itelefone1").val()+"&telefone2="+$("#itelefone2").val()+ "&escolaridade_idescolaridade="+($("#iescolaridade")[0].selectedIndex+1)+ "&estadocivil_idestadocivil="+($("#iestadocivil")[0].selectedIndex+1)+"&nomepropriedade="+$("#inomepropriedade").val()+"&rua="+$("#irua").val()+"&numero="+$("#inumero").val()+"&bairro="+$("#ibairro").val()+"&complemento="+$("#icomplemento").val()+"&cep="+$("#icep").val()+"&cidade_idcidade="+verificarIDCidade()+"&area="+$("#iarea").val()+"&unidadedemedida="+$('input[name = "bs-radio-group-2"]:checked').val()+"&areautilizavel="+$("#iareautilizavel").val()+"&unidadedemedidaau="+$('input[name = "bs-radio-group-1"]:checked').val()+"&gps_lat="+$("#igpslat").val()+"&gps_long="+$("#igpslong").val()+"&qtdedeintegrantes="+$("#iqtdintegrantes").val()+"&qtdedecriancas="+$("#iqtdcriancas").val()+"&qtdedegravidas="+$("#iqtdgravidas").val()+"&usuario="+$("#iusuario").val()+"&senha="+$("#isenha").val()+"&email="+$("#iemail").val()+"&papel=a&unidade_idunidade=2";
 
-/*
+
             $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/pessoa/inseriragricultor", data, function(dados){
 
                 //se cadastrado entao vai para pagina inicial
@@ -835,14 +836,14 @@ $(document).on("click", ".propriedadeBackup", function(evt){
                 );
 
 
-            });*/
+            });
 c(data);
         //mensagem de alerta
-       // }else{
-        //    alertaCampoNulo(teste[1], teste[2]);
-       // }
+        }else{
+            alertaCampoNulo(teste[1], teste[2]);
+        }
 
-        ///
+
          return false;
     });
     //funcao para verificar se existe campos nulos
@@ -1573,20 +1574,42 @@ c(data);
     });
 
     //colapse ajuda, abrir com o toque
-    $(document).on("click",".collapseSafras .panel-heading", function(evt)
+    $(document).on("click",".uib_w_353 > a", function(evt)
     {
-        var idCollapse = $(this).children('h4').children('a').attr('href');
-        var iconeCollapse = $(this).children('h4').children('a').children('i').attr('id');
 
-        $(idCollapse).collapse('toggle');
+        var item = $(this).children('pre');
 
-        c(iconeCollapse);
-        $(idCollapse).on('shown.bs.collapse', function() {
-            $("#"+iconeCollapse).removeClass("fa-chevron-down").addClass("fa-chevron-up");
+        if(item.is(':visible')){
+            item.hide();
+            $(this).children('h4').children('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+        }else{
+            $('.itensPre').hide();
+            $('.uib_w_353 .glyphicon-chevron-down').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
 
-        }).on('hidden.bs.collapse', function() {
-            $("#"+iconeCollapse).removeClass("fa-chevron-up").addClass("fa-chevron-down");
-        });
+            item.fadeIn().show();
+            $(this).children('h4').children('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+        }
+
+
+        /* $(this).children('h4').children('i');
+
+        if(teste.hasClass('glyphicon-chevron-down')){
+            teste.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            $(this).children('.list-group-item-text').hide();
+            $(this).css('background', 'rgb(255, 255, 255)');
+        }else{
+            //verifica se tem algum  campo aberto
+            $('.uib_w_353 .list-group-item .list-group-item-text').hide();
+            $('.uib_w_353 .list-group-item').css('background', 'rgb(255, 255, 255)');
+            $('.uib_w_353 .glyphicon-chevron-down').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            //arruma o item selecionado
+            $(this).children('pre').show();
+            $(this).css('background', 'rgb(236, 240, 241)');
+            teste.removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+        }
+
+        */
+
 
         return false;
     });
