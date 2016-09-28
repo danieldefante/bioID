@@ -73,7 +73,7 @@
         <script type="application/javascript" src="xdk/appdesigner/js/rest-of-space.js"></script>
 
 
-        <!--script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script-->
+        <!--script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui.js"></script>
         <script type="text/javascript">
             $(document).ready(function(e) {
@@ -89,7 +89,7 @@
                 });
             });
         </script>
-        <link href="css/jquery-ui.css" rel="stylesheet" />
+        <link href="css/jquery-ui.css" rel="stylesheet" /-->
     </head>
 
     <body>
@@ -285,7 +285,7 @@
                                 </div>
                                 <div class="table-thing widget uib_w_17 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="idatanascimento">Data de nascimento:</label>
-                                    <input class="wide-control form-control default camposcadastro input-lg" type="text" id="idatanascimento">
+                                    <input class="wide-control form-control default camposcadastro input-lg" type="date" id="idatanascimento">
                                 </div>
 
                                 <div class="table-thing widget uib_w_18 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
@@ -355,7 +355,7 @@
                                 </div>
                                 <div class="table-thing widget uib_w_21 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="inumero">Numero:</label>
-                                    <input class="wide-control form-control default numeros camposcadastro input-lg" type="number" placeholder="Digite o numero..." id="inumero">
+                                    <input class="wide-control form-control default camposcadastro input-lg" type="number" placeholder="Digite o numero..." id="inumero" min="1">
                                 </div>
                                 <div class="table-thing widget uib_w_295 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="ibairro">Bairro:</label>
@@ -386,7 +386,7 @@
 
                                 <div class="table-thing widget uib_w_177 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="iarea">Área total:</label>
-                                    <input class="wide-control form-control default input-lg camposcadastro" type="number" step="any" placeholder="Digite a área total..." id="iarea">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="number" step="any" placeholder="Digite a área total..." id="iarea" min="0">
                                 </div>
                                 <fieldset class="widget uib_w_178 d-margins" data-uib="twitter%20bootstrap/radio_group" data-ver="1" data-child-name="bs-radio-group-2">
                                     <label class="radio radio-padding-left widget uib_w_179" data-uib="twitter%20bootstrap/radio_button" data-ver="1">
@@ -398,7 +398,7 @@
                                 </fieldset>
                                 <div class="table-thing widget uib_w_296 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="iareautilizavel">Área utilizável:</label>
-                                    <input class="wide-control form-control default input-lg camposcadastro" type="number" step="any" placeholder="Digite a área utilizável..." id="iareautilizavel">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="number" step="any" placeholder="Digite a área utilizável..." id="iareautilizavel" min="0">
                                 </div>
                                 <fieldset class="widget uib_w_297 d-margins" data-uib="twitter%20bootstrap/radio_group" data-ver="1" data-child-name="bs-radio-group-1">
                                     <label class="radio radio-padding-left widget uib_w_298" data-uib="twitter%20bootstrap/radio_button" data-ver="1">
@@ -421,11 +421,11 @@
                                                 <div class="widget-container content-area vertical-col">
                                                     <div class="table-thing widget uib_w_293 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                                         <label class="narrow-control label-inline" for="igpslat">Latitude:</label>
-                                                        <input class="wide-control form-control default numeros camposcadastro" type="text" value="0" id="igpslat">
+                                                        <input class="wide-control form-control default camposcadastro" type="number" value="0" id="igpslat">
                                                     </div>
                                                     <div class="table-thing widget uib_w_294 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                                         <label class="narrow-control label-inline" for="igpslong">Longitude:</label>
-                                                        <input class="wide-control form-control default numeros camposcadastro" type="text" value="0" id="igpslong">
+                                                        <input class="wide-control form-control default camposcadastro" type="number" value="0" id="igpslong">
                                                     </div>
                                                     <button class="btn widget uib_w_169 d-margins btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="fa fa-hand-o-down button-icon-top" data-position="top"></i>Obter Coordenadas</button><span class="uib_shim"></span>
                                                 </div>
@@ -456,15 +456,15 @@
                             <div class="widget-container content-area vertical-col">
                                 <div class="table-thing widget uib_w_176 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="iqtdintegrantes">Quantidade de membros:</label>
-                                    <input class="wide-control form-control default input-lg numeros camposcadastro" type="text" placeholder="Digite a quantidade..." id="iqtdintegrantes">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="number" placeholder="Digite a quantidade..." id="iqtdintegrantes" min="0">
                                 </div>
                                 <div class="table-thing widget uib_w_238 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="iqtdcriancas">Número de crianças menores de 5 anos:</label>
-                                    <input class="wide-control form-control default input-lg numeros camposcadastro" type="text" placeholder="Digite a quantidade..." id="iqtdcriancas">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="number" placeholder="Digite a quantidade..." id="iqtdcriancas" min="0">
                                 </div>
                                 <div class="table-thing widget uib_w_175 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="iqtdgravidas">Número de mulheres grávidas ou amamentando:</label>
-                                    <input class="wide-control form-control default input-lg numeros camposcadastro" type="text" placeholder="Digite a quantidade..." id="iqtdgravidas">
+                                    <input class="wide-control form-control default input-lg numeros camposcadastro" type="number" placeholder="Digite a quantidade..." id="iqtdgravidas" min="0">
                                 </div>
                                 <span class="uib_shim"></span>
                             </div>
@@ -492,7 +492,7 @@
                                 </div>
                                 <div class="table-thing widget uib_w_236 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="iemail">Email</label>
-                                    <input class="wide-control form-control default input-lg camposcadastro" type="text" placeholder="Digite seu email..." id="iemail" maxlength="45">
+                                    <input class="wide-control form-control default input-lg camposcadastro" type="email" placeholder="Digite seu email..." id="iemail" maxlength="45">
                                 </div>
                                 <div class="table-thing widget uib_w_162 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="isenha">Senha:</label>

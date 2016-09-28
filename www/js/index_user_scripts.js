@@ -27,47 +27,6 @@
 
      });
 
-     $(document).on( "change", '#idatanascimento', function(evt){
-         c($('#idatanascimento').val());
-     });
-
-     /*window.jQuery(function($){
-        $.datepicker.regional['pt-BR'] = {
-		closeText: 'Fechar',
-		prevText: '&#x3c;Anterior',
-		nextText: 'Pr&oacute;ximo&#x3e;',
-		currentText: 'Hoje',
-		monthNames: ['Janeiro','Fevereiro','Mar&ccedil;o','Abril','Maio','Junho',
-		'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-		monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun',
-		'Jul','Ago','Set','Out','Nov','Dez'],
-		dayNames: ['Domingo','Segunda-feira','Ter&ccedil;a-feira','Quarta-feira','Quinta-feira','Sexta-feira','S&aacute;bado'],
-		dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','S&aacute;b'],
-		dayNamesMin: ['Dom','Seg','Ter','Qua','Qui','Sex','S&aacute;b'],
-		weekHeader: 'Sm',
-		dateFormat: 'dd/mm/yy',
-		firstDay: 0,
-		isRTL: false,
-		showMonthAfterYear: false,
-		yearSuffix: ''};
-        $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
-     });*/
-
-
-     /*$("#idatanascimento").datepicker({
-        onSelect: function(dateText) {
-        window.display("Selected date: " + dateText + "; input's current value: " + this.value);
-        }
-     });
-     */
-
-
-
-
-
-
-
-
 
      //lista os cultivares por propriedade, metodo entrevistador
      $(document).on("click", ".uib_w_118 > a", function(evt){
@@ -839,11 +798,11 @@ $(document).on("click", ".propriedadeBackup", function(evt){
 
         var teste = testeCamposNulos();
 
-        //if(teste[0]){
+        //if(teste){
             var data = "nome="+$("#inome").val()+"&sobrenome="+$("#isobrenome").val()+"&apelido="+$("#iapelido").val()+"&cpf="+$("#icpf").val()+"&sexo="+$('input[name = "bs-radio-group-0"]:checked').val()+"&rg="+$("#irg").val()+"&datanascimento="+$("#idatanascimento").val()+"&telefone1="+$("#itelefone1").val()+"&telefone2="+$("#itelefone2").val()+ "&escolaridade_idescolaridade="+($("#iescolaridade")[0].selectedIndex+1)+ "&estadocivil_idestadocivil="+($("#iestadocivil")[0].selectedIndex+1)+"&nomepropriedade="+$("#inomepropriedade").val()+"&rua="+$("#irua").val()+"&numero="+$("#inumero").val()+"&bairro="+$("#ibairro").val()+"&complemento="+$("#icomplemento").val()+"&cep="+$("#icep").val()+"&cidade_idcidade="+verificarIDCidade()+"&area="+$("#iarea").val()+"&unidadedemedida="+$('input[name = "bs-radio-group-2"]:checked').val()+"&areautilizavel="+$("#iareautilizavel").val()+"&unidadedemedidaau="+$('input[name = "bs-radio-group-1"]:checked').val()+"&gps_lat="+$("#igpslat").val()+"&gps_long="+$("#igpslong").val()+"&qtdedeintegrantes="+$("#iqtdintegrantes").val()+"&qtdedecriancas="+$("#iqtdcriancas").val()+"&qtdedegravidas="+$("#iqtdgravidas").val()+"&usuario="+$("#iusuario").val()+"&senha="+$("#isenha").val()+"&email="+$("#iemail").val()+"&papel=a&unidade_idunidade=2";
 
-
-           /* $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/pessoa/inseriragricultor", data, function(dados){
+/*
+            $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/pessoa/inseriragricultor", data, function(dados){
 
                 //se cadastrado entao vai para pagina inicial
                 if(dados.sucesso){
