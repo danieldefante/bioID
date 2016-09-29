@@ -66,11 +66,15 @@
 
 
 
+         $('.uib_w_154').fadeOut(500, function(evt){
+             $(".uib_w_116").hide();
+             $('.uib_w_378').show();
+             $(".uib_w_154").fadeIn(500);
 
+         });
 
-
-         $(".uib_w_378").show();
-         $(".uib_w_116").hide();
+         //$(".uib_w_378").show();
+         //$(".uib_w_116").hide();
      });
 
      function listarBkpEstrevistaP(dados){
@@ -119,28 +123,17 @@ $(document).on("click", ".propriedadeBackup", function(evt){
         $(this).children('div').show();
         //$('.uib_w_384').hide();
     }
-     /*navigator.notification.confirm(
-        'Deseja armazenar temporariamente essa propriedade?', // message
-        function(buttonIndex) {
-            if(buttonIndex === 2){
 
-
-            }
-       },            // callback to invoke with index of button pressed
-        'Confirmação',           // title
-        ['Não', 'Sim']     // buttonLabels
-    );*/
 });
         /* button  .uib_w_3 */
     $(document).on("click", ".uib_w_3", function(evt)
     {
          /*global activate_page */
          activate_page("#page_1");
-        //if($("#inputUsuario").val() === ""){
-          //  $("#inputUsuario").focus();
-       // }else{
-         //   $("#inputSenha").focus();
-       // }
+         $('.uib_w_7').hide();
+         $('.uib_w_7').fadeIn(500);
+
+
          return false;
     });
 
@@ -149,7 +142,15 @@ $(document).on("click", ".propriedadeBackup", function(evt){
     {
          /*global activate_page */
          activate_page("#page_2");
+         $('.uib_w_156').hide();
+         $('.uib_w_158').hide();
+         $('.uib_w_172').hide();
+         $('.uib_w_165').hide();
 
+         $('.uib_w_156').fadeIn(500);
+         $('.uib_w_158').fadeIn(500);
+         $('.uib_w_172').fadeIn(500);
+         $('.uib_w_165').fadeIn(500);
          return false;
     });
 
@@ -158,6 +159,8 @@ $(document).on("click", ".propriedadeBackup", function(evt){
     {
          /*global activate_page */
          activate_page("#mainpage");
+         $('.uib_w_133').hide();
+         $('.uib_w_133').fadeIn(500);
          $("#inputSenha").val("");
          return false;
     });
@@ -168,8 +171,12 @@ $(document).on("click", ".propriedadeBackup", function(evt){
          /*global activate_page */
         if(localStorage.getItem("logSession")){
             activate_page("#page_4");
+            $('.uib_w_154').hide();
+            $('.uib_w_154').fadeIn(500);
         }else{
             activate_page("#mainpage");
+            $('.uib_w_133').hide();
+            $('.uib_w_133').fadeIn(500);
         }
          return false;
     });
@@ -343,17 +350,36 @@ $(document).on("click", ".propriedadeBackup", function(evt){
         /* button  .uib_w_50 */
     $(document).on("click", ".uib_w_360", function(evt)
     {
-        activate_page("#page_2");
+        $('.uib_w_154').fadeOut(500);
+         activate_page("#page_2");
+
+         $('.uib_w_156').hide();
+         $('.uib_w_158').hide();
+         $('.uib_w_172').hide();
+         $('.uib_w_165').hide();
+
+        // $('.uib_w_154').fadeOut(500, function(evt){
+             $('.uib_w_156').fadeIn(500);
+             $('.uib_w_158').fadeIn(500);
+             $('.uib_w_172').fadeIn(500);
+             $('.uib_w_165').fadeIn(500);
+         //});
          return false;
     });
 
              /* button  .uib_w_50 */
     $(document).on("click", ".uib_w_50", function(evt)
     {
-        $('.uib_w_361').show();
-        $(".uib_w_116").hide();
-        $(".uib_w_123").hide();
-        $(".uib_w_378").hide();
+
+        var t = [".uib_w_116",".uib_w_123", ".uib_w_361", ".uib_w_378"];
+        var a = boxFades(t);
+         $('.uib_w_154').fadeOut(500, function(evt){
+
+             $(a).hide();
+             $('.uib_w_361').show();
+             $(".uib_w_154").fadeIn(500);
+
+         });
          return false;
     });
 
@@ -368,10 +394,16 @@ $(document).on("click", ".propriedadeBackup", function(evt){
         /* button  .uib_w_52 */
     $(document).on("click", ".uib_w_52", function(evt)
     {
-         $(".uib_w_116").show();
-         $(".uib_w_123").hide();
-         $('.uib_w_361').hide();
-         $(".uib_w_378").hide();
+
+         var t = [".uib_w_116",".uib_w_123", ".uib_w_361", ".uib_w_378"];
+         var a = boxFades(t);
+         $('.uib_w_154').fadeOut(500, function(evt){
+             $(a).hide();
+             $('.uib_w_116').show();
+             $(".uib_w_154").fadeIn(500);
+
+         });
+
          window.listarAgricultoresUnidade();
 
          return false;
@@ -379,11 +411,14 @@ $(document).on("click", ".propriedadeBackup", function(evt){
 
      function retornaInicioUser3(){
 
-         $(".uib_w_123").show();
-         $('.uib_w_361').hide();
-         //window.listarCultivar();
-         $(".uib_w_116").hide();
-         $(".uib_w_378").hide();
+         var t = [".uib_w_116",".uib_w_123", ".uib_w_361", ".uib_w_378"];
+         var a = boxFades(t);
+         $('.uib_w_154').fadeOut(500, function(evt){
+             $(a).hide();
+             $('.uib_w_123').show();
+             $(".uib_w_154").fadeIn(500);
+
+         });
      }
 
     $("#inputSenha").keypress(function(e){
@@ -438,6 +473,8 @@ $(document).on("click", ".propriedadeBackup", function(evt){
                         //c(dados.idunidade);
                         window.iniciarGerEntrev();
                         activate_page("#page_4");
+                        $('.uib_w_154').hide();
+                        $('.uib_w_154').fadeIn();
 
                     }
 
@@ -517,7 +554,7 @@ $(document).on("click", ".propriedadeBackup", function(evt){
 
      //esconde o menu hambueguer
      function escondeMenuHamburguer(item){
-
+c('testeaaa');
          var esconder = false;
          if($('#'+item).is(':visible') && $('.botaoMenu').is(':visible')){
              $('#'+item).collapse('hide');
@@ -541,6 +578,8 @@ $(document).on("click", ".propriedadeBackup", function(evt){
                     //chama a funcao que limpa a localStorage e abre mainpage
                     window.clearGoMainPage();
 
+                }else if(buttonIndex == 1){
+                    navigator.app.exitApp();
                 }
             },            // callback to invoke with index of button pressed
             'Confirmação',           // title
@@ -664,7 +703,7 @@ $(document).on("click", ".propriedadeBackup", function(evt){
 
 
 
-        /* listitem  Batata Docess */
+        /* listar cultivares recebidos*/
     $(document).on("click",".listaCultivar > a", function(evt)
     {
         if(!escondeMenuHamburguer('bs-navbar-1')){
@@ -678,30 +717,10 @@ $(document).on("click", ".propriedadeBackup", function(evt){
                 sessionStorage.setItem("indiceSelecionado", a);
                 //guarda o id da safra no sessionStorage
                 sessionStorage.setItem("idsafra", cultivarSelecionado.idsafra);
-                //hide e show os painels de cada usuario
-                if(window.papel === "e"){
-                    $("#painelEstoque").show();
-                    $("#desabilitado").prop('disabled', true);
-                    $("#salvarEstoque").hide();
-                    $("#statuscultivar").hide();
-                    //some botao de relatar
-                    //$("#relatar").hide();
-                }else if(window.papel === "g"){
-                    $("#desabilitado").prop('disabled', false);
-                    $("#salvarEstoque").show();
-                    $("#painelEstoque").show();
-                    $("#statuscultivar").hide();
-                    //some botao de relatar
-                   // $("#relatar").hide();
-                //usuario agricultor
-                }else{
 
                     $("#statuscultivar").show();
                     $("#painelEstoque").hide();
                     //aparece botao de relatar se não foi relatado ainda a produçao do cultivar
-
-
-
 
                     switch(cultivarSelecionado.statussafra_idstatussafra) {
                         case 1:
@@ -727,7 +746,7 @@ $(document).on("click", ".propriedadeBackup", function(evt){
 
                     }
 
-                }
+              //  }
 
 
                 //renomeia os valores dos produtos
@@ -738,6 +757,8 @@ $(document).on("click", ".propriedadeBackup", function(evt){
                 $("#statuscultivar").html("<p>Safra: "+cultivarSelecionado.safra+"</p><p>Data recebimento: "+cultivarSelecionado.datareceb+"</p><p>Quantidade recebida: "+cultivarSelecionado.qtdrecebida+" "+cultivarSelecionado.grandeza_recebida+"</p><p>Quantidade colhida: "+cultivarSelecionado.qtdcolhida+" kilo(s)</p><p>Status colheita: "+cultivarSelecionado.prazo_colheita+"</p><p>Quantidade destinada: "+cultivarSelecionado.qtddestinada+" (kilo(s)</p><p>Status destinação: "+cultivarSelecionado.prazo_destinacao+"</p>");
 
                 activate_page("#page_6");
+                $('.uib_w_250').hide();
+                $('.uib_w_250').fadeIn(500);
                 $("#page_6").scrollTop(0);
             }
 
@@ -770,17 +791,12 @@ $(document).on("click", ".propriedadeBackup", function(evt){
         /* button  .uib_w_242 */
     $(document).on("click", ".uib_w_242", function(evt)
     {
-        /*global activate_page */
-        if(window.papel === "a"){
-            activate_page("#page_3");
-            $("#page_3").scrollTop(0);
-            sessionStorage.removeItem("indiceSelecionado");
-        }else if(window.papel === "g" || window.papel === "e" || window.papel === "d"){
-            activate_page("#page_4");
-            //$("#page_4").scrollTop(0);
-        }else{
-            window.clearGoMainPage();
-        }
+        activate_page("#page_3");
+        $("#recebidos").hide();
+        $("#recebidos").fadeIn(500);
+        $("#page_3").scrollTop(0);
+        sessionStorage.removeItem("indiceSelecionado");
+
          return false;
     });
 
@@ -790,7 +806,7 @@ $(document).on("click", ".propriedadeBackup", function(evt){
     {
          /*global activate_page */
          activate_page("#page_3");
-         $("#colheita").show();
+         $("#colheita").fadeIn(500);
          $("#destinacao").hide();
          $("#recebidos").hide();
          $("#page_3").scrollTop(0);
@@ -1470,7 +1486,7 @@ c(data);
         //deixa os botoes enviar e cancelar ocultos
 
          activate_page("#page_3");
-         $("#destinacao").show();
+         $("#destinacao").fadeIn(500);
          $("#colheita").hide();
          $("#recebidos").hide();
          $('#nomeCDestinacao').text('Destinação de '+cultivaresRecebidos[i].qtdcolhida +' kilo(s) de '+cultivaresRecebidos[i].nomecultivar);
@@ -1600,6 +1616,7 @@ c(data);
     $(document).on("click",".uib_w_353 > a", function(evt)
     {
 
+
         var item = $(this).children('pre');
 
         if(item.is(':visible')){
@@ -1614,28 +1631,67 @@ c(data);
         }
 
 
-        /* $(this).children('h4').children('i');
-
-        if(teste.hasClass('glyphicon-chevron-down')){
-            teste.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
-            $(this).children('.list-group-item-text').hide();
-            $(this).css('background', 'rgb(255, 255, 255)');
-        }else{
-            //verifica se tem algum  campo aberto
-            $('.uib_w_353 .list-group-item .list-group-item-text').hide();
-            $('.uib_w_353 .list-group-item').css('background', 'rgb(255, 255, 255)');
-            $('.uib_w_353 .glyphicon-chevron-down').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
-            //arruma o item selecionado
-            $(this).children('pre').show();
-            $(this).css('background', 'rgb(236, 240, 241)');
-            teste.removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
-        }
-
-        */
-
-
         return false;
     });
+
+        /* armazenar propriedades para o entrevistador */
+    $(document).on("click", ".uib_w_384", function(evt)
+    {
+
+
+        if($('.propriedadeBackup h4').children('span').hasClass('glyphicon-check')){
+            navigator.notification.confirm(
+                'Deseja realmente guardar temporariamente as informações da(s) propriedade(s) marcada(s)?', // message
+                function(buttonIndex) {
+                    if(buttonIndex === 2){
+                        $('.uib_w_154').fadeOut(500, function(evt){
+                        $(".uib_w_378").hide();
+                        $('.uib_w_116').show();
+                        $(".uib_w_154").fadeIn(500);
+
+
+
+                            //var a = [$('.propriedadeBackup .glyphicon-check').parent().text()];
+                            //c(a[0]);
+                        backupPropriedadeStorage();
+         });
+
+                    }
+                },            // callback to invoke with index of button pressed
+                'Confirmação',           // title
+                ['Não', 'Sim']     // buttonLabels
+            );
+        }else{
+            navigator.notification.alert("Marque a(s) propriedade(s) para armazenar temporariamente!",function(){},"Alerta!", "Sair");
+        }
+
+
+         return false;
+    });
+
+     function backupPropriedadeStorage(){
+         var itens = [];
+         var itemlista;
+         var backupPropriedades = [];
+         //backupPropriedades = localStorage.getItem('backupPropriedades');
+
+         $('#infoSemBackup').hide();
+         var i = 0;
+         $('.uib_w_380').children("a").each(function() {
+            if($(this).children("h4").children('span').hasClass('glyphicon-check')){
+                itemlista = '<a class="list-group-item allow-badge widget uib_w_364" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="fa fa-briefcase"></span>'+$(this).children('h4').text()+'<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4></a>';
+
+                //backupPropriedades.push($(this).children('h4').text());
+                backupPropriedades[i] = {nomePropriedade: $(this).children('h4').text()};
+
+                $('.uib_w_363').append(itemlista);
+                i++;
+            }
+        });
+
+     localStorage.setItem('backupPropriedades', JSON.stringify(backupPropriedades));
+
+    }
 
     }
  document.addEventListener("app.Ready", register_event_handlers, false);
