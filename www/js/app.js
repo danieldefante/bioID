@@ -34,8 +34,8 @@ var papel;
 //var ipServidor = "192.168.0.7:8080";
 //var ipServidor = "10.2.10.200:8080";
 //var ipServidor = "localhost:8080";
-//var ipServidor = "187.19.101.252:8082";
-var ipServidor = "10.1.2.52:8080";
+var ipServidor = "187.19.101.252:8082";
+//var ipServidor = "10.1.2.52:8080";
 
 /*/funcao mudar background aleatorio
 function mudarBackground(){
@@ -59,13 +59,17 @@ function mudarBackground(){
     }
 }*/
 
+
+
 //papel agricultor
 function iniciarAgricultor(){
-    $('#recebidos').show();
+    $('#recebidos').hide();
     $("#colheita").hide();
     $("#destinacao").hide();
     $("#safra").hide();
     $("#relatorios").hide();
+
+    $("#recebidos").fadeIn(500);
     $("#page_3").scrollTop(0);
 }
 

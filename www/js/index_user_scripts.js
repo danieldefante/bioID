@@ -8,6 +8,7 @@
  function register_event_handlers()
  {
 
+
      function c(msg){
          window.console.log(msg);
      }
@@ -207,6 +208,20 @@ $(document).on("click", ".propriedadeBackup", function(evt){
     });
 
 
+     function boxFades(itens){
+        var i = 0;
+        var visivel;
+        $.each(itens, function(){
+            if($(itens[i]).is(':visible')){
+                visivel = itens[i];
+                return false;
+            }
+            i++;
+        });
+
+        return visivel;
+    }
+
         /* button  botao socioe */
     $(document).on("click", ".uib_w_45", function(evt)
     {
@@ -219,11 +234,12 @@ $(document).on("click", ".propriedadeBackup", function(evt){
                     ['Não','Sim']     // buttonLabels
                 );
              }else{
-                 $("#colheita").hide();
-                 $("#destinacao").hide();
-                 $("#safra").show();
-                 $("#recebidos").hide();
-                 $("#relatorios").hide();
+                 var t = ["#recebidos","#destinacao", "#colheita", "#relatorios","#safra"];
+
+                 $(boxFades(t)).fadeOut(500, function(evt){
+                     $("#safra").fadeIn(500);
+                 });
+
 
              }
          }
@@ -234,11 +250,11 @@ $(document).on("click", ".propriedadeBackup", function(evt){
          if(buttonIndex === 2){
              //limpa o sessionStorage
              window.sessionStorage.clear();
-             $("#colheita").hide();
-             $("#destinacao").hide();
-             $("#safra").show();
-             $("#recebidos").hide();
-             $("#relatorios").hide();
+             var t = ["#recebidos","#destinacao", "#colheita", "#relatorios","#safra"];
+
+             $(boxFades(t)).fadeOut(500, function(evt){
+                 $("#safra").fadeIn(500);
+             });
          }
      }
 
@@ -255,11 +271,13 @@ $(document).on("click", ".propriedadeBackup", function(evt){
                     ['Não','Sim']     // buttonLabels
                 );
              }else{
-                 $("#recebidos").hide();
-                 $("#colheita").hide();
-                 $("#destinacao").hide();
-                 $("#safra").hide();
-                 $("#relatorios").show();
+
+                 var t = ["#recebidos","#destinacao", "#colheita", "#relatorios","#safra"];
+
+                 $(boxFades(t)).fadeOut(500, function(evt){
+                     $("#relatorios").fadeIn(500);
+                 });
+
 
              }
          }
@@ -271,11 +289,12 @@ $(document).on("click", ".propriedadeBackup", function(evt){
          if(buttonIndex === 2){
              //limpa o sessionStorage
              window.sessionStorage.clear();
-             $("#recebidos").hide();
-             $("#colheita").hide();
-             $("#destinacao").hide();
-             $("#safra").hide();
-             $("#relatorios").show();
+             var t = ["#recebidos","#destinacao", "#colheita", "#relatorios","#safra"];
+
+             $(boxFades(t)).fadeOut(500, function(evt){
+                 $("#relatorios").fadeIn(500);
+             });
+
          }
      }
 
@@ -292,7 +311,11 @@ $(document).on("click", ".propriedadeBackup", function(evt){
                     ['Não','Sim']     // buttonLabels
                 );
             }else{
-                window.iniciarAgricultor();
+                var t = ["#recebidos","#destinacao", "#colheita", "#relatorios","#safra"];
+
+                $(boxFades(t)).fadeOut(500, function(evt){
+                    $("#recebidos").fadeIn(500);
+                });
             }
          }
 
