@@ -14,7 +14,7 @@
      }
 
      $(document).ready(function(){
-       // $('.numerosInt').mask('n',{'translation': {'n': {pattern: /[0123456789]/, optional: true, recursive: true}}});
+        $('.numeroInt').mask('000000000000000');
         $('#icpf').mask('000.000.000-00');//,{'translation': {'u': {pattern: /[0123456789.-]/, optional: true, recursive: true}}};
 
         $('#irg').mask('00000.000-0', {reverse: true});
@@ -66,10 +66,10 @@
 
 
 
-         $('.uib_w_154').fadeOut(500, function(evt){
+         $('.uib_w_154').fadeOut(100, function(evt){
              $(".uib_w_116").hide();
              $('.uib_w_378').show();
-             $(".uib_w_154").fadeIn(500);
+             $(".uib_w_154").fadeIn(100);
 
          });
 
@@ -84,7 +84,7 @@
          var i=0;
          $.each(propriedades, function(){
 
-             item ='<a class="list-group-item allow-badge propriedadeBackup widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-unchecked" ></span>&nbsp;&nbsp;&nbsp;'+propriedades[i].nomepropriedade+'<i class="glyphicon glyphicon-chevron-down button-icon-right" data-position="top"></i></h4><div hidden><p class="list-group-item-text">Telefone:</p><p class="list-group-item-text">Rua:</p><p class="list-group-item-text">Bairro:</p><p class="list-group-item-text">Numero:</p><p class="list-group-item-text">Cidade:</p><p class="list-group-item-text">Latitude:</p><p class="list-group-item-text">Logitude:</p>'+listarBkpEstrevistaC(dados.itementrevista, propriedades[i].nomepropriedade)+'</div></a>';
+             item ='<a class="list-group-item allow-badge propriedadeBackup widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-unchecked" >&nbsp;</span>'+propriedades[i].nomepropriedade+'<i class="glyphicon glyphicon-chevron-down button-icon-right" data-position="top"></i></h4><div hidden><p class="list-group-item-text">Telefone:</p><p class="list-group-item-text">Rua:</p><p class="list-group-item-text">Bairro:</p><p class="list-group-item-text">Numero:</p><p class="list-group-item-text">Cidade:</p><p class="list-group-item-text">Latitude:</p><p class="list-group-item-text">Longitude:</p>'+listarBkpEstrevistaC(dados.itementrevista, propriedades[i].nomepropriedade)+'</div></a>';
 
 
              $('.uib_w_380').append(item);
@@ -114,36 +114,33 @@
 
 $(document).on("click", ".uib_w_380 > a ", function(evt){
 
-    if($(this).children('div').is(':visible')){
-        $(this).children('div').hide();
-        //$('.uib_w_384').show();
-    }else{
 
-        $(this).children('div').show();
-        //$('.uib_w_384').hide();
+    if(evt.target.nodeName === 'SPAN'){
+        c('entrou');
+        if($(this).children('h4').children('span').hasClass('glyphicon-unchecked')){
+            $(this).children('h4').children('span').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+
+        }else{
+            $(this).children('h4').children('span').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+        }
+    }else if($(this).children('div').is(':visible')){
+        $(this).children('div').fadeOut(100);
+        $(this).children('h4').children('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+    }else{
+        //$('.uib_w_380 div').fadeOut(100);
+        $(this).children('div').fadeIn(100);
+        $(this).children('h4').children('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
     }
 
 });
-$(document).on("click", ".uib_w_380 > a h4", function(evt){
 
-    if($(this).children('span').hasClass('glyphicon-unchecked')){
-        $(this).children('span').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
-        //$(this).children('div').hide();
-        //$('.uib_w_384').show();
-    }else{
-        $(this).children('span').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
-        //$(this).children('div').show();
-        //$('.uib_w_384').hide();
-    }
-
-});
         /* button  .uib_w_3 */
     $(document).on("click", ".uib_w_3", function(evt)
     {
          /*global activate_page */
          activate_page("#page_1");
          $('.uib_w_7').hide();
-         $('.uib_w_7').fadeIn(500);
+         $('.uib_w_7').fadeIn(100);
 
 
          return false;
@@ -159,10 +156,10 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
          $('.uib_w_172').hide();
          $('.uib_w_165').hide();
 
-         $('.uib_w_156').fadeIn(500);
-         $('.uib_w_158').fadeIn(500);
-         $('.uib_w_172').fadeIn(500);
-         $('.uib_w_165').fadeIn(500);
+         $('.uib_w_156').fadeIn(100);
+         $('.uib_w_158').fadeIn(100);
+         $('.uib_w_172').fadeIn(100);
+         $('.uib_w_165').fadeIn(100);
          return false;
     });
 
@@ -172,7 +169,7 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
          /*global activate_page */
          activate_page("#mainpage");
          $('.uib_w_133').hide();
-         $('.uib_w_133').fadeIn(500);
+         $('.uib_w_133').fadeIn(100);
          $("#inputSenha").val("");
          return false;
     });
@@ -184,11 +181,11 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
         if(localStorage.getItem("logSession")){
             activate_page("#page_4");
             $('.uib_w_154').hide();
-            $('.uib_w_154').fadeIn(500);
+            $('.uib_w_154').fadeIn(100);
         }else{
             activate_page("#mainpage");
             $('.uib_w_133').hide();
-            $('.uib_w_133').fadeIn(500);
+            $('.uib_w_133').fadeIn(100);
         }
          return false;
     });
@@ -255,8 +252,8 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
              }else{
                  var t = ["#recebidos","#destinacao", "#colheita", "#relatorios","#safra"];
 
-                 $(boxFades(t)).fadeOut(500, function(evt){
-                     $("#safra").fadeIn(500);
+                 $(boxFades(t)).fadeOut(100, function(evt){
+                     $("#safra").fadeIn(100);
                  });
 
 
@@ -271,8 +268,8 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
              window.sessionStorage.clear();
              var t = ["#recebidos","#destinacao", "#colheita", "#relatorios","#safra"];
 
-             $(boxFades(t)).fadeOut(500, function(evt){
-                 $("#safra").fadeIn(500);
+             $(boxFades(t)).fadeOut(100, function(evt){
+                 $("#safra").fadeIn(100);
              });
          }
      }
@@ -293,8 +290,8 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
 
                  var t = ["#recebidos","#destinacao", "#colheita", "#relatorios","#safra"];
 
-                 $(boxFades(t)).fadeOut(500, function(evt){
-                     $("#relatorios").fadeIn(500);
+                 $(boxFades(t)).fadeOut(100, function(evt){
+                     $("#relatorios").fadeIn(100);
                  });
 
 
@@ -310,8 +307,8 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
              window.sessionStorage.clear();
              var t = ["#recebidos","#destinacao", "#colheita", "#relatorios","#safra"];
 
-             $(boxFades(t)).fadeOut(500, function(evt){
-                 $("#relatorios").fadeIn(500);
+             $(boxFades(t)).fadeOut(100, function(evt){
+                 $("#relatorios").fadeIn(100);
              });
 
          }
@@ -332,8 +329,8 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
             }else{
                 var t = ["#recebidos","#destinacao", "#colheita", "#relatorios","#safra"];
 
-                $(boxFades(t)).fadeOut(500, function(evt){
-                    $("#recebidos").fadeIn(500);
+                $(boxFades(t)).fadeOut(100, function(evt){
+                    $("#recebidos").fadeIn(100);
                 });
             }
          }
@@ -351,7 +348,7 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
      }
 
 
-         /* button  .uib_w_50 */
+         /* button  */
     $(document).on("click", ".uib_w_358", function(evt)
     {
         $('.uib_w_357').append($(this));
@@ -359,10 +356,10 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
     });
 
 
-        /* button  .uib_w_50 */
+        /* button   */
     $(document).on("click", ".uib_w_360", function(evt)
     {
-        $('.uib_w_154').fadeOut(500);
+        $('.uib_w_154').fadeOut(100);
          activate_page("#page_2");
 
          $('.uib_w_156').hide();
@@ -370,27 +367,27 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
          $('.uib_w_172').hide();
          $('.uib_w_165').hide();
 
-        // $('.uib_w_154').fadeOut(500, function(evt){
-             $('.uib_w_156').fadeIn(500);
-             $('.uib_w_158').fadeIn(500);
-             $('.uib_w_172').fadeIn(500);
-             $('.uib_w_165').fadeIn(500);
+        // $('.uib_w_154').fadeOut(100, function(evt){
+             $('.uib_w_156').fadeIn(100);
+             $('.uib_w_158').fadeIn(100);
+             $('.uib_w_172').fadeIn(100);
+             $('.uib_w_165').fadeIn(100);
          //});
          return false;
     });
 
-             /* button  .uib_w_50 */
+             /* button  entrevista */
     $(document).on("click", ".uib_w_50", function(evt)
     {
 
         var t = [".uib_w_116",".uib_w_123", ".uib_w_361", ".uib_w_378"];
         var a = boxFades(t);
-         $('.uib_w_154').fadeOut(500, function(evt){
+         $('.uib_w_154').fadeOut(100, function(evt){
 
              $(a).hide();
              $('.uib_w_361').show();
-             $(".uib_w_154").fadeIn(500);
-
+             $(".uib_w_154").fadeIn(100);
+             window.listarPropriedadesBackup();
          });
          return false;
     });
@@ -409,10 +406,10 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
 
          var t = [".uib_w_116",".uib_w_123", ".uib_w_361", ".uib_w_378"];
          var a = boxFades(t);
-         $('.uib_w_154').fadeOut(500, function(evt){
+         $('.uib_w_154').fadeOut(100, function(evt){
              $(a).hide();
              $('.uib_w_116').show();
-             $(".uib_w_154").fadeIn(500);
+             $(".uib_w_154").fadeIn(100);
 
          });
 
@@ -425,10 +422,10 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
 
          var t = [".uib_w_116",".uib_w_123", ".uib_w_361", ".uib_w_378"];
          var a = boxFades(t);
-         $('.uib_w_154').fadeOut(500, function(evt){
+         $('.uib_w_154').fadeOut(100, function(evt){
              $(a).hide();
              $('.uib_w_123').show();
-             $(".uib_w_154").fadeIn(500);
+             $(".uib_w_154").fadeIn(100);
 
          });
      }
@@ -566,7 +563,7 @@ $(document).on("click", ".uib_w_380 > a h4", function(evt){
 
      //esconde o menu hambueguer
      function escondeMenuHamburguer(item){
-c('testeaaa');
+
          var esconder = false;
          if($('#'+item).is(':visible') && $('.botaoMenu').is(':visible')){
              $('#'+item).collapse('hide');
@@ -770,7 +767,7 @@ c('testeaaa');
 
                 activate_page("#page_6");
                 $('.uib_w_250').hide();
-                $('.uib_w_250').fadeIn(500);
+                $('.uib_w_250').fadeIn(100);
                 $("#page_6").scrollTop(0);
             }
 
@@ -805,7 +802,7 @@ c('testeaaa');
     {
         activate_page("#page_3");
         $("#recebidos").hide();
-        $("#recebidos").fadeIn(500);
+        $("#recebidos").fadeIn(100);
         $("#page_3").scrollTop(0);
         sessionStorage.removeItem("indiceSelecionado");
 
@@ -818,7 +815,7 @@ c('testeaaa');
     {
          /*global activate_page */
          activate_page("#page_3");
-         $("#colheita").fadeIn(500);
+         $("#colheita").fadeIn(100);
          $("#destinacao").hide();
          $("#recebidos").hide();
          $("#page_3").scrollTop(0);
@@ -879,6 +876,7 @@ c('testeaaa');
                 navigator.notification.confirm(
                     'Cadastro não efetuado, sem conexão com o servidor!',
                     function() {
+                        $(".camposcadastro").val("");
                         //limpa a tela e vai para a pagina inicial
                         window.clearGoMainPage();
                     },
@@ -1498,7 +1496,7 @@ c(data);
         //deixa os botoes enviar e cancelar ocultos
 
          activate_page("#page_3");
-         $("#destinacao").fadeIn(500);
+         $("#destinacao").fadeIn(100);
          $("#colheita").hide();
          $("#recebidos").hide();
          $('#nomeCDestinacao').text('Destinação de '+cultivaresRecebidos[i].qtdcolhida +' kilo(s) de '+cultivaresRecebidos[i].nomecultivar);
@@ -1656,16 +1654,18 @@ c(data);
                 'Deseja realmente guardar temporariamente as informações da(s) propriedade(s) marcada(s)?', // message
                 function(buttonIndex) {
                     if(buttonIndex === 2){
-                        $('.uib_w_154').fadeOut(500, function(evt){
+                        backupPropriedadeStorage();
+
+                        $('.uib_w_154').fadeOut(100, function(evt){
                         $(".uib_w_378").hide();
                         $('.uib_w_116').show();
-                        $(".uib_w_154").fadeIn(500);
+                        $(".uib_w_154").fadeIn(100);
 
 
 
                             //var a = [$('.propriedadeBackup .glyphicon-check').parent().text()];
                             //c(a[0]);
-                        backupPropriedadeStorage();
+
          });
 
                     }
@@ -1685,24 +1685,46 @@ c(data);
          var itens = [];
          var itemlista;
          var backupPropriedades = [];
-         //backupPropriedades = localStorage.getItem('backupPropriedades');
+         var i;
+
+         if(localStorage.getItem('backupPropriedades')){
+            backupPropriedades = JSON.parse(localStorage.getItem('backupPropriedades'));
+            i = backupPropriedades.length;
+         }else{
+             i = 0;
+         }
+
 
          $('#infoSemBackup').hide();
-         var i = 0;
+
          $('.uib_w_380').children("a").each(function() {
             if($(this).children("h4").children('span').hasClass('glyphicon-check')){
                 itemlista = '<a class="list-group-item allow-badge widget uib_w_364" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="fa fa-briefcase"></span>'+$(this).children('h4').text()+'<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4></a>';
 
-                //backupPropriedades.push($(this).children('h4').text());
-                backupPropriedades[i] = {nomePropriedade: $(this).children('h4').text()};
-
-                $('.uib_w_363').append(itemlista);
+                 if(contemPropriedade($(this).children('h4').text(), backupPropriedades)){
+                    // window.console.log('ñ existe');
+                     backupPropriedades[i] = {nomePropriedade: $(this).children('h4').text()};
+                 }
                 i++;
             }
         });
 
-     localStorage.setItem('backupPropriedades', JSON.stringify(backupPropriedades));
 
+        localStorage.setItem('backupPropriedades', JSON.stringify(backupPropriedades));
+
+    }
+
+    function contemPropriedade(nomePropriedade, listaPropriedade){
+        var teste = true;
+        var i = 0;
+        $.each(listaPropriedade, function(){
+            if(listaPropriedade[i].nomePropriedade === nomePropriedade){
+                teste = false;
+                return false;
+            }
+            i++;
+        });
+        return teste;
     }
 
     }

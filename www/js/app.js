@@ -34,8 +34,8 @@ var papel;
 //var ipServidor = "192.168.0.7:8080";
 //var ipServidor = "10.2.10.200:8080";
 //var ipServidor = "localhost:8080";
-//var ipServidor = "187.19.101.252:8082";
-var ipServidor = "10.1.2.52:8080";
+var ipServidor = "187.19.101.252:8082";
+//var ipServidor = "10.1.2.52:8080";
 
 /*/funcao mudar background aleatorio
 function mudarBackground(){
@@ -69,7 +69,7 @@ function iniciarAgricultor(){
     $("#safra").hide();
     $("#relatorios").hide();
 
-    $("#recebidos").fadeIn(500);
+    $("#recebidos").fadeIn(100);
     $("#page_3").scrollTop(0);
 }
 
@@ -360,6 +360,29 @@ function listarEstoque(idunidade){
 
 }
 
+function listarPropriedadesBackup(){
+    var backupPropriedades = [];
+    var item;
+
+    $('.uib_w_363').empty();
+    if(localStorage.getItem('backupPropriedades')){
+        backupPropriedades = JSON.parse(localStorage.getItem('backupPropriedades'));
+        var i = 0;
+        $.each(backupPropriedades, function(){
+
+            item = '<a class="list-group-item allow-badge widget uib_w_364" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="fa fa-briefcase"></span>'+backupPropriedades[i].nomePropriedade+'<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4></a>';
+
+            $('.uib_w_363').append(item);
+            i++;
+        });
+    }else{
+        item = '<a id="infoSemBackup" class="list-group-item allow-badge widget " data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;&nbsp;Não contém propriedades armazenadas!</h4></a>';
+
+        $('.uib_w_363').append(item);
+    }
+
+
+}
 function listarAgricultoresUnidade(){
     var idunidade = 2;
     var data = "idunidade="+idunidade;
