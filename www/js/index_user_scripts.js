@@ -84,7 +84,7 @@
          var i=0;
          $.each(propriedades, function(){
 
-             item ='<a class="list-group-item allow-badge propriedadeBackup widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-unchecked" ></span>&nbsp;&nbsp;&nbsp;'+propriedades[i].nomepropriedade+'</h4><div><p class="list-group-item-text">Telefone:</p><p class="list-group-item-text">Rua:</p><p class="list-group-item-text">Bairro:</p><p class="list-group-item-text">Numero:</p><p class="list-group-item-text">Cidade:</p><p class="list-group-item-text">Latitude:</p><p class="list-group-item-text">Logitude:</p>'+listarBkpEstrevistaC(dados.itementrevista, propriedades[i].nomepropriedade)+'</div></a>';
+             item ='<a class="list-group-item allow-badge propriedadeBackup widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-unchecked" ></span>&nbsp;&nbsp;&nbsp;'+propriedades[i].nomepropriedade+'<i class="glyphicon glyphicon-chevron-down button-icon-right" data-position="top"></i></h4><div hidden><p class="list-group-item-text">Telefone:</p><p class="list-group-item-text">Rua:</p><p class="list-group-item-text">Bairro:</p><p class="list-group-item-text">Numero:</p><p class="list-group-item-text">Cidade:</p><p class="list-group-item-text">Latitude:</p><p class="list-group-item-text">Logitude:</p>'+listarBkpEstrevistaC(dados.itementrevista, propriedades[i].nomepropriedade)+'</div></a>';
 
 
              $('.uib_w_380').append(item);
@@ -112,15 +112,27 @@
      });
 
 
-$(document).on("click", ".propriedadeBackup", function(evt){
+$(document).on("click", ".uib_w_380 > a ", function(evt){
 
-    if($(this).children('h4').children('span').hasClass('glyphicon-unchecked')){
-        $(this).children('h4').children('span').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+    if($(this).children('div').is(':visible')){
         $(this).children('div').hide();
         //$('.uib_w_384').show();
     }else{
-        $(this).children('h4').children('span').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+
         $(this).children('div').show();
+        //$('.uib_w_384').hide();
+    }
+
+});
+$(document).on("click", ".uib_w_380 > a h4", function(evt){
+
+    if($(this).children('span').hasClass('glyphicon-unchecked')){
+        $(this).children('span').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+        //$(this).children('div').hide();
+        //$('.uib_w_384').show();
+    }else{
+        $(this).children('span').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+        //$(this).children('div').show();
         //$('.uib_w_384').hide();
     }
 
