@@ -38,12 +38,13 @@
          //$('.uib_w_384').hide();
 
 
-        var data = 'usuario='+$(this).children('.usuarioOculto').text()+'&idunidade='+2;
+        var data = 'idpessoa='+$(this).children('.usuarioOculto').text();
+
 
         $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/backupentrevista", data, function(dados){
             //teste da requisicao no banco esta correta
             if(dados.sucesso){
-
+                c(dados);
                 listarBkpEstrevistaP(dados);
 
             }
@@ -79,6 +80,24 @@
 
      function listarBkpEstrevistaP(dados){
          var propriedades = dados.propriedades;
+         var cultivares = dados.cultivaresarelatar;
+         $('.uib_w_380').empty();
+         var item;
+         $.each(propriedades, function(i){
+
+             item ='<a class="list-group-item allow-badge propriedadeBackup widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-unchecked" >&nbsp;</span>'+propriedades[i].nomepropriedade+'<i class="glyphicon glyphicon-chevron-down button-icon-right" data-position="top"></i></h4><div hidden><p class="list-group-item-text">Rua: '+propriedades[i].rua+'</p><p class="list-group-item-text">Numero: '+propriedades[i].numero+'</p><p class="list-group-item-text">Bairro: '+propriedades[i].bairro+'</p><p class="list-group-item-text">Cep: '+propriedades[i].cep+'</p><p class="list-group-item-text">Cidade: '+propriedades[i].nomecidade+'</p><p class="list-group-item-text">Latitude: '+propriedades[i].gps_lat+'</p><p class="list-group-item-text">Longitude: '+propriedades[i].gps_long+'</p>'+listarBkpEstrevistaC(cultivares, propriedades[i].nomepropriedade)+'</div></a>';
+
+             c('adsfasdf');
+             $('.uib_w_380').append(item);
+
+         });
+     }
+
+
+
+
+     /*function listarBkpEstrevistaP(dados){
+         var propriedades = dados.propriedades;
          $('.uib_w_380').empty();
          var item;
          var i=0;
@@ -91,9 +110,10 @@
              i++;
          });
      }
-
+*/
      function listarBkpEstrevistaC(cultivares, nomepropriedade){
 
+         c('cultivares +" "+ nomepropriedade');
          var item = '';// = '<p class="list-group-item-text">Cultivares Recebidos:</p> ';
          var i=0;
          $.each(cultivares, function(){
@@ -456,12 +476,11 @@ $(document).on("click", ".uib_w_380 > a ", function(evt){
                 if(dados.sucesso){
                    //guarda dados do usuario no local storge
                     var logSession = JSON.stringify({
-                        usuario:  usuario,
-                        idunidade: dados.idunidade,
+                        idpessoa:  dados.idpessoa,
                         idSession: dados.idSession,
                         logTempo: dados.logTempo,
-                        papel: dados.papel
-
+                        papel: dados.papel,
+                        idunidade: dados.idunidade
                     });
                     localStorage.setItem("logSession", logSession);
 
@@ -475,7 +494,7 @@ $(document).on("click", ".uib_w_380 > a ", function(evt){
                         //chama o metodo que busca dados no servidor e armazena no localStorage
                         //para outro metodo acessar e criar a lista de cultivares recebidos
                         window.iniciarAgricultor();
-                        window.servArmazenarCulRecebdo(usuario);
+                        window.servArmazenarCulRecebdo(dados.idpessoa);
                         activate_page("#page_3");
                     }else{
                         window.listarEstoque(dados.idunidade);
@@ -631,15 +650,14 @@ $(document).on("click", ".uib_w_380 > a ", function(evt){
             var abaNomeProp = $(this).text();
 
 
-            var i = 0;
-            $.each(propriedades, function(){
+            $.each(propriedades, function(i){
 
-                if(abaNomeProp === propriedades[i].nomepropriedade){
+                if(abaNomeProp === propriedades[i]){
                     //lista os cultivares
                     window.listarCultivarRecebidos(abaNomeProp);
                     return false;
                 }
-                i++;
+
             });
 
         }

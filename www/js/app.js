@@ -33,8 +33,8 @@ var papel;
 //ip do servidor
 //var ipServidor = "192.168.0.7:8080";
 //var ipServidor = "10.2.10.200:8080";
-//var ipServidor = "localhost:8080";
-var ipServidor = "187.19.101.252:8082";
+var ipServidor = "localhost:8080";
+//var ipServidor = "187.19.101.252:8082";
 //var ipServidor = "10.1.2.52:8080";
 
 /*/funcao mudar background aleatorio
@@ -214,7 +214,7 @@ function statusDestinacao(statussafra){
 }
 
 //servico de busca dos dados no servidor, consome dados de internet e armazena no localStorage
-function servArmazenarCulRecebdo(usuario){
+function servArmazenarCulRecebdo(idpessoa){
 
 
     var cultivaresRecebidos = [];
@@ -222,8 +222,10 @@ function servArmazenarCulRecebdo(usuario){
     var cultivares = [];
     var safras = [];
 
-    $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/listarrecebidos", usuario, function(dados){
+
+    $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/listarrecebidos", "idpessoa="+idpessoa, function(dados){
         //armazena no localStorge
+
         if(dados.sucesso){
 
             //armazena os cultivares recebidos
@@ -231,11 +233,19 @@ function servArmazenarCulRecebdo(usuario){
             //armazena as imagens dos cultivares em um array
             cultivares = dados.cultivares;
 
-            propriedades = dados.propriedades;
+            //adiciona as propriedades e as safras em arrays
+            $.each(dados.cultivaresrecebidos, function(i, valor){
 
-            safras = dados.safras;
+                if(propriedades.indexOf(valor.nomepropriedade) < 0){
+                    propriedades.push(valor.nomepropriedade);
+                }
 
-            //perguntas = dados.perguntas;
+                if(safras.indexOf(valor.safra) < 0){
+                    safras.push(valor.safra);
+                }
+
+            });
+
         }/*else{
             navigator.notification.confirm(
             'Erro de busca!',
@@ -275,9 +285,9 @@ function servArmazenarCulRecebdo(usuario){
         //localStorage.removeItem("perguntas");
         //localStorage.setItem("perguntas", JSON.stringify(perguntas));
         //chama o metodo que popula o item de propriedades
-        listarPropriedades();
+    listarPropriedades();
         //chama o metodo que lista as safras
-        listarSafras();
+    listarSafras();
 
     });
 
@@ -290,17 +300,19 @@ function listarPropriedades(){
     var itemP;
     $(".uib_w_286").empty();
     $(".uib_w_357").empty();
-    var propriedades = JSON.parse(localStorage.getItem("propriedades"));
-    if(propriedades.length > 0){
-        var i = 0;
-        $.each(propriedades, function(){
-            item = '<li role="presentation" class="widget uib_w_287" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i].nomepropriedade+'</a></li>';
 
-            itemP = '<li role="presentation" class="widget uib_w_358" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i].nomepropriedade+'</a></li>';
+    var propriedades = JSON.parse(localStorage.getItem("propriedades"));
+
+    if(propriedades.length > 0){
+
+        $.each(propriedades, function(i){
+            item = '<li role="presentation" class="widget uib_w_287" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i]+'</a></li>';
+
+            itemP = '<li role="presentation" class="widget uib_w_358" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i]+'</a></li>';
 
             $(".uib_w_286").append(item);
             $(".uib_w_357").append(itemP);
-            i++;
+
         });
 
 
@@ -310,7 +322,7 @@ function listarPropriedades(){
 
 
         //chama a funcao de listar cultivares recebidos
-        listarCultivarRecebidos(propriedades[i-1].nomepropriedade);
+        listarCultivarRecebidos(propriedades[propriedades.length - 1]);
 
     }else{
         $("#cultivarRecebido").empty();
@@ -397,7 +409,7 @@ function listarAgricultoresUnidade(){
             var i = 0;
             $.each(listaAgricultores, function(){
 
-                item = '<a class="list-group-item allow-badge widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+listaAgricultores[i].nome+'</h4><p class="list-group-item-text"> '+listaAgricultores[i].sobrenome+'</p><p class="list-group-item-text usuarioOculto">'+listaAgricultores[i].usuario+'</p></a>';
+                item = '<a class="list-group-item allow-badge widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+listaAgricultores[i].nome+'</h4><p class="list-group-item-text"> '+listaAgricultores[i].sobrenome+'</p><p class="list-group-item-text usuarioOculto">'+listaAgricultores[i].idpessoa+'</p></a>';
 
 
                 //window.console.log('usuario='+listaAgricultores[i].usuario+'&idunidade='+2);
@@ -434,19 +446,19 @@ function listarSafras(){
     if(localStorage.getItem("safras")){
         var safras = JSON.parse(localStorage.getItem("safras"));
         var item;
-        var i = 0;
+
 
         $(".uib_w_353").empty();
 
-        $.each(safras, function(){
-            item ='<a id="safra_'+i+'" class="list-group-item allow-badge widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+safras[i].safra+'<i class="glyphicon glyphicon-chevron-up button-icon-right" data-position="top"></i></h4></a>';
+        $.each(safras, function(i){
+            item ='<a id="safra_'+i+'" class="list-group-item allow-badge widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+safras[i]+'<i class="glyphicon glyphicon-chevron-up button-icon-right" data-position="top"></i></h4></a>';
 
 
             $(".uib_w_353").append(item);
 
-            listarCultivarSafras(safras[i].safra, i);
+            listarCultivarSafras(safras[i], i);
             $('#safra_'+i+' pre').hide();
-            i++;
+
         });
 
     }else{
