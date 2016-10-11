@@ -1013,3 +1013,8 @@ label:empty {
 .marginTopoImg {
   margin-top: 10px;
 }
+@media all {
+  .maps-size {
+    height: 250px;
+  }
+}

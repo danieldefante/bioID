@@ -32,8 +32,8 @@ var papel;
 
 //ip do servidor
 //var ipServidor = "192.168.0.7:8080";
-//var ipServidor = "10.2.10.200:8080";
-var ipServidor = "localhost:8080";
+var ipServidor = "10.2.10.200:8080";
+//var ipServidor = "localhost:8080";
 //var ipServidor = "187.19.101.252:8082";
 //var ipServidor = "10.1.2.52:8080";
 
@@ -164,16 +164,14 @@ function listarCultivarRecebidos(nomePropriedade){
             clearGoMainPage();
         //acessa o localStorge e cria a lista
         }else{
-            var i = 0;
             //percore o tamanho do cultivares recebidos e cria um novo item
-            $.each(cultivaresRecebidos, function(){
+            $.each(cultivaresRecebidos, function(i){
                 var a = cultivaresRecebidos[i];
                 //teste a propriedade
                 if(a.nomepropriedade === nomePropriedade){
                       var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ prazoRelatar(a.statussafra_idstatussafra)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">'+statusColheita(a.statussafra_idstatussafra)+ a.prazo_colheita+'</p><p class="list-group-item-text">'+statusDestinacao(a.statussafra_idstatussafra)+a.prazo_destinacao+'</p></a>';
                     $("#cultivarRecebido").append(item);
                 }
-                i++;
             });
         }
     }catch(e){
@@ -343,7 +341,7 @@ function listarEstoque(idunidade){
 
         if(dados.sucesso){
             var estoque = dados.estoque;
-            localStorage.setItem('estoque', JSON.stringify(estoque));
+            sessionStorage.setItem('estoque', JSON.stringify(estoque));
             $('.uib_w_127').empty();
             var item;
             var i = 0;
@@ -372,7 +370,7 @@ function listarEstoque(idunidade){
 
 }
 
-function listarPropriedadesBackup(){
+/*function listarPropriedadesBackup(){
     var backupPropriedades = [];
     var item;
 
@@ -382,7 +380,7 @@ function listarPropriedadesBackup(){
         var i = 0;
         $.each(backupPropriedades, function(){
 
-            item = '<a class="list-group-item allow-badge widget uib_w_364" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="fa fa-briefcase"></span>'+backupPropriedades[i].nomePropriedade+'<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4></a>';
+            item = '<a class="list-group-item allow-badge widget uib_w_364" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="fa fa-briefcase"></span>'+backupPropriedades[i].nomePropriedade+'aaa<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4></a>';
 
             $('.uib_w_363').append(item);
             i++;
@@ -395,6 +393,8 @@ function listarPropriedadesBackup(){
 
 
 }
+
+*/
 function listarAgricultoresUnidade(){
     var idunidade = 2;
     var data = "idunidade="+idunidade;
@@ -403,11 +403,10 @@ function listarAgricultoresUnidade(){
 
         if(dados.sucesso){
             var listaAgricultores = dados.listaAgricultores;
-            localStorage.setItem('listaAgricultores', JSON.stringify(listaAgricultores));
+            sessionStorage.setItem('listaAgricultores', JSON.stringify(listaAgricultores));
             $('.uib_w_118').empty();
             var item;
-            var i = 0;
-            $.each(listaAgricultores, function(){
+            $.each(listaAgricultores, function(i){
 
                 item = '<a class="list-group-item allow-badge widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+listaAgricultores[i].nome+'</h4><p class="list-group-item-text"> '+listaAgricultores[i].sobrenome+'</p><p class="list-group-item-text usuarioOculto">'+listaAgricultores[i].idpessoa+'</p></a>';
 
@@ -416,7 +415,6 @@ function listarAgricultoresUnidade(){
 
 
                 $('.uib_w_118').append(item);
-                i++;
             });
             $('.usuarioOculto').hide();
         }
@@ -477,9 +475,8 @@ function listarCultivarSafras(safra, classSafra){
     var cultivaresRecebidos = JSON.parse(localStorage.getItem("cultivaresRecebidos"));
     var item;
     var a;
-    var i = 0;
 
-    $.each(cultivaresRecebidos, function(){
+    $.each(cultivaresRecebidos, function(i){
 
         if(safra === cultivaresRecebidos[i].safra){
             a = cultivaresRecebidos[i];
@@ -489,7 +486,6 @@ function listarCultivarSafras(safra, classSafra){
 
             $("#safra_"+classSafra).append(item);
         }
-    i++;
     });
 
 }

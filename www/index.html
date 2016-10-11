@@ -72,23 +72,8 @@
         <script type="application/javascript" src="js/jquery.mask.min.js"></script>
         <script type="application/javascript" src="xdk/appdesigner/js/rest-of-space.js"></script>
 
-        <!--script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="js/jquery-ui.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function(e) {
-            $("#idatanascimento").datepicker({
-            dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
-            dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
-            dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
-            monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
-            monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-            dateFormat: 'dd/mm/yy',
-            nextText: 'Próximo',
-            prevText: 'Anterior'
-                });
-            });
-        </script>
-        <link href="css/jquery-ui.css" rel="stylesheet" /-->
+        <script type="application/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+        <script type="application/javascript" src="google_maps/google_maps.js"></script>
     </head>
 
     <body>
@@ -892,8 +877,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-default" type="button" id="cancelaresposta">Cancelar</button>
-                            <button data-dismiss="modal" class="btn btn-default" type="button" id="okresposta">OK</button>
+                            <button data-dismiss="modal" class="btn btn-warning" type="button" id="cancelaresposta">Cancelar</button>
+                            <button data-dismiss="modal" class="btn btn-warning" type="button" id="okresposta">OK</button>
 
                         </div>
                     </div>
@@ -1262,6 +1247,140 @@
                             </div>
                         </div>
 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="upage hidden backgroundInicial" id="page_7">
+            <div class="upage-outer">
+                <div class="uib-header header-bg container-group inner-element uib_w_385" data-uib="layout/header" data-ver="0">
+                    <h2></h2>
+                    <div class="widget-container wrapping-col single-centered"></div>
+                    <div class="widget-container content-area horiz-area wrapping-col left">
+                        <button class="btn widget uib_w_386 d-margins btn-default" data-uib="twitter%20bootstrap/button" data-ver="1">voltar7</button>
+                    </div>
+                    <div class="widget-container content-area horiz-area wrapping-col right"></div>
+                </div>
+                <div class="upage-content ac0 content-area vertical-col left" id="page_63_30">
+                    <div class="panel widget uib_w_401 d-margins marginTopo panel-default" data-uib="twitter%20bootstrap/panel" data-ver="1">
+                        <div class="col uib_col_102 single-col" data-uib="layout/col" data-ver="0">
+                            <div class="widget-container content-area vertical-col">
+                                <div class="panel widget uib_w_402 d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
+                                    <div class="panel-heading">
+                                        <div class="widget-container">
+                                            <div class="tarea widget uib_w_403 d-margins" data-uib="media/text" data-ver="0" name="uib_w_403">
+                                                <div class="widget-container left-receptacle"></div>
+                                                <div class="widget-container right-receptacle"></div>
+                                                <div class="text-container">
+                                                    <p>Localização:</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col uib_col_103 single-col" data-uib="layout/col" data-ver="0">
+                                        <div class="widget-container content-area vertical-col">
+                                            <div class="tarea widget uib_w_390 d-margins" data-uib="media/text" data-ver="0" name="uib_w_390">
+                                                <div class="widget-container left-receptacle"></div>
+                                                <div class="widget-container right-receptacle"></div>
+                                                <div class="text-container">
+                                                    <p>rua:</p>
+
+                                                    <p>numero</p>
+
+                                                    <p>bairro</p>
+
+                                                    <p>cidade</p>
+
+                                                    <p>estado:</p>
+                                                </div>
+                                            </div>
+                                            <div class="widget uib_w_388 maps-size d-margins" data-uib="media/google_maps" data-ver="0" data-rpath="null" data-zoom="8"></div><span class="uib_shim"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="panel widget uib_w_395 d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
+                                    <div class="panel-heading">
+                                        <div class="widget-container">
+                                            <div class="tarea widget uib_w_396 d-margins" data-uib="media/text" data-ver="0" name="uib_w_396">
+                                                <div class="widget-container left-receptacle"></div>
+                                                <div class="widget-container right-receptacle"></div>
+                                                <div class="text-container">
+                                                    <p>Cultivares recebidos:</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col uib_col_100 single-col" data-uib="layout/col" data-ver="0">
+                                        <div class="widget-container content-area vertical-col">
+                                            <div class="list-group widget uib_w_391 d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1">
+                                                <a class="list-group-item allow-badge widget uib_w_392" data-uib="twitter%20bootstrap/list_item" data-ver="1">
+                                                    <h4 class="list-group-item-heading">Heading</h4>
+                                                    <p class="list-group-item-text">List item</p>
+                                                </a>
+                                                <a class="list-group-item allow-badge widget uib_w_393" data-uib="twitter%20bootstrap/list_item" data-ver="1">
+                                                    <h4 class="list-group-item-heading">Heading</h4>
+                                                    <p class="list-group-item-text">List item</p>
+                                                </a>
+                                                <a class="list-group-item allow-badge widget uib_w_394" data-uib="twitter%20bootstrap/list_item" data-ver="1">
+                                                    <h4 class="list-group-item-heading">Heading</h4>
+                                                    <p class="list-group-item-text">List item</p>
+                                                </a>
+                                            </div><span class="uib_shim"></span>
+                                        </div>
+                                    </div>
+
+                                </div><span class="uib_shim"></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal outer-element uib_w_397" data-uib="twitter%20bootstrap/modal" data-ver="1" data-backdrop="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color:#007a61">
+                            <h4 class="modal-title" style="color:#fff"><span class="fa fa-comment"></span>&nbsp;Relatar colheita</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="col uib_col_101 single-col" data-uib="layout/col" data-ver="0">
+                                <div class="widget-container content-area vertical-col">
+                                    <div class="table-thing widget uib_w_399 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
+                                        <label class="narrow-control label-top-left">Quantidade:</label>
+                                        <input class="wide-control form-control default" type="tel" placeholder="Quantidade colhida...">
+                                    </div>
+                                    <div class="table-thing widget uib_w_398 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
+                                        <label class="narrow-control label-top-left">Unidade de medida:</label>
+                                        <select class="wide-control form-control default">
+                                            <option>Kilo(s)</option>
+                                            <option>Tonelada(s)</option>
+                                            <option>Saca(s)</option>
+                                        </select>
+                                    </div>
+                                    <div class="table-thing widget uib_w_400 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
+                                        <label class="narrow-control label-top-left">Destinação:</label>
+                                        <select class="wide-control form-control default">
+                                            <option>Consumo</option>
+                                            <option>Replantio</option>
+                                            <option>Venda</option>
+                                            <option>Merenda Escolar</option>
+                                            <option>Doação</option>
+                                            <option>Perda</option>
+                                        </select>
+                                    </div>
+                                    <span class="uib_shim"></span>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button data-dismiss="modal" class="btn btn-warning" type="button" id="entRelCanc">Cancelar</button>
+                            <button data-dismiss="modal" class="btn btn-warning" type="button" id="entRelOk">OK</button>
+                        </div>
                     </div>
                 </div>
             </div>
