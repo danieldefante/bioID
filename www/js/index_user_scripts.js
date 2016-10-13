@@ -79,71 +79,13 @@
          //$(".uib_w_116").hide();
      });
 
-     function listarBkpEstrevistaP(dados){
-         var propriedades = dados.propriedades;
-         var cultivares = [];
-         if(dados.aberto){
-            cultivares = dados.cultivaresarelatar;
-         }else{
-             cultivares = null;
-         }
 
-         $('.uib_w_380').empty();
-         var item;
-         $.each(propriedades, function(i){
-
-             item ='<a class="list-group-item allow-badge propriedadeBackup widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-unchecked" >&nbsp;</span>'+propriedades[i].nomepropriedade+'<i class="glyphicon glyphicon-chevron-down button-icon-right" data-position="top"></i></h4><div hidden><p class="list-group-item-text">Rua: '+propriedades[i].rua+'</p><p class="list-group-item-text">Numero: '+propriedades[i].numero+'</p><p class="list-group-item-text">Bairro: '+propriedades[i].bairro+'</p><p class="list-group-item-text">Cep: '+propriedades[i].cep+'</p><p class="list-group-item-text">Cidade: '+propriedades[i].nomecidade+'</p><p class="list-group-item-text">Latitude: '+propriedades[i].gps_lat+'</p><p class="list-group-item-text">Longitude: '+propriedades[i].gps_long+'</p><p class="idpropriedadeB">'+propriedades[i].idpropriedade+'</p>'+listarBkpEstrevistaC(cultivares, propriedades[i].nomepropriedade)+'</div></a>';
-
-
-             $('.uib_w_380').append(item);
-
-         });
-         sessionStorage.setItem("propriedadesTemporarias", JSON.stringify(propriedades));
-     }
-
-
-     function listarBkpEstrevistaC(cultivares, nomepropriedade){
-         var item = '';
-         if(cultivares !== null){
-
-             $.each(cultivares, function(i){
-                 if(cultivares[i].nomepropriedade === nomepropriedade){
-                    item = item.concat('<pre class="list-group-item-text">'+cultivares[i].nomecultivar+'<p>Qtd recebida: '+cultivares[i].qtdrecebida+' '+cultivares[i].grandeza_recebida+'</p></pre>');
-
-                 }
-             });
-         }else{
-             item = '<pre class="list-group-item-text">Não contém cultivares para relatar</p></pre>';
-         }
-
-         return item;
-     }
      //esqueceu a senha
      $(document).on("click", "#esqueceuSenha", function(evt){
          navigator.notification.alert("suporte_bioid@fundetec.org.br",function(){},"Contato:", "Sair");
      });
 
-//check nas propriedades para backup
-$(document).on("click", ".uib_w_380 > a ", function(evt){
 
-
-    if(evt.target.nodeName === 'SPAN'){
-        if($(this).children('h4').children('span').hasClass('glyphicon-unchecked')){
-            $(this).children('h4').children('span').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
-
-        }else{
-            $(this).children('h4').children('span').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
-        }
-    }else if($(this).children('div').is(':visible')){
-        $(this).children('div').fadeOut(100);
-        $(this).children('h4').children('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
-    }else{
-        //$('.uib_w_380 div').fadeOut(100);
-        $(this).children('div').fadeIn(100);
-        $(this).children('h4').children('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
-    }
-
-});
 
         /* button  .uib_w_3 */
     $(document).on("click", ".uib_w_3", function(evt)
@@ -387,7 +329,7 @@ $(document).on("click", ".uib_w_380 > a ", function(evt){
          return false;
     });
 
-             /* button  entrevista */
+    /* button  entrevista */
     $(document).on("click", ".uib_w_50", function(evt)
     {
 
@@ -398,7 +340,8 @@ $(document).on("click", ".uib_w_380 > a ", function(evt){
              $(a).hide();
              $('.uib_w_361').show();
              $(".uib_w_154").fadeIn(100);
-             //window.listarPropriedadesBackup();
+             window.listarPropriedadesBackup();
+
          });
          return false;
     });
@@ -1652,7 +1595,46 @@ $(document).on("click", ".uib_w_380 > a ", function(evt){
 
         return false;
     });
+    function listarBkpEstrevistaP(dados){
+         var propriedades = dados.propriedades;
+         var cultivares = [];
+         if(dados.aberto){
+            cultivares = dados.cultivaresarelatar;
+         }else{
+             cultivares = null;
+         }
 
+         $('.uib_w_380').empty();
+         var item;
+         $.each(propriedades, function(i){
+
+             item ='<a class="list-group-item allow-badge propriedadeBackup widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-unchecked" >&nbsp;</span>'+propriedades[i].nomepropriedade+'<i class="glyphicon glyphicon-chevron-down button-icon-right" data-position="top"></i></h4><div hidden><p class="list-group-item-text">Rua: '+propriedades[i].rua+'</p><p class="list-group-item-text">Numero: '+propriedades[i].numero+'</p><p class="list-group-item-text">Bairro: '+propriedades[i].bairro+'</p><p class="list-group-item-text">Cep: '+propriedades[i].cep+'</p><p class="list-group-item-text">Cidade: '+propriedades[i].nomecidade+'</p><p class="list-group-item-text">Latitude: '+propriedades[i].gps_lat+'</p><p class="list-group-item-text">Longitude: '+propriedades[i].gps_long+'</p><p class="idpropriedadeB">'+propriedades[i].idpropriedade+'</p>'+listarBkpEstrevistaC(cultivares, propriedades[i].nomepropriedade)+'</div></a>';
+
+
+             $('.uib_w_380').append(item);
+
+         });
+         sessionStorage.setItem("propriedadesTemporarias", JSON.stringify(propriedades));
+         sessionStorage.setItem("cultRecTemporarios", JSON.stringify(cultivares));
+     }
+
+
+     function listarBkpEstrevistaC(cultivares, nomepropriedade){
+         var item = '';
+         if(cultivares !== null){
+
+             $.each(cultivares, function(i){
+                 if(cultivares[i].nomepropriedade === nomepropriedade){
+                    item = item.concat('<pre class="list-group-item-text">'+cultivares[i].nomecultivar+'<p>Qtd recebida: '+cultivares[i].qtdrecebida+' '+cultivares[i].grandeza_recebida+'</p></pre>');
+
+                 }
+             });
+         }else{
+             item = '<pre class="list-group-item-text">Não contém cultivares para relatar</p></pre>';
+         }
+
+         return item;
+     }
         /* botao armazenar propriedades para o entrevistador */
     $(document).on("click", ".uib_w_384", function(evt)
     {
@@ -1690,92 +1672,145 @@ $(document).on("click", ".uib_w_380 > a ", function(evt){
          return false;
     });
 
-    function backupPropriedadeStorage(){
-        //var propriedadesTemporarias = sessionStorage.getItem("propriedadesTemporarias");
+     //check nas propriedades para backup
+    $(document).on("click", ".uib_w_380 > a ", function(evt){
 
-        $('.uib_w_380').children("a").each(function() {
-            if($(this).children("h4").children('span').hasClass('glyphicon-check')){
-                armazenaPropriedade($(this).children('div').children('.idpropriedadeB').text());
+        var itemLista = $(this);
+
+        if(evt.target.nodeName === 'SPAN'){
+            if($(this).children('h4').children('span').hasClass('glyphicon-unchecked')){
+
+                navigator.notification.confirm(
+                    'Deseja realmente guardar temporariamente as informações da(s) propriedade(s) marcada(s)?', // message
+                    function(buttonIndex) {
+                        if(buttonIndex === 2){
+                            backupPropriedadeStorage(itemLista.children('div').children('.idpropriedadeB').html());
+                            //c(itemLista.children('div').children('.idpropriedadeB').html());
+                            itemLista.children('h4').children('span').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                        }
+                    },            // callback to invoke with index of button pressed
+                    'Confirmação',           // title
+                    ['Não', 'Sim']     // buttonLabels
+                );
+
+            }else{
+                $(this).children('h4').children('span').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
             }
-        });
+        }else if($(this).children('div').is(':visible')){
+            $(this).children('div').fadeOut(100);
+            $(this).children('h4').children('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+        }else{
+            //$('.uib_w_380 div').fadeOut(100);
+            $(this).children('div').fadeIn(100);
+            $(this).children('h4').children('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+        }
+
+    });
+
+    function backupPropriedadeStorage(idpropriedade){
 
 
-
-
-    }
-
-    function armazenaPropriedade(idpropriedade){
-        var propriedadesTemporarias = sessionStorage.getItem("propriedadesTemporarias");
-        var backupPropriedades = localStorage.getItem('backupPropriedades');
+        var propriedadesTemporarias = JSON.parse(sessionStorage.getItem("propriedadesTemporarias"));
+        var propriedade;
 
         $.each(propriedadesTemporarias, function(i){
-            if(propriedadesTemporarias[i].idpropriedade === idpropriedade){
-                backupPropriedades.push(propriedadesTemporarias[i]);
-            }
+           if(propriedadesTemporarias[i].idpropriedade == idpropriedade){
+                propriedade = propriedadesTemporarias[i];
+           }
+
         });
 
-        localStorage.setItem("backupPropriedades", backupPropriedades);
-
-    }
-     /*function backupPropriedadeStorage(){
-         var itens = [];
-         var itemlista;
-         var backupPropriedades = [];
-         var propriedadesTemporarias = sessionStorage.getItem("propriedadesTemporarias");
-         var i;
-
-         //verifica se existe dados no local storage
-         if(localStorage.getItem('backupPropriedades')){
+        var backupPropriedades = [];
+        var adicionar = true;
+        if(localStorage.getItem('backupPropriedades')){
             backupPropriedades = JSON.parse(localStorage.getItem('backupPropriedades'));
-            i = backupPropriedades.length;
-         }else{
-             i = 0;
-         }
+            //percorre a lista de backup do localStorage e verifica se existe a propriedade para adcionar
+            $.each(backupPropriedades, function(i){
+               if(backupPropriedades[i].idpropriedade == idpropriedade){
+                   adicionar = false;
+                   return false;
+               }
+            });
+            if(adicionar){
+                backupPropriedades.push(propriedade);
 
-
-         $('#infoSemBackup').hide();
-
-         //percore a lista e verifica se existe propriedades marcadas
-         $('.uib_w_380').children("a").each(function() {
-            if($(this).children("h4").children('span').hasClass('glyphicon-check')){
-
-                itemlista = '<a class="list-group-item allow-badge widget uib_w_364" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="fa fa-briefcase"></span>'+$(this).children('h4').text()+'<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4></a>';
-
-                 if(contemPropriedade($(this).children('h4').text(), backupPropriedades)){
-                    // window.console.log('ñ existe');
-                     backupPropriedades[i] = {nomePropriedade: $(this).children('h4').text()};
-                 }
-
-                if(propriedadesTemporarias[0].nomepropriedade === $(this).children('h4').text()){
-                   c('asudif');
-                }
-
-                i++;
             }
-        });
+
+        }else{
+            backupPropriedades[0] = propriedade;
+        }
 
 
         localStorage.setItem('backupPropriedades', JSON.stringify(backupPropriedades));
 
-    }*/
+        if(adicionar){
+            backupCultRecebStorage(idpropriedade);
+        }
 
-    function contemPropriedade(nomePropriedade, listaPropriedade){
-        var teste = true;
-        var i = 0;
-        $.each(listaPropriedade, function(){
-            if(listaPropriedade[i].nomePropriedade === nomePropriedade){
-                teste = false;
-                return false;
+
+
+    }
+
+    function backupCultRecebStorage(idpropriedade){
+        //armazena os cultivares
+        var cultRecTemporarios = JSON.parse(sessionStorage.getItem('cultRecTemporarios'));
+        var culRecPropriedade = [];
+
+        if(sessionStorage.getItem('culRecPropriedade')){
+            culRecPropriedade = JSON.parse(sessionStorage.getItem('culRecPropriedade'));
+        }
+
+        $.each(cultRecTemporarios, function(i){
+            if(cultRecTemporarios[i].idpropriedade == idpropriedade){
+                if(sessionStorage.getItem('culRecPropriedade')){
+
+                    culRecPropriedade.push(cultRecTemporarios[i]);
+
+                }else{
+                    culRecPropriedade[0] = cultRecTemporarios[i];
+                }
+
             }
-            i++;
+
         });
-        return teste;
+
+        localStorage.setItem('culRecPropriedade', JSON.stringify(culRecPropriedade));
     }
 
      //lista de propriedades
-    $(document).on("click", ".uib_w_363", function(evt){
+    $(document).on("click", ".uib_w_363 > a", function(evt){
+        var itemClicado = $(this);
 
-        activate_page("#page_7");
+        if(itemClicado.attr('id') !== 'infoSemBackup'){
+            //lista os dados da propriedade
+            var backupPropriedades = JSON.parse(localStorage.getItem('backupPropriedades'));
+            var dadosPropriedade;
+
+
+            $.each(backupPropriedades, function(i){
+                if(backupPropriedades[i].idpropriedade == itemClicado.children('.idpropriedadeBackup').text()){
+                    dadosPropriedade = '<h4>'+backupPropriedades[i].nomepropriedade+'</h4><p>Rua: '+backupPropriedades[i].rua+'</p><p>Numero: '+backupPropriedades[i].numero+'</p><p>Bairro: '+backupPropriedades[i].bairro+'</p><p>Cidade: '+backupPropriedades[i].nomecidade+'</p><p>Cep: '+backupPropriedades[i].cep+'</p><p>Latitude: '+backupPropriedades[i].gps_lat+'</p><p>Longitude: '+backupPropriedades[i].gps_long+'</p>';
+                    return false;
+                }
+            });
+
+            $('.uib_w_390').children('.text-container').empty().append(dadosPropriedade);
+
+            //lista cultivares recebidos na propriedade
+            var culRecPropriedade = JSON.parse(localStorage.getItem('culRecPropriedade'));
+            $('.uib_w_391').empty();
+            var item;
+            $.each(culRecPropriedade, function(i){
+                if(culRecPropriedade[i].idpropriedade == itemClicado.children('.idpropriedadeBackup').text()){
+                    item = '<a class="list-group-item allow-badge widget uib_w_392" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+culRecPropriedade[i].nomecultivar+'</h4><p class="list-group-item-text">Quantidade Recebida: '+culRecPropriedade[i].qtdrecebida+' '+culRecPropriedade[i].grandeza_recebida+'</p></a>';
+
+                    $('.uib_w_391').append(item);
+                }
+
+            });
+            activate_page("#page_7");
+        }
+
 
     });
 

@@ -370,20 +370,19 @@ function listarEstoque(idunidade){
 
 }
 
-/*function listarPropriedadesBackup(){
+function listarPropriedadesBackup(){
     var backupPropriedades = [];
     var item;
 
     $('.uib_w_363').empty();
     if(localStorage.getItem('backupPropriedades')){
         backupPropriedades = JSON.parse(localStorage.getItem('backupPropriedades'));
-        var i = 0;
-        $.each(backupPropriedades, function(){
 
-            item = '<a class="list-group-item allow-badge widget uib_w_364" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="fa fa-briefcase"></span>'+backupPropriedades[i].nomePropriedade+'aaa<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4></a>';
+        $.each(backupPropriedades, function(i){
+
+            item = '<a class="list-group-item allow-badge widget uib_w_364" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="fa fa-briefcase">&nbsp;</span>'+backupPropriedades[i].nomepropriedade+'<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text idpropriedadeBackup"> '+backupPropriedades[i].idpropriedade+'</p></a>';
 
             $('.uib_w_363').append(item);
-            i++;
         });
     }else{
         item = '<a id="infoSemBackup" class="list-group-item allow-badge widget " data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;&nbsp;Não contém propriedades armazenadas!</h4></a>';
@@ -394,7 +393,7 @@ function listarEstoque(idunidade){
 
 }
 
-*/
+
 function listarAgricultoresUnidade(){
     var idunidade = 2;
     var data = "idunidade="+idunidade;
