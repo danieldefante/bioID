@@ -72,8 +72,6 @@
         <script type="application/javascript" src="js/jquery.mask.min.js"></script>
         <script type="application/javascript" src="xdk/appdesigner/js/rest-of-space.js"></script>
 
-        <script type="application/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
-        <script type="application/javascript" src="google_maps/google_maps.js"></script>
     </head>
 
     <body>
@@ -926,7 +924,7 @@
                                     <div class="col uib_col_20 single-col" data-uib="layout/col" data-ver="0">
                                         <div class="widget-container content-area vertical-col">
                                             <div class="list-group widget uib_w_127 d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1">
-                                                <a id="1" class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"> </span>
+                                                <a id="1" class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1">
                                                     <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;&nbsp;Carregando...</h4>
                                                 </a>
 
@@ -963,9 +961,10 @@
 
                                             </div>
 
-                                            <div class="list-group widget uib_w_118 d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1"><a class="list-group-item allow-badge widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"> </span>
-   <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;&nbsp;Carregando...</h4>
-</a>
+                                            <div class="list-group widget uib_w_118 d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1">
+                                                <a class="list-group-item allow-badge widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1">
+                                                    <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;&nbsp;Carregando...</h4>
+                                                </a>
                                             </div>
                                             <span class="uib_shim"></span>
                                         </div>
@@ -987,6 +986,7 @@
                                     </div>
                                     <div class="col uib_col_94 single-col" data-uib="layout/col" data-ver="0">
                                         <div class="widget-container content-area vertical-col">
+
                                             <div class="list-group widget uib_w_363 d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1">
                                                 <a id="infoSemBackup" class="list-group-item allow-badge widget " data-uib="twitter%20bootstrap/list_item" data-ver="1">
                                                     <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;&nbsp;Não contém propriedades armazenadas!</h4>
@@ -1004,7 +1004,8 @@
                                                 <div class="widget-container left-receptacle"></div>
                                                 <div class="widget-container right-receptacle"></div>
                                                 <div class="text-container">
-                                                    <p>Backup da propriedade</p>
+                                                    <p>Backup da propriedade<i class="fa fa-download button-icon-right" data-position="top"></i>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1267,6 +1268,7 @@
                     <div class="panel widget uib_w_401 d-margins panel-default marginBox" data-uib="twitter%20bootstrap/panel" data-ver="1">
                         <div class="col uib_col_102 single-col" data-uib="layout/col" data-ver="0">
                             <div class="widget-container content-area vertical-col">
+
                                 <div class="panel widget uib_w_402 d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
                                     <div class="panel-heading">
                                         <div class="widget-container">
@@ -1274,25 +1276,31 @@
                                                 <div class="widget-container left-receptacle"></div>
                                                 <div class="widget-container right-receptacle"></div>
                                                 <div class="text-container">
-                                                    <p>Localização:</p>
+                                                    <p>Localização <i class="fa fa-flag button-icon-right" data-position="top"></i>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col uib_col_103 single-col" data-uib="layout/col" data-ver="0">
                                         <div class="widget-container content-area vertical-col">
+                                            <div class="table-thing widget uib_w_399 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
+                                                <label class="narrow-control label-top-left">Quantidade Colhida:</label>
+                                                <input class="wide-control form-control default" type="tel" placeholder="Quantidade colhida...">
+                                            </div>
                                             <div class="tarea widget uib_w_390 d-margins" data-uib="media/text" data-ver="0" name="uib_w_390">
                                                 <div class="widget-container left-receptacle"></div>
                                                 <div class="widget-container right-receptacle"></div>
                                                 <div class="text-container">
-
+                                                    <p>Endereço:</p>
                                                 </div>
                                             </div>
-                                            <div class="widget uib_w_388 maps-size d-margins" data-uib="media/google_maps" data-ver="0" data-rpath="null" data-zoom="8"></div><span class="uib_shim"></span>
+                                            <span class="uib_shim"></span>
                                         </div>
                                     </div>
 
                                 </div>
+                                <button class="btn widget uib_w_404 d-margins btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="fa fa-trash-o button-icon-left" data-position="left"></i>Remover backup propriedade</button>
                                 <div class="panel widget uib_w_395 d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
                                     <div class="panel-heading">
                                         <div class="widget-container">
@@ -1300,7 +1308,8 @@
                                                 <div class="widget-container left-receptacle"></div>
                                                 <div class="widget-container right-receptacle"></div>
                                                 <div class="text-container">
-                                                    <p>Cultivares recebidos:</p>
+                                                    <p>Cultivares recebidos <i class="fa fa-expand button-icon-right" data-position="top"></i>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1332,38 +1341,98 @@
 
                 </div>
             </div>
+
             <div class="modal outer-element uib_w_397" data-uib="twitter%20bootstrap/modal" data-ver="1" data-backdrop="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header" style="background-color:#007a61">
-                            <h4 class="modal-title" style="color:#fff"><span class="fa fa-comment"></span>&nbsp;Relatar colheita</h4>
+                            <h4 class="modal-title" style="color:#fff"><span class="fa fa-comment"></span>&nbsp;Relatar cultivar</h4>
                         </div>
 
                         <div class="modal-body">
                             <div class="col uib_col_101 single-col" data-uib="layout/col" data-ver="0">
                                 <div class="widget-container content-area vertical-col">
-                                    <div class="table-thing widget uib_w_399 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
-                                        <label class="narrow-control label-top-left">Quantidade:</label>
-                                        <input class="wide-control form-control default" type="tel" placeholder="Quantidade colhida...">
+                                    <div class="panel widget uib_w_407 d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
+                                        <div class="panel-heading">
+                                            <div class="widget-container">
+                                                <div class="tarea widget uib_w_408 d-margins" data-uib="media/text" data-ver="0" name="uib_w_408">
+                                                    <div class="widget-container left-receptacle"></div>
+                                                    <div class="widget-container right-receptacle"></div>
+                                                    <div class="text-container">
+                                                        <p>Colheita da safra <i class="fa fa-shopping-cart button-icon-right" data-position="top"></i>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col uib_col_106 single-col" data-uib="layout/col" data-ver="0">
+                                            <div class="widget-container content-area vertical-col">
+                                                <div class="table-thing widget uib_w_409 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
+                                                    <label class="narrow-control label-top-left">Quantidade colhida:</label>
+                                                    <input class="wide-control form-control default" type="tel" placeholder="Ex.: 10.5">
+                                                </div>
+                                                <div class="table-thing widget uib_w_398 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
+                                                    <label class="narrow-control label-top-left">Unidade de medida:</label>
+                                                    <select class="wide-control form-control default">
+                                                        <option>Kilo(s)</option>
+                                                        <option>Tonelada(s)</option>
+                                                        <option>Saca(s)</option>
+                                                    </select>
+                                                </div><span class="uib_shim"></span>
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <div class="table-thing widget uib_w_398 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
-                                        <label class="narrow-control label-top-left">Unidade de medida:</label>
-                                        <select class="wide-control form-control default">
-                                            <option>Kilo(s)</option>
-                                            <option>Tonelada(s)</option>
-                                            <option>Saca(s)</option>
-                                        </select>
+                                    <div class="panel widget uib_w_410 d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
+                                        <div class="panel-heading">
+                                            <div class="widget-container">
+                                                <div class="tarea widget uib_w_411 d-margins" data-uib="media/text" data-ver="0" name="uib_w_411">
+                                                    <div class="widget-container left-receptacle"></div>
+                                                    <div class="widget-container right-receptacle"></div>
+                                                    <div class="text-container">
+                                                        <p>Destinação da safra <i class="fa fa-truck button-icon-right" data-position="top"></i>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col uib_col_107 single-col" data-uib="layout/col" data-ver="0">
+                                            <div class="widget-container content-area vertical-col">
+                                                <div class="table-thing widget uib_w_400 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
+                                                    <label class="narrow-control label-top-left">Destino:</label>
+                                                    <select class="wide-control form-control default">
+                                                        <option>Consumo</option>
+                                                        <option>Replantio</option>
+                                                        <option>Venda</option>
+                                                        <option>Merenda Escolar</option>
+                                                        <option>Doação</option>
+                                                        <option>Perda</option>
+                                                    </select>
+                                                </div>
+                                                <div class="table-thing widget uib_w_412 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
+                                                    <label class="narrow-control label-top-left">Quantidade destinada:</label>
+                                                    <input class="wide-control form-control default" type="tel" placeholder="Ex.: 10.5">
+                                                </div>
+                                                <div class="table-thing widget uib_w_413 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
+                                                    <label class="narrow-control label-top-left">Unidade de medida:</label>
+                                                    <select class="wide-control form-control default">
+                                                        <option>Kilo(s)</option>
+                                                        <option>Tonelada(s)</option>
+                                                        <option>Saca(s)</option>
+                                                    </select>
+                                                </div><span class="uib_shim"></span>
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <div class="table-thing widget uib_w_400 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
-                                        <label class="narrow-control label-top-left">Destinação:</label>
-                                        <select class="wide-control form-control default">
-                                            <option>Consumo</option>
-                                            <option>Replantio</option>
-                                            <option>Venda</option>
-                                            <option>Merenda Escolar</option>
-                                            <option>Doação</option>
-                                            <option>Perda</option>
-                                        </select>
+
+                                    <div class="tarea widget uib_w_405 d-margins" data-uib="media/text" data-ver="0" name="uib_w_405">
+                                        <div class="widget-container left-receptacle"></div>
+                                        <div class="widget-container right-receptacle"></div>
+                                        <div class="text-container">
+                                            <p id="maisDestinacao"><span class=" fa fa-plus"></span>&nbsp;&nbsp; destinação</p>
+                                            <hr>
+                                        </div>
                                     </div>
                                     <span class="uib_shim"></span>
 

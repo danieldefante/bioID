@@ -42,7 +42,7 @@
 
 
 
-        $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/backupentrevista", data, function(dados){
+        $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/pessoa/listarpropriedades", data, function(dados){
             //teste da requisicao no banco esta correta
             if(dados.sucesso){
 
@@ -131,7 +131,7 @@
     $(document).on("click", ".uib_w_32", function(evt)
     {
          /*global activate_page */
-        if(localStorage.getItem("logSession")){
+        if(window.localStorage.getItem("logSession")){
             activate_page("#page_4");
             $('.uib_w_154').hide();
             $('.uib_w_154').fadeIn(100);
@@ -197,7 +197,7 @@
         if(!escondeMenuHamburguer('bs-navbar-1')){
             if(sessionStorage.getItem('indiceSelecionado')){
                 navigator.notification.confirm(
-                    'O cultivar não foi relatado, Deseja realmente cancelar?', // message
+                    'O cultivar não foi relatado, Deseja cancelar?', // message
                      testeButtonSafras,            // callback to invoke with index of button pressed
                     'Confirmação',           // title
                     ['Não','Sim']     // buttonLabels
@@ -234,7 +234,7 @@
         if(!escondeMenuHamburguer('bs-navbar-1')){
             if(sessionStorage.getItem('indiceSelecionado')){
                 navigator.notification.confirm(
-                    'O cultivar não foi relatado, Deseja realmente cancelar?', // message
+                    'O cultivar não foi relatado, Deseja cancelar?', // message
                      testeButtonSocioEco,            // callback to invoke with index of button pressed
                     'Confirmação',           // title
                     ['Não','Sim']     // buttonLabels
@@ -274,7 +274,7 @@
         if(!escondeMenuHamburguer('bs-navbar-1')){
             if(sessionStorage.getItem('indiceSelecionado')){
                 navigator.notification.confirm(
-                    'O cultivar não foi relatado, Deseja realmente cancelar?', // message
+                    'O cultivar não foi relatado, Deseja cancelar?', // message
                      testeButtonRecebidos,            // callback to invoke with index of button pressed
                     'Confirmação',           // title
                     ['Não','Sim']     // buttonLabels
@@ -367,7 +367,7 @@
 
          });
 
-         window.listarAgricultoresUnidade();
+         window.listarAgricultoresUnidade(2, true);
 
          return false;
     });
@@ -416,7 +416,7 @@
                         papel: dados.papel,
                         idunidade: dados.idunidade
                     });
-                    localStorage.setItem("logSession", logSession);
+                    window.localStorage.setItem("logSession", logSession);
 
 
                     window.papel = dados.papel;
@@ -578,7 +578,7 @@
     {
         if(!escondeMenuHamburguer('bs-navbar-1')){
 
-            var propriedades = JSON.parse(localStorage.getItem("propriedades"));
+            var propriedades = JSON.parse(window.localStorage.getItem("propriedades"));
             $(".uib_w_286").append($(this));
 
             var abaNomeProp = $(this).text();
@@ -671,7 +671,7 @@
 
             var a = $(this).attr("id");
             //carrega item que esta no localStorage
-            var cultivaresRecebidos = JSON.parse(localStorage.getItem("cultivaresRecebidos"));
+            var cultivaresRecebidos = JSON.parse(window.localStorage.getItem("cultivaresRecebidos"));
             if(cultivaresRecebidos.length > 0){
                 var cultivarSelecionado = cultivaresRecebidos[a];
                 //guarda o id da safra no session storage
@@ -1012,9 +1012,9 @@
 
                 }else{
                     if($('#ultimaColheita').is(':checked')){
-                        relatarSafra('Deseja realmente relatar a ultima colheita da safra?', 4);
+                        relatarSafra('Deseja relatar a ultima colheita da safra?', 4);
                     }else{
-                        relatarSafra('Deseja realmente relatar a colheita parcial da safra?', 2);
+                        relatarSafra('Deseja relatar a colheita parcial da safra?', 2);
                     }
                 }
             }
@@ -1057,7 +1057,7 @@
                     .done(function(){
                         limparcamposrelatar();
                         //atualiza o local storage
-                        window.servArmazenarCulRecebdo(JSON.parse(localStorage.getItem("logSession")).usuario);
+                        window.servArmazenarCulRecebdo(JSON.parse(window.localStorage.getItem("logSession")).usuario);
                     });
                     }
                 },            // callback to invoke with index of button pressed
@@ -1152,7 +1152,7 @@
 
      function retornarValCultivares(){
          var i = sessionStorage.getItem('indiceSelecionado');
-         var cultivar = JSON.parse(localStorage.getItem("cultivaresRecebidos"));
+         var cultivar = JSON.parse(window.localStorage.getItem("cultivaresRecebidos"));
          var valor = cultivar[i].qtdcolhida;
          return valor;
      }
@@ -1172,7 +1172,7 @@
                  $('.uib_w_337').show();
              }else if(id === 'ultimaColheita'){
                  navigator.notification.confirm(
-                     'Toda sua safra foi realmente colhida?', // message
+                     'Toda sua safra foi colhida?', // message
                      function(buttonIndex) {
                          if(buttonIndex === 2){
                             $('#colheitaParcial').prop('checked', false);
@@ -1396,7 +1396,7 @@
     $(document).on("click", ".uib_w_313", function(evt)
     {
         navigator.notification.confirm(
-            'Deseja realmente excluir essa destinção?', // message
+            'Deseja excluir essa destinção?', // message
             function(buttonIndex) {
                 if(buttonIndex === 2){
                     var abaSelecionada = $(".uib_w_308 .active").attr("id");
@@ -1444,7 +1444,7 @@
     {
 
         var i = sessionStorage.getItem('indiceSelecionado');
-        var cultivaresRecebidos = JSON.parse(localStorage.getItem("cultivaresRecebidos"));
+        var cultivaresRecebidos = JSON.parse(window.localStorage.getItem("cultivaresRecebidos"));
         //deixa os botoes enviar e cancelar ocultos
 
          activate_page("#page_3");
@@ -1503,7 +1503,7 @@
     $(document).on("click", ".uib_w_346", function(evt)
     {
         navigator.notification.confirm(
-            'Deseja realmente enviar as destinações?', // message
+            'Deseja enviar as destinações?', // message
             function(buttonIndex) {
                 if(buttonIndex === 2){
                     window.iniciarAgricultor();
@@ -1597,80 +1597,82 @@
     });
     function listarBkpEstrevistaP(dados){
          var propriedades = dados.propriedades;
-         var cultivares = [];
-         if(dados.aberto){
-            cultivares = dados.cultivaresarelatar;
-         }else{
-             cultivares = null;
-         }
+//         var cultivares = [];
+//         if(dados.aberto){
+//            cultivares = dados.cultivaresarelatar;
+//         }else{
+//             cultivares = null;
+//         }
 
          $('.uib_w_380').empty();
          var item;
          $.each(propriedades, function(i){
 
-             item ='<a class="list-group-item allow-badge propriedadeBackup widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-unchecked" >&nbsp;</span>'+propriedades[i].nomepropriedade+'<i class="glyphicon glyphicon-chevron-down button-icon-right" data-position="top"></i></h4><div hidden><p class="list-group-item-text">Rua: '+propriedades[i].rua+'</p><p class="list-group-item-text">Numero: '+propriedades[i].numero+'</p><p class="list-group-item-text">Bairro: '+propriedades[i].bairro+'</p><p class="list-group-item-text">Cep: '+propriedades[i].cep+'</p><p class="list-group-item-text">Cidade: '+propriedades[i].nomecidade+'</p><p class="list-group-item-text">Latitude: '+propriedades[i].gps_lat+'</p><p class="list-group-item-text">Longitude: '+propriedades[i].gps_long+'</p><p class="idpropriedadeB">'+propriedades[i].idpropriedade+'</p>'+listarBkpEstrevistaC(cultivares, propriedades[i].nomepropriedade)+'</div></a>';
+             //item ='<a class="list-group-item allow-badge propriedadeBackup widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-unchecked" >&nbsp;</span>'+propriedades[i].nomepropriedade+'<i class="glyphicon glyphicon-chevron-down button-icon-right" data-position="top"></i></h4><div hidden><p class="list-group-item-text">Rua: '+propriedades[i].rua+'</p><p class="list-group-item-text">Numero: '+propriedades[i].numero+'</p><p class="list-group-item-text">Bairro: '+propriedades[i].bairro+'</p><p class="list-group-item-text">Cep: '+propriedades[i].cep+'</p><p class="list-group-item-text">Cidade: '+propriedades[i].nomecidade+'</p><p class="list-group-item-text">Latitude: '+propriedades[i].gps_lat+'</p><p class="list-group-item-text">Longitude: '+propriedades[i].gps_long+'</p><p class="idpropriedadeB">'+propriedades[i].idpropriedade+'</p>'+listarBkpEstrevistaC(cultivares, propriedades[i].nomepropriedade)+'</div></a>';
+
+             item ='<a class="list-group-item allow-badge propriedadeBackup widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-unchecked" >&nbsp;</span>'+propriedades[i].nomepropriedade+'<i class="glyphicon glyphicon-chevron-down button-icon-right" data-position="top"></i></h4><div hidden><p class="list-group-item-text">Rua: '+propriedades[i].rua+'</p><p class="list-group-item-text">Numero: '+propriedades[i].numero+'</p><p class="list-group-item-text">Bairro: '+propriedades[i].bairro+'</p><p class="list-group-item-text">Cep: '+propriedades[i].cep+'</p><p class="list-group-item-text">Cidade: '+propriedades[i].nomecidade+'</p><p class="list-group-item-text">Latitude: '+propriedades[i].gps_lat+'</p><p class="list-group-item-text">Longitude: '+propriedades[i].gps_long+'</p><p class="idpropriedadeB" hidden>'+propriedades[i].idpropriedade+'</p></div></a>';
 
 
              $('.uib_w_380').append(item);
 
          });
          sessionStorage.setItem("propriedadesTemporarias", JSON.stringify(propriedades));
-         sessionStorage.setItem("cultRecTemporarios", JSON.stringify(cultivares));
+         //sessionStorage.setItem("cultRecTemporarios", JSON.stringify(cultivares));
      }
 
 
-     function listarBkpEstrevistaC(cultivares, nomepropriedade){
-         var item = '';
-         if(cultivares !== null){
-
-             $.each(cultivares, function(i){
-                 if(cultivares[i].nomepropriedade === nomepropriedade){
-                    item = item.concat('<pre class="list-group-item-text">'+cultivares[i].nomecultivar+'<p>Qtd recebida: '+cultivares[i].qtdrecebida+' '+cultivares[i].grandeza_recebida+'</p></pre>');
-
-                 }
-             });
-         }else{
-             item = '<pre class="list-group-item-text">Não contém cultivares para relatar</p></pre>';
-         }
-
-         return item;
-     }
+//     function listarBkpEstrevistaC(cultivares, nomepropriedade){
+//         var item = '';
+//         if(cultivares !== null){
+//
+//             $.each(cultivares, function(i){
+//                 if(cultivares[i].nomepropriedade === nomepropriedade){
+//                    item = item.concat('<pre class="list-group-item-text">'+cultivares[i].nomecultivar+'<p>Qtd recebida: '+cultivares[i].qtdrecebida+' '+cultivares[i].grandeza_recebida+'</p></pre>');
+//
+//                 }
+//             });
+//         }else{
+//             item = '<pre class="list-group-item-text">Não contém cultivares para relatar</p></pre>';
+//         }
+//
+//         return item;
+//     }
         /* botao armazenar propriedades para o entrevistador */
-    $(document).on("click", ".uib_w_384", function(evt)
-    {
-
-
-        if($('.propriedadeBackup h4').children('span').hasClass('glyphicon-check')){
-            navigator.notification.confirm(
-                'Deseja realmente guardar temporariamente as informações da(s) propriedade(s) marcada(s)?', // message
-                function(buttonIndex) {
-                    if(buttonIndex === 2){
-                        backupPropriedadeStorage();
-
-                        $('.uib_w_154').fadeOut(100, function(evt){
-                        $(".uib_w_378").hide();
-                        $('.uib_w_116').show();
-                        $(".uib_w_154").fadeIn(100);
-
-
-
-                            //var a = [$('.propriedadeBackup .glyphicon-check').parent().text()];
-                            //c(a[0]);
-
-         });
-
-                    }
-                },            // callback to invoke with index of button pressed
-                'Confirmação',           // title
-                ['Não', 'Sim']     // buttonLabels
-            );
-        }else{
-            navigator.notification.alert("Marque a(s) propriedade(s) para armazenar temporariamente!",function(){},"Alerta!", "Sair");
-        }
-
-
-         return false;
-    });
+//    $(document).on("click", ".uib_w_384", function(evt)
+//    {
+//
+//
+//        if($('.propriedadeBackup h4').children('span').hasClass('glyphicon-check')){
+//            navigator.notification.confirm(
+//                'Deseja guardar temporariamente as informações da(s) propriedade(s) marcada(s)jj?', // message
+//                function(buttonIndex) {
+//                    if(buttonIndex === 2){
+//                        backupPropriedadeStorage();
+//
+//                        $('.uib_w_154').fadeOut(100, function(evt){
+//                        $(".uib_w_378").hide();
+//                        $('.uib_w_116').show();
+//                        $(".uib_w_154").fadeIn(100);
+//
+//
+//
+//                            //var a = [$('.propriedadeBackup .glyphicon-check').parent().text()];
+//                            //c(a[0]);
+//
+//         });
+//
+//                    }
+//                },            // callback to invoke with index of button pressed
+//                'Confirmação',           // title
+//                ['Não', 'Sim']     // buttonLabels
+//            );
+//        }else{
+//            navigator.notification.alert("Marque a(s) propriedade(s) para armazenar temporariamente!",function(){},"Alerta!", "Sair");
+//        }
+//
+//
+//         return false;
+//    });
 
      //check nas propriedades para backup
     $(document).on("click", ".uib_w_380 > a ", function(evt){
@@ -1681,7 +1683,7 @@
             if($(this).children('h4').children('span').hasClass('glyphicon-unchecked')){
 
                 navigator.notification.confirm(
-                    'Deseja realmente guardar temporariamente as informações da(s) propriedade(s) marcada(s)?', // message
+                    'Deseja guardar temporariamente as informações da(s) propriedade(s) marcada(s)?', // message
                     function(buttonIndex) {
                         if(buttonIndex === 2){
                             backupPropriedadeStorage(itemLista.children('div').children('.idpropriedadeB').html());
@@ -1722,8 +1724,8 @@
 
         var backupPropriedades = [];
         var adicionar = true;
-        if(localStorage.getItem('backupPropriedades')){
-            backupPropriedades = JSON.parse(localStorage.getItem('backupPropriedades'));
+        if(window.localStorage.getItem('backupPropriedades')){
+            backupPropriedades = JSON.parse(window.localStorage.getItem('backupPropriedades'));
             //percorre a lista de backup do localStorage e verifica se existe a propriedade para adcionar
             $.each(backupPropriedades, function(i){
                if(backupPropriedades[i].idpropriedade == idpropriedade){
@@ -1741,8 +1743,9 @@
         }
 
 
-        localStorage.setItem('backupPropriedades', JSON.stringify(backupPropriedades));
+        window.localStorage.setItem('backupPropriedades', JSON.stringify(backupPropriedades));
 
+        //faz requisicao
         if(adicionar){
             backupCultRecebStorage(idpropriedade);
         }
@@ -1752,43 +1755,88 @@
     }
 
     function backupCultRecebStorage(idpropriedade){
-        //armazena os cultivares
-        var cultRecTemporarios = JSON.parse(sessionStorage.getItem('cultRecTemporarios'));
-        var culRecPropriedade = [];
 
-        if(sessionStorage.getItem('culRecPropriedade')){
-            culRecPropriedade = JSON.parse(sessionStorage.getItem('culRecPropriedade'));
-        }
 
-        $.each(cultRecTemporarios, function(i){
-            if(cultRecTemporarios[i].idpropriedade == idpropriedade){
-                if(sessionStorage.getItem('culRecPropriedade')){
+        var data = 'idpropriedade='+idpropriedade;
+        var cultivaresarelatar;
+        $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/backupentrevista", data, function(dados){
+            //teste da requisicao no banco esta correta
+            if(dados.sucesso){
 
-                    culRecPropriedade.push(cultRecTemporarios[i]);
+                if(window.localStorage.getItem('cultivaresarelatar')){
+                    cultivaresarelatar = JSON.parse(window.localStorage.getItem('cultivaresarelatar'));
+                    $.each(dados.cultivaresarelatar, function(i){
+
+                        cultivaresarelatar.push(dados.cultivaresarelatar[i]);
+                    });
 
                 }else{
-                    culRecPropriedade[0] = cultRecTemporarios[i];
+                    cultivaresarelatar = dados.cultivaresarelatar;
                 }
+
 
             }
 
+        },"json")
+        //Tratamento de erro da requisicao servico RESt login
+        .fail(function(){
+            navigator.notification.confirm(
+                'Sem conexão com o servidor!',
+                function() {
+                    //limpa a tela e vai para a pagina inicial
+                    window.clearGoMainPage();
+                },
+                'Erro',
+                ['OK']
+            );
+
+
+        }).done(function(){
+
+            window.localStorage.setItem('cultivaresarelatar', JSON.stringify(cultivaresarelatar));
         });
 
-        localStorage.setItem('culRecPropriedade', JSON.stringify(culRecPropriedade));
+//
+//        //armazena os cultivares
+//        var cultRecTemporarios = JSON.parse(sessionStorage.getItem('cultRecTemporarios'));
+//        var culRecPropriedade = [];
+//
+//        if(sessionStorage.getItem('culRecPropriedade')){
+//            culRecPropriedade = JSON.parse(sessionStorage.getItem('culRecPropriedade'));
+//        }
+//
+//        $.each(cultRecTemporarios, function(i){
+//            if(cultRecTemporarios[i].idpropriedade == idpropriedade){
+//                if(sessionStorage.getItem('culRecPropriedade')){
+//
+//                    culRecPropriedade.push(cultRecTemporarios[i]);
+//
+//                }else{
+//                    culRecPropriedade[0] = cultRecTemporarios[i];
+//                }
+//
+//            }
+//
+//        });
+
+
+        //localStorage.setItem('culRecPropriedade', JSON.stringify(culRecPropriedade));
+
     }
 
      //lista de propriedades
     $(document).on("click", ".uib_w_363 > a", function(evt){
         var itemClicado = $(this);
+        var idPropriedade = $(this).children('.idpropriedadeBackup').text();
 
         if(itemClicado.attr('id') !== 'infoSemBackup'){
             //lista os dados da propriedade
-            var backupPropriedades = JSON.parse(localStorage.getItem('backupPropriedades'));
+            var backupPropriedades = JSON.parse(window.localStorage.getItem('backupPropriedades'));
             var dadosPropriedade;
 
 
             $.each(backupPropriedades, function(i){
-                if(backupPropriedades[i].idpropriedade == itemClicado.children('.idpropriedadeBackup').text()){
+                if(backupPropriedades[i].idpropriedade == idPropriedade){
                     dadosPropriedade = '<h4>'+backupPropriedades[i].nomepropriedade+'</h4><p>Rua: '+backupPropriedades[i].rua+'</p><p>Numero: '+backupPropriedades[i].numero+'</p><p>Bairro: '+backupPropriedades[i].bairro+'</p><p>Cidade: '+backupPropriedades[i].nomecidade+'</p><p>Cep: '+backupPropriedades[i].cep+'</p><p>Latitude: '+backupPropriedades[i].gps_lat+'</p><p>Longitude: '+backupPropriedades[i].gps_long+'</p>';
                     return false;
                 }
@@ -1797,12 +1845,13 @@
             $('.uib_w_390').children('.text-container').empty().append(dadosPropriedade);
 
             //lista cultivares recebidos na propriedade
-            var culRecPropriedade = JSON.parse(localStorage.getItem('culRecPropriedade'));
+            var cultivaresarelatar = JSON.parse(window.localStorage.getItem('cultivaresarelatar'));
             $('.uib_w_391').empty();
             var item;
-            $.each(culRecPropriedade, function(i){
-                if(culRecPropriedade[i].idpropriedade == itemClicado.children('.idpropriedadeBackup').text()){
-                    item = '<a class="list-group-item allow-badge widget uib_w_392" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+culRecPropriedade[i].nomecultivar+'</h4><p class="list-group-item-text">Quantidade Recebida: '+culRecPropriedade[i].qtdrecebida+' '+culRecPropriedade[i].grandeza_recebida+'</p></a>';
+            //c(idPropriedade);
+            $.each(cultivaresarelatar, function(i){
+                if(cultivaresarelatar[i].idpropriedade == idPropriedade){
+                    item = '<a class="list-group-item allow-badge widget uib_w_392" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+cultivaresarelatar[i].nomecultivar+'<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text">Quantidade Recebida: '+cultivaresarelatar[i].qtdrecebida+' '+cultivaresarelatar[i].grandeza_recebida+'</p></a>';
 
                     $('.uib_w_391').append(item);
                 }
@@ -1827,6 +1876,28 @@
 
         $(".uib_w_397").modal("toggle");
     });
+
+    //acrecenta mais destinacao entrevistador
+    $(document).on("click", "#maisDestinacao", function(evt){
+        var selectUm = $('.uib_w_413').children('select');
+        var selectDestino = $('.uib_w_400').children('select');
+        var qtd = $('.uib_w_412').children('input');
+
+        if(qtd.val() > 0){
+            $(this).parent('div').append('<p class="itemDestinacao"><span class=" fa fa-trash"></span>&nbsp;&nbsp; '+qtd.val()+ '&nbsp;' + selectUm.val()+ ' para ' + selectDestino.val()+ '</p>');
+
+            qtd.val('');
+            selectUm.val('Kilo(s)');
+            selectDestino.val('Consumo');
+        }
+
+    });
+    //deleta item destinacao entrevistador
+    $(document).on("click", ".itemDestinacao", function(evt){
+
+        $(this).remove();
+    });
+
 
     }
  document.addEventListener("app.Ready", register_event_handlers, false);

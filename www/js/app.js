@@ -139,8 +139,8 @@ function carregaDados(){
             //usuario gerenciador e entrevistador
             window.activate_page("#page_4");
             iniciarGerEntrev();
-            listarEstoque(dadosSessao.idunidade);
-            listarAgricultoresUnidade();
+            listarEstoque(dadosSessao.idunidade, true);
+            listarAgricultoresUnidade(dadosSessao.idunidade, false);
         }else{
             clearGoMainPage();
         }
@@ -333,40 +333,59 @@ function listarPropriedades(){
     }
 }
 
-function listarEstoque(idunidade){
+function listarEstoque(idunidade, msgErro){
 
     var data = "idunidade="+idunidade;
-
     $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/unidade/listarestoque", data, function(dados){
 
         if(dados.sucesso){
             var estoque = dados.estoque;
             sessionStorage.setItem('estoque', JSON.stringify(estoque));
             $('.uib_w_127').empty();
-            var item;
+
             var i = 0;
             $.each(estoque, function(){
 
-                item = '<a id="culEstoque"'+ i +' class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+estoque[i].nomecultivar+'</h4><p class="list-group-item-text">Quantidade no Estoque: '+parseFloat(estoque[i].quantidade.toFixed(2))+' '+estoque[i].grandeza+'</p></a>';
-
-                $('.uib_w_127').append(item);
+                $('.uib_w_127').append('<a id="culEstoque"'+ i +' class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+estoque[i].nomecultivar+'</h4><p class="list-group-item-text">Quantidade no Estoque: '+parseFloat(estoque[i].quantidade.toFixed(2))+' '+estoque[i].grandeza+'</p></a>');
                 i++;
             });
         }
     },"json")
     //Tratamento de erro da requisicao servico RESt login
     .fail(function(){
-        navigator.notification.confirm(
-            'Sem conexão com o servidor!',
-            function() {
-                window.clearGoMainPage();
-            },
-            'Erro',
-            ['OK']
-        );
+        if(msgErro){
+            navigator.notification.confirm(
+                'Sem conexão com o servidor, Continuar off-line ou conectar-se?',
+                function(buttonIndex) {
+                    if(buttonIndex === 2){
 
+                        //msg em lista de estoque
+                        $('.uib_w_127').empty();
+                        $('.uib_w_127').append('<a class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">Sem conexão com o servidor!</h4></a>');
+
+
+                        //msg em lista de agricultores
+                        $('.uib_w_118').empty();
+                        $('.uib_w_118').append('<a class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">Sem conexão com o servidor!</h4></a>');
+                    }else{
+                        window.navigator.app.exitApp();
+                        //window.clearGoMainPage();
+                    }
+
+                },
+                'Alerta!',
+                ['Conectar-se!','Off-line']
+            );
+        }else{
+            navigator.notification.alert('Erro requisição servidor!', function(){
+            },"Erro!", "OK");
+        }
 
     });
+    //lista os agricultores da unidade
+//    .done(function(){
+//        listarAgricultoresUnidade(idunidade, false);
+//    });
 
 }
 
@@ -380,7 +399,7 @@ function listarPropriedadesBackup(){
 
         $.each(backupPropriedades, function(i){
 
-            item = '<a class="list-group-item allow-badge widget uib_w_364" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="fa fa-briefcase">&nbsp;</span>'+backupPropriedades[i].nomepropriedade+'<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text idpropriedadeBackup"> '+backupPropriedades[i].idpropriedade+'</p></a>';
+            item = '<a class="list-group-item allow-badge widget uib_w_364" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="fa fa-briefcase">&nbsp;</span>'+backupPropriedades[i].nomepropriedade+'<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text idpropriedadeBackup" hidden> '+backupPropriedades[i].idpropriedade+'</p></a>';
 
             $('.uib_w_363').append(item);
         });
@@ -394,10 +413,10 @@ function listarPropriedadesBackup(){
 }
 
 
-function listarAgricultoresUnidade(){
-    var idunidade = 2;
+function listarAgricultoresUnidade(idunidade, msgErro){
     var data = "idunidade="+idunidade;
 
+    window.console.log(data);
     $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/unidade/listarAgricultoresUnidade", data, function(dados){
 
         if(dados.sucesso){
@@ -407,7 +426,7 @@ function listarAgricultoresUnidade(){
             var item;
             $.each(listaAgricultores, function(i){
 
-                item = '<a class="list-group-item allow-badge widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+listaAgricultores[i].nome+'</h4><p class="list-group-item-text"> '+listaAgricultores[i].sobrenome+'</p><p class="list-group-item-text usuarioOculto">'+listaAgricultores[i].idpessoa+'</p></a>';
+                item = '<a class="list-group-item allow-badge widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+listaAgricultores[i].nome+'<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text"> '+listaAgricultores[i].sobrenome+'</p><p class="list-group-item-text usuarioOculto" hidden>'+listaAgricultores[i].idpessoa+'</p></a>';
 
 
                 //window.console.log('usuario='+listaAgricultores[i].usuario+'&idunidade='+2);
@@ -415,20 +434,15 @@ function listarAgricultoresUnidade(){
 
                 $('.uib_w_118').append(item);
             });
-            $('.usuarioOculto').hide();
         }
     },"json")
     //Tratamento de erro da requisicao servico RESt login
     .fail(function(){
-        navigator.notification.confirm(
-            'Sem conexão com o servidor!',
-            function() {
-                window.clearGoMainPage();
-            },
-            'Erro',
-            ['OK']
-        );
+        if(msgErro){
 
+            navigator.notification.alert('Erro requisição servidor!', function(){
+            },"Erro!", "OK");
+        }
 
     });
 }
