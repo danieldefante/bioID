@@ -44,19 +44,19 @@ body {
 }
 
 .amarelo{
-    background: #FFCC00;
+    color: #FFCC00;
 }
 
 .vermelho{
-    background: #FF0000;
+    color: #FF0000;
 }
 
 .verde{
-    background: #007A61;
+    color: #007A61;
 }
 
 .laranja{
-    background: #EC751A;
+    color: #EC751A;
 }
 
 #esqueceuSenha{

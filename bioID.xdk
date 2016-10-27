@@ -6,7 +6,7 @@
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "jsapp/template-blank-cordova-ad-project/sample.zip",
       "projectGuid": "45101c27-9c57-422a-a257-01ff97b98657",
-      "lastModifiedDate": 1477487472129,
+      "lastModifiedDate": 1477590838178,
       "creationDate": 1466424083911
     },
     "XDK-app-designer": "true",
@@ -233,10 +233,10 @@
         "excludedLibraries_": "",
         "cordovaCLIVersion_": "5.4.1",
         "crosswalkVersion_": "16",
-        "appVersion_": "0.0.4",
+        "appVersion_": "0.0.5",
         "appAuthor_": "Intel XDK",
         "appDescription_": "Template to develop a Cordova mobile web app using the App Designer UI editor.",
-        "appVersionCode_": "5"
+        "appVersionCode_": "6"
       },
       "iOS": {
         "platform_": "ios",
@@ -318,7 +318,7 @@
         "runtime_": "W3C",
         "name_": "WebApp",
         "preferences_": {},
-        "isActive_": true,
+        "isActive_": false,
         "certificateId_": "",
         "appName_": "bioID",
         "appID_": "not.yet.specified",
@@ -342,7 +342,7 @@
         "runtime_": "W3C on Chrome OS",
         "name_": "Chrome",
         "preferences_": {},
-        "isActive_": true,
+        "isActive_": false,
         "certificateId_": "",
         "appName_": "bioID",
         "appID_": "not.yet.specified",

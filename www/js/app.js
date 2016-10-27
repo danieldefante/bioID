@@ -32,9 +32,9 @@ var papel;
 
 //ip do servidor
 //var ipServidor = "192.168.0.7:8080";
-var ipServidor = "10.2.10.200:8080";
+//var ipServidor = "10.2.10.200:8080";
 //var ipServidor = "localhost:8080";
-//var ipServidor = "187.19.101.252:8082";
+var ipServidor = "187.19.101.252:8082";
 //var ipServidor = "10.1.2.52:8080";
 
 /*/funcao mudar background aleatorio
@@ -169,7 +169,8 @@ function listarCultivarRecebidos(nomePropriedade){
                 var a = cultivaresRecebidos[i];
                 //teste a propriedade
                 if(a.nomepropriedade === nomePropriedade){
-                      var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ prazoRelatar(a.statussafra_idstatussafra)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">'+statusColheita(a.statussafra_idstatussafra)+ a.prazo_colheita+'</p><p class="list-group-item-text">'+statusDestinacao(a.statussafra_idstatussafra)+a.prazo_destinacao+'</p></a>';
+                     // var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ prazoRelatar(a.statussafra_idstatussafra)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">'+statusColheita(a.statussafra_idstatussafra)+ a.prazo_colheita+'</p><p class="list-group-item-text">'+statusDestinacao(a.statussafra_idstatussafra)+a.prazo_destinacao+'</p></a>';
+                     var item ='<a id="'+i+'" class="list-group-item widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+ a.nomecultivar + prazoRelatar(a.statussafra_idstatussafra)+'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">'+statusColheita(a.statussafra_idstatussafra)+ a.prazo_colheita+'</p><p class="list-group-item-text">'+statusDestinacao(a.statussafra_idstatussafra)+a.prazo_destinacao+'</p></a>';
                     $("#cultivarRecebido").append(item);
                 }
             });
@@ -183,13 +184,17 @@ function listarCultivarRecebidos(nomePropriedade){
 function prazoRelatar(status){
 
     if(status === 7 || status === 8){
-        return '<span class="vermelho badge fa fa-thumbs-o-down"><span class="vermelho badge fa fa-chevron-right"> </span></span>';
+        //return '<span class="vermelho badge fa fa-thumbs-o-down"><span class="vermelho badge fa fa-chevron-right"> </span></span>';
+        return '<i class="vermelho fa fa-thumbs-o-down button-icon-right" data-position="top"></i>';
     }else if(status === 6 ){
-        return '<span class="verde badge fa fa-thumbs-o-up"><span class="verde badge fa fa-chevron-right"> </span></span>';
+        return '<i class="verde fa fa-thumbs-o-up button-icon-right" data-position="top"></i>';
+        //return '<span class="verde badge fa fa-thumbs-o-up"><span class="verde badge fa fa-chevron-right"> </span></span>';
     }else if(status === 1){
-         return ' <span class="laranja badge fa fa-chevron-right"> </span>';
+        return '<i class="laranja fa fa-hand-o-right button-icon-right" data-position="top"></i>';
+        // return ' <span class="laranja badge fa fa-chevron-right"> </span>';
     }else{
-        return ' <span class="amarelo badge fa fa-chevron-right"> </span>';
+        //return ' <span class="amarelo badge fa fa-chevron-right"> </span>';
+        return '<i class="amarelo fa fa-hand-o-right button-icon-right" data-position="top"></i>';
     }
 
 }
@@ -357,6 +362,9 @@ function listarEstoque(idunidade, msgErro){
             navigator.notification.confirm(
                 'Sem conexão com o servidor, Continuar off-line ou conectar-se?',
                 function(buttonIndex) {
+//                     var sessao = {idsessao: '12345',
+//                                   conectado: false
+//                                   };
                     if(buttonIndex === 2){
 
                         //msg em lista de estoque
@@ -367,18 +375,25 @@ function listarEstoque(idunidade, msgErro){
                         //msg em lista de agricultores
                         $('.uib_w_118').empty();
                         $('.uib_w_118').append('<a class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">Sem conexão com o servidor!</h4></a>');
+
+                        //sessao.conectado = false;
+
                     }else{
-                        window.navigator.app.exitApp();
+                        //window.navigator.app.exitApp();
                         //window.clearGoMainPage();
+                        //sessao.conectado = true;
                     }
+
+                    //guarda na sessao
+                   // window.sessionStorage.setItem('sessao', JSON.stringify(sessao));
 
                 },
                 'Alerta!',
                 ['Conectar-se!','Off-line']
             );
         }else{
-            navigator.notification.alert('Erro requisição servidor!', function(){
-            },"Erro!", "OK");
+           //navigator.notification.alert('Erro requisição servidor!', function(){
+           // },"Erro!", "OK");
         }
 
     });
@@ -399,12 +414,12 @@ function listarPropriedadesBackup(){
 
         $.each(backupPropriedades, function(i){
 
-            item = '<a class="list-group-item allow-badge widget uib_w_364" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="fa fa-briefcase">&nbsp;</span>'+backupPropriedades[i].nomepropriedade+'<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text idpropriedadeBackup" hidden> '+backupPropriedades[i].idpropriedade+'</p></a>';
+            item = '<a class="list-group-item widget uib_w_364" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="fa fa-briefcase">&nbsp;</span>'+backupPropriedades[i].nomepropriedade+'<i class=" amarelo glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text idpropriedadeBackup" hidden> '+backupPropriedades[i].idpropriedade+'</p></a>';
 
             $('.uib_w_363').append(item);
         });
     }else{
-        item = '<a id="infoSemBackup" class="list-group-item allow-badge widget " data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;&nbsp;Não contém propriedades armazenadas!</h4></a>';
+        item = '<a id="infoSemBackup" class="list-group-item widget " data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;&nbsp;Não contém propriedades armazenadas!</h4></a>';
 
         $('.uib_w_363').append(item);
     }
@@ -426,7 +441,7 @@ function listarAgricultoresUnidade(idunidade, msgErro){
             var item;
             $.each(listaAgricultores, function(i){
 
-                item = '<a class="list-group-item allow-badge widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+listaAgricultores[i].nome+'<i class="glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text"> '+listaAgricultores[i].sobrenome+'</p><p class="list-group-item-text usuarioOculto" hidden>'+listaAgricultores[i].idpessoa+'</p></a>';
+                item = '<a class="list-group-item widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+listaAgricultores[i].nome+'<i class="amarelo glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text"> '+listaAgricultores[i].sobrenome+'</p><p class="list-group-item-text usuarioOculto" hidden>'+listaAgricultores[i].idpessoa+'</p></a>';
 
 
                 //window.console.log('usuario='+listaAgricultores[i].usuario+'&idunidade='+2);
@@ -462,7 +477,7 @@ function listarSafras(){
         $(".uib_w_353").empty();
 
         $.each(safras, function(i){
-            item ='<a id="safra_'+i+'" class="list-group-item allow-badge widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+safras[i]+'<i class="glyphicon glyphicon-chevron-up button-icon-right" data-position="top"></i></h4></a>';
+            item ='<a id="safra_'+i+'" class="list-group-item widget" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+safras[i]+'<i class="amarelo glyphicon glyphicon-chevron-up button-icon-right" data-position="top"></i></h4></a>';
 
 
             $(".uib_w_353").append(item);
