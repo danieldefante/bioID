@@ -5,6 +5,10 @@
  /*
    hook up event handlers
  */
+ function onBackKeyDown()
+ {
+    navigator.notification.alert("Evento em construção",function(){},"Alerta:", "ok");
+ }
  function register_event_handlers()
  {
 
@@ -131,7 +135,7 @@
     $(document).on("click", ".uib_w_32", function(evt)
     {
          /*global activate_page */
-        if(window.localStorage.getItem("logSession")){
+        if(window.localStorage.getItem("logSessao")){
             activate_page("#page_4");
             $('.uib_w_154').hide();
             $('.uib_w_154').fadeIn(100);
@@ -360,7 +364,7 @@
 
          retornaListaAgrUnid();
 
-         window.listarAgricultoresUnidade(2, false);
+         window.listarAgricultoresUnidade();
 
          return false;
     });
@@ -387,14 +391,13 @@
 
          });
 
-         var dadosSessao = JSON.parse(localStorage.getItem("logSession"));
          //lista o estoque
-         window.listarEstoque(dadosSessao.idunidade, false);
+         window.listarEstoque();
      }
 
     $("#inputSenha").keypress(function(e){
         if(e.which === 13){
-            validacaoLogin();
+            window.validacaoLogin();
         }
 
     });
@@ -417,14 +420,14 @@
                 //teste da requisicao no banco esta correta
                 if(dados.sucesso){
                    //guarda dados do usuario no local storge
-                    var logSession = JSON.stringify({
+                    var logSessao = JSON.stringify({
                         idpessoa:  dados.idpessoa,
-                        idSession: dados.idSession,
-                        logTempo: dados.logTempo,
+                        sessao: dados.sessao,
+                       // tempoLogin: dados.tempoLogin,
                         papel: dados.papel,
                         idunidade: dados.idunidade
                     });
-                    window.localStorage.setItem("logSession", logSession);
+                    window.localStorage.setItem("logSessao", logSessao);
 
 
                     window.papel = dados.papel;
@@ -436,11 +439,12 @@
                         //chama o metodo que busca dados no servidor e armazena no localStorage
                         //para outro metodo acessar e criar a lista de cultivares recebidos
                         window.iniciarAgricultor();
-                        window.servArmazenarCulRecebdo(dados.idpessoa);
+                        window.servArmazenarCulRecebdo(dados.idpessoa, window.getSessao());
                         activate_page("#page_3");
                     }else{
-                        window.listarEstoque(dados.idunidade);
-                        //c(dados.idunidade);
+
+                        window.listarEstoque();
+
                         window.iniciarGerEntrev();
                         activate_page("#page_4");
                         $('.uib_w_154').hide();
@@ -688,7 +692,6 @@
                 sessionStorage.setItem("idsafra", cultivarSelecionado.idsafra);
 
                     $("#statuscultivar").show();
-                    $("#painelEstoque").hide();
                     //aparece botao de relatar se não foi relatado ainda a produçao do cultivar
 
                     switch(cultivarSelecionado.statussafra_idstatussafra) {
@@ -757,14 +760,30 @@
    }
 
 
-        /* button  .uib_w_242 */
+        /* button  .uib_w_242 voltar relatar cultivar */
     $(document).on("click", ".uib_w_242", function(evt)
     {
-        activate_page("#page_3");
-        $("#recebidos").hide();
-        $("#recebidos").fadeIn(100);
-        $("#page_3").scrollTop(0);
-        sessionStorage.removeItem("indiceSelecionado");
+
+        //voltar a lista de cultivares recebidos
+        if($('.uib_w_250').is(':visible')){
+            $('.uib_w_250').fadeOut(100, function(evt){
+                activate_page("#page_3");
+                $("#recebidos").hide();
+                $("#recebidos").fadeIn(100);
+                $("#page_3").scrollTop(0);
+                sessionStorage.removeItem("indiceSelecionado");
+            });
+        }else if($('.uib_w_416').is(':visible')){
+            $('.uib_w_416').fadeOut(100, function(evt){
+
+                $(".uib_w_250").fadeIn(100);
+            });
+        }else{
+            $('.uib_w_418').fadeOut(100, function(evt){
+
+                $(".uib_w_250").fadeIn(100);
+            });
+        }
 
          return false;
     });
@@ -773,12 +792,22 @@
         /* button  .uib_w_272 */
     $(document).on("click", ".uib_w_272", function(evt)
     {
-         /*global activate_page */
-         activate_page("#page_3");
-         $("#colheita").fadeIn(100);
-         $("#destinacao").hide();
-         $("#recebidos").hide();
-         $("#page_3").scrollTop(0);
+
+
+
+        $('.uib_w_250').fadeOut(100, function(evt){
+
+             $(".uib_w_416").fadeIn(100);
+
+         });
+
+//         /*global activate_page */
+//         //activate_page("#page_3");
+//         //$("#colheita").fadeIn(100);
+//         $("#colheita").show();
+//         $("#destinacao").hide();
+//         $("#recebidos").hide();
+//         $("#page_3").scrollTop(0);
 
          return false;
     });
@@ -1065,7 +1094,7 @@
                     .done(function(){
                         limparcamposrelatar();
                         //atualiza o local storage
-                        window.servArmazenarCulRecebdo(JSON.parse(window.localStorage.getItem("logSession")).usuario);
+                        window.servArmazenarCulRecebdo(JSON.parse(window.localStorage.getItem("logSessao")).usuario, window.getSessao());
                     });
                     }
                 },            // callback to invoke with index of button pressed
@@ -2042,10 +2071,19 @@
 
     });
 
+        /* button  Button */
+    $(document).on("click", ".uib_w_415", function(evt)
+    {
+         /*global activate_page */
+         activate_page("#uib_page_teste");
+         return false;
+    });
+
     }
  document.addEventListener("app.Ready", register_event_handlers, false);
-})();
+ document.addEventListener("backbutton", onBackKeyDown, false);
 
+})();
 
 
 

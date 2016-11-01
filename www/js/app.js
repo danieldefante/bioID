@@ -32,9 +32,9 @@ var papel;
 
 //ip do servidor
 //var ipServidor = "192.168.0.7:8080";
-//var ipServidor = "10.2.10.200:8080";
+var ipServidor = "10.2.10.200:8080";
 //var ipServidor = "localhost:8080";
-var ipServidor = "187.19.101.252:8082";
+//var ipServidor = "187.19.101.252:8082";
 //var ipServidor = "10.1.2.52:8080";
 
 /*/funcao mudar background aleatorio
@@ -86,8 +86,9 @@ function iniciarAgricultor(){
 function verificaSession(){
 
     try{
-        if(localStorage.getItem("logSession")){
-            verificarDataLogin();
+        if(localStorage.getItem("logSessao")){
+             carregaDados();
+            //verificarDataLogin();
         }else{
             //limpa o localstorage e inicia o app da pagina de login
             localStorage.clear();
@@ -100,33 +101,46 @@ function verificaSession(){
 }
 
 
-//funcao para verificar a data referente ao ultimo acesso, se estiver mais de 7 dias sem se conectar redireciona para login
-function verificarDataLogin(){
-
-    try{
-        var data = new Date(),
-            dia = data.getDate(),
-            mes = data.getMonth() + 1;
-        //teste os dias logado com ultimo login armazenado no localStorage
-        if((730 * mes) - (730 - (dia*24)) > JSON.parse(localStorage.getItem("logSession")).logTempo){
-            //alerta, redireciona para pagina login e limpa a localStorage
-            navigator.notification.alert("Por motivos de segurança pedimos que faça o login novamente!",function(){},"Alerta","OK");
-            clearGoMainPage();
-        //o app foi aberto antes de 7 dias, entao carrega informacoes da localStorage
-        }else{
-
-            carregaDados();
-        }
-    }catch(e){
-        window.alert("Erro verificarDataLogin: "+ e.message);
-        clearGoMainPage();
-    }
-}
+////funcao para verificar a data referente ao ultimo acesso, se estiver mais de 7 dias sem se conectar redireciona para login
+//function verificarDataLogin(){
+//
+//    try{
+//
+//        var dataAtual = new Date().getTime() - (5 * 24 * 60 * 60 * 1000);
+//        var tempoLogin = JSON.parse(localStorage.getItem("logSessao")).tempoLogin;
+//
+//        if(dataAtual > tempoLogin){
+//            console.log(dataAtual);
+//            console.log(tempoLogin);
+//        }
+//
+//
+//        var data = new Date(),
+//            dia = data.getDate(),
+//            mes = data.getMonth() + 1,
+//            ano = data.getFullYear();
+//
+//
+//        //teste os dias logado com ultimo login armazenado no localStorage
+//        if((730 * mes) - (730 - (dia*24)) > JSON.parse(localStorage.getItem("logSessao")).logTempo){
+//            //alerta, redireciona para pagina login e limpa a localStorage
+//            navigator.notification.alert("Por motivos de segurança pedimos que faça o login novamente!",function(){},"Alerta","OK");
+//            clearGoMainPage();
+//        //o app foi aberto antes de 7 dias, entao carrega informacoes da localStorage
+//        }else{
+//
+//            carregaDados();
+//        }
+//    }catch(e){
+//        window.alert("Erro verificarDataLogin: "+ e.message);
+//        clearGoMainPage();
+//    }
+//}
 
 //carrega os dados de cada usuario
 function carregaDados(){
     try{
-        var dadosSessao = JSON.parse(localStorage.getItem("logSession"));
+        var dadosSessao = JSON.parse(localStorage.getItem("logSessao"));
         papel = dadosSessao.papel;
 
         if(papel === "a"){
@@ -139,8 +153,8 @@ function carregaDados(){
             //usuario gerenciador e entrevistador
             window.activate_page("#page_4");
             iniciarGerEntrev();
-            listarEstoque(dadosSessao.idunidade, true);
-            listarAgricultoresUnidade(dadosSessao.idunidade, false);
+            listarEstoque();
+            listarAgricultoresUnidade();
         }else{
             clearGoMainPage();
         }
@@ -216,8 +230,27 @@ function statusDestinacao(statussafra){
 
 }
 
+
+function updateSessao(sessao){
+    var logSessao = JSON.parse(window.localStorage.getItem("logSessao"));
+    logSessao.sessao = sessao;
+    window.localStorage.setItem("logSessao", JSON.stringify(logSessao));
+}
+
+
+function getSessao(){
+    var logSessao = JSON.parse(window.localStorage.getItem("logSessao"));
+    return logSessao.sessao;
+
+}
+
+function getIdUnidade(){
+    var logSessao = JSON.parse(window.localStorage.getItem("logSessao"));
+    return logSessao.idunidade;
+}
+
 //servico de busca dos dados no servidor, consome dados de internet e armazena no localStorage
-function servArmazenarCulRecebdo(idpessoa){
+function servArmazenarCulRecebdo(idpessoa, sessao){
 
 
     var cultivaresRecebidos = [];
@@ -226,7 +259,7 @@ function servArmazenarCulRecebdo(idpessoa){
     var safras = [];
 
 
-    $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/listarrecebidos", "idpessoa="+idpessoa, function(dados){
+    $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/listarrecebidos", "idpessoa="+idpessoa+'&sessao='+sessao, function(dados){
         //armazena no localStorge
 
         if(dados.sucesso){
@@ -248,7 +281,7 @@ function servArmazenarCulRecebdo(idpessoa){
                 }
 
             });
-
+            window.updateSessao(dados.sessao);
         }/*else{
             navigator.notification.confirm(
             'Erro de busca!',
@@ -334,13 +367,17 @@ function listarPropriedades(){
 
         $("#cultivarRecebido").append(item);
 
-        navigator.notification.alert("Nenhum cultivar foi recebido!",function(){},"Alerta","OK");
+        navigator.notification.alert("Nenhum cultivar recebido!",function(){},"Alerta","OK");
     }
 }
 
-function listarEstoque(idunidade, msgErro){
+function listarEstoque(){
+    var idunidade = getIdUnidade();
+    var sessao = getSessao();
 
-    var data = "idunidade="+idunidade;
+    var data = "idunidade="+idunidade+'&sessao='+sessao;
+
+
     $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/unidade/listarestoque", data, function(dados){
 
         if(dados.sucesso){
@@ -351,14 +388,14 @@ function listarEstoque(idunidade, msgErro){
             var i = 0;
             $.each(estoque, function(){
 
-                $('.uib_w_127').append('<a id="culEstoque"'+ i +' class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+estoque[i].nomecultivar+'</h4><p class="list-group-item-text">Quantidade no Estoque: '+parseFloat(estoque[i].quantidade.toFixed(2))+' '+estoque[i].grandeza+'</p></a>');
+                $('.uib_w_127').append('<a id="culEstoque"'+ i +' class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+estoque[i].nomecultivar+'</h4><p class="list-group-item-text">'+parseFloat(estoque[i].quantidade.toFixed(2))+' '+estoque[i].grandeza+'</p></a>');
                 i++;
             });
+            updateSessao(dados.sessao);
         }
     },"json")
     //Tratamento de erro da requisicao servico RESt login
     .fail(function(){
-        if(msgErro){
             navigator.notification.confirm(
                 'Sem conexão com o servidor, Continuar off-line ou conectar-se?',
                 function(buttonIndex) {
@@ -391,10 +428,7 @@ function listarEstoque(idunidade, msgErro){
                 'Alerta!',
                 ['Conectar-se!','Off-line']
             );
-        }else{
-           //navigator.notification.alert('Erro requisição servidor!', function(){
-           // },"Erro!", "OK");
-        }
+
 
     });
     //lista os agricultores da unidade
@@ -428,8 +462,9 @@ function listarPropriedadesBackup(){
 }
 
 
-function listarAgricultoresUnidade(idunidade, msgErro){
-    var data = "idunidade="+idunidade;
+function listarAgricultoresUnidade(){
+
+    var data = "idunidade="+getIdUnidade()+'&sessao='+getSessao();
 
     window.console.log(data);
     $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/unidade/listarAgricultoresUnidade", data, function(dados){
@@ -449,17 +484,17 @@ function listarAgricultoresUnidade(idunidade, msgErro){
 
                 $('.uib_w_118').append(item);
             });
+            updateSessao(dados.sessao);
         }
     },"json")
     //Tratamento de erro da requisicao servico RESt login
     .fail(function(){
-        if(msgErro){
 
-            navigator.notification.alert('Erro requisição servidor!', function(){
-            },"Erro!", "OK");
-        }
+        navigator.notification.alert('Erro requisição servidor!', function(){},"Erro!", "OK");
+
 
     });
+
 }
 
 //limpa a memoria do app e redireciona para tela de login
@@ -517,6 +552,10 @@ function listarCultivarSafras(safra, classSafra){
     });
 
 }
+
+
+
+
 
 
 
