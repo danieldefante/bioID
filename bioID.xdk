@@ -6,7 +6,7 @@
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "jsapp/template-blank-cordova-ad-project/sample.zip",
       "projectGuid": "45101c27-9c57-422a-a257-01ff97b98657",
-      "lastModifiedDate": 1477590838178,
+      "lastModifiedDate": 1478193713174,
       "creationDate": 1466424083911
     },
     "XDK-app-designer": "true",
@@ -140,6 +140,27 @@
         "description": "Cordova Geolocation Plugin",
         "data": {},
         "dependedBy": []
+      },
+      {
+        "id": "it.mobimentum.phonegapspinnerplugin",
+        "name": "SpinnerPlugin",
+        "version": "1.2.1",
+        "originType": "repo",
+        "origin": "https://github.com/mobimentum/phonegap-plugin-loading-spinner.git",
+        "gitref": "",
+        "subdir": ".",
+        "paramvals": {},
+        "sourceLocation": "plugins/it.mobimentum.phonegapspinnerplugin",
+        "selectedState": "Included",
+        "checksum": "2690e543",
+        "dependsOn": [],
+        "topLevel": true,
+        "cordovaVersion": ">=3.0.0",
+        "permissions": {},
+        "description": "A native loading indicator",
+        "data": {},
+        "dependedBy": [],
+        "custom": "true"
       }
     ],
     "buildConfigurations": {
@@ -148,7 +169,7 @@
         "runtime_": "Crosswalk with Cordova 3.x",
         "name_": "Android",
         "preferences_": {
-          "android-minSdkVersion": "14",
+          "android-minSdkVersion": "15",
           "android-targetSdkVersion": "21",
           "android-installLocation": "auto",
           "android-signed": true
@@ -233,10 +254,10 @@
         "excludedLibraries_": "",
         "cordovaCLIVersion_": "5.4.1",
         "crosswalkVersion_": "16",
-        "appVersion_": "0.0.5",
+        "appVersion_": "0.0.6",
         "appAuthor_": "Intel XDK",
         "appDescription_": "Template to develop a Cordova mobile web app using the App Designer UI editor.",
-        "appVersionCode_": "6"
+        "appVersionCode_": "7"
       },
       "iOS": {
         "platform_": "ios",

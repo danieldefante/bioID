@@ -9,6 +9,8 @@
  {
     navigator.notification.alert("Evento em construção",function(){},"Alerta:", "ok");
  }
+
+
  function register_event_handlers()
  {
 
@@ -47,6 +49,7 @@
 
 
         $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/pessoa/listarpropriedades", data, function(dados){
+            window.spinnerplugin.show();
             //teste da requisicao no banco esta correta
             if(dados.sucesso){
 
@@ -57,17 +60,12 @@
         },"json")
         //Tratamento de erro da requisicao servico RESt login
         .fail(function(){
-            navigator.notification.confirm(
-                'Sem conexão com o servidor!',
-                function() {
-                    //limpa a tela e vai para a pagina inicial
-                    window.clearGoMainPage();
-                },
-                'Erro',
-                ['OK']
-            );
+            window.spinnerplugin.hide();
+            window.verificarConexao();
 
 
+        }).done(function(){
+            window.spinnerplugin.hide();
         });
 
 
@@ -284,6 +282,11 @@
                     ['Não','Sim']     // buttonLabels
                 );
             }else{
+                //verifica se existe conexao, se existir baixa do servidor informações
+                if(navigator.connection.type != 'none'){
+                    window.servArmazenarCulRecebdo(window.getIdPessoa(), window.getSessao());
+                    c('entrou');
+                }
                 var t = ["#recebidos","#destinacao", "#colheita", "#relatorios","#safra"];
 
                 $(boxFades(t)).fadeOut(100, function(evt){
@@ -402,10 +405,14 @@
 
     });
 
+
+
      /* button  .uib_w_10 */
     $(document).on("click", ".uib_w_10", function(evt)
     {
+
          validacaoLogin();
+
          return false;
     });
 
@@ -417,6 +424,7 @@
             var data = usuario+"&senha="+$("#inputSenha").val();
 
             $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/pessoa/validacao", data, function(dados){
+                window.spinnerplugin.show();
                 //teste da requisicao no banco esta correta
                 if(dados.sucesso){
                    //guarda dados do usuario no local storge
@@ -490,19 +498,11 @@
             },"json")
             //Tratamento de erro da requisicao servico RESt login
             .fail(function(){
-                navigator.notification.confirm(
-                    'Sem conexão com o servidor!',
-                    function() {
-                        //limpa o campo senha
-                        $("#inputSenha").val('');
-                        //limpa a tela e vai para a pagina inicial
-                        window.clearGoMainPage();
-                    },
-                    'Erro',
-                    ['OK']
-                );
+                window.spinnerplugin.hide();
+                window.verificarConexao();
 
-
+            }).done(function(){
+                 window.spinnerplugin.hide();
             });
 
 
@@ -637,16 +637,6 @@
          }else{
              $(".backgroundInicial").css("background-image", 'url("images/background5.jpg")');
          }
-    });
-
-
-
-        /* button  .uib_w_169 */
-    $(document).on("click", ".uib_w_169", function(evt)
-    {
-         /*global activate_page */
-         activate_page("#pageCidades");
-         return false;
     });
 
 
@@ -841,7 +831,7 @@
 
 
             $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/pessoa/inseriragricultor", data, function(dados){
-
+                window.spinnerplugin.show();
                 //se cadastrado entao vai para pagina inicial
                 if(dados.sucesso){
                     //vai para a pagina de login
@@ -862,6 +852,7 @@
             },"json")
             //Tratamento de erro da requisicao servico RESt login
             .fail(function(){
+                window.spinnerplugin.hide();
                 navigator.notification.confirm(
                     'Cadastro não efetuado, sem conexão com o servidor!',
                     function() {
@@ -874,6 +865,8 @@
                 );
 
 
+            }).done(function(){
+                 window.spinnerplugin.hide();
             });
 
         //mensagem de alerta
@@ -1070,6 +1063,7 @@
                     var data = "idsafra="+sessionStorage.getItem("idsafra")+"&ultimadatacolheita="+$("#datacolheita").val()+"&qtdcolhida="+$("#qtdcolhida").val()+"&statussafra_idstatussafra="+statussafra;
 
                     $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/relatarcolheita", data, function(dados){
+                         window.spinnerplugin.show();
                         //se safra foi relatada
                         if(dados.sucesso){
                             navigator.notification.alert("Colheita relatada!", function(){},"Alerta!", "OK");
@@ -1081,6 +1075,7 @@
                     },"json")
                     //Tratamento de erro da requisicao servico RESt login
                     .fail(function(){
+                        window.spinnerplugin.hide();
                         navigator.notification.confirm(
                             'Colheita não enviada!',
                             function() {
@@ -1095,6 +1090,7 @@
                         limparcamposrelatar();
                         //atualiza o local storage
                         window.servArmazenarCulRecebdo(JSON.parse(window.localStorage.getItem("logSessao")).usuario, window.getSessao());
+                        window.spinnerplugin.show();
                     });
                     }
                 },            // callback to invoke with index of button pressed
@@ -1798,6 +1794,7 @@
         var data = 'idpropriedade='+idpropriedade;
         var cultivaresArelatar;
         $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/backupentrevista", data, function(dados){
+             window.spinnerplugin.show();
             //teste da requisicao no banco esta correta
             if(dados.sucesso){
 
@@ -1818,21 +1815,14 @@
         },"json")
         //Tratamento de erro da requisicao servico RESt login
         .fail(function(){
-            navigator.notification.confirm(
-                'Sem conexão com o servidor!',
-                function() {
-                    //limpa a tela e vai para a pagina inicial
-                    window.clearGoMainPage();
-                },
-                'Erro',
-                ['OK']
-            );
+            window.spinnerplugin.hide();
+            window.verificarConexao();
 
 
         }).done(function(){
 
             window.localStorage.setItem('cultivaresArelatar', JSON.stringify(cultivaresArelatar));
-
+            window.spinnerplugin.hide();
         });
 
 //
@@ -1891,12 +1881,13 @@
             var item;
             //c(idPropriedade);
             $.each(cultivaresArelatar, function(i){
+                c(cultivaresArelatar[i]);
                 if(cultivaresArelatar[i].idpropriedade == idPropriedade){
                     if(testeCultivarRelatado(cultivaresArelatar[i].idsafra)){
-                        item = '<a class="list-group-item allow-badge widget uib_w_392" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+cultivaresArelatar[i].nomecultivar+'<i class="verde fa fa-thumbs-o-up button-icon-right" data-position="top"></i></h4><p class="list-group-item-text">Quantidade Recebida: '+cultivaresArelatar[i].qtdrecebida+' '+cultivaresArelatar[i].grandeza_recebida+'</p></a>';
+                        item = '<a class="list-group-item allow-badge widget uib_w_392" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+cultivaresArelatar[i].nomecultivar+'<i class="verde fa fa-thumbs-o-up button-icon-right" data-position="top"></i></h4><p class="list-group-item-text">Data recebimento: '+cultivaresArelatar[i].datareceb+'</p><p class="list-group-item-text">Quantidade Recebida: '+cultivaresArelatar[i].qtdrecebida+' '+cultivaresArelatar[i].grandeza_recebida+'</p></a>';
 
                     }else{
-                        item = '<a class="list-group-item allow-badge widget uib_w_392" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+cultivaresArelatar[i].nomecultivar+'<i class="amarelo fa fa-hand-o-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text">Quantidade Recebida: '+cultivaresArelatar[i].qtdrecebida+' '+cultivaresArelatar[i].grandeza_recebida+'</p><p class="list-group-item-text">idsafra: '+cultivaresArelatar[i].idsafra+'</p></a>';
+                        item = '<a class="list-group-item allow-badge widget uib_w_392" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+cultivaresArelatar[i].nomecultivar+'<i class="amarelo fa fa-hand-o-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text">Data recebimento: '+cultivaresArelatar[i].datareceb+'</p><p class="list-group-item-text">Quantidade Recebida: '+cultivaresArelatar[i].qtdrecebida+' '+cultivaresArelatar[i].grandeza_recebida+'</p></a>';
 
                     }
 
@@ -2078,6 +2069,32 @@
          activate_page("#uib_page_teste");
          return false;
     });
+
+        /* button  .uib_w_169 */
+    $(document).on("click", ".uib_w_169", function(evt)
+    {
+        window.spinnerplugin.show();
+        window.navigator.geolocation.getCurrentPosition(function(position) {
+        window.spinnerplugin.hide();
+        window.alert('Latitude: '          + position.coords.latitude          + '\n' +
+              'Longitude: '         + position.coords.longitude         + '\n' +
+              'Altitude: '          + position.coords.altitude          + '\n' +
+              'Accuracy: '          + position.coords.accuracy          + '\n' +
+              'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+              'Heading: '           + position.coords.heading           + '\n' +
+              'Speed: '             + position.coords.speed             + '\n' +
+              'Timestamp: '         + position.timestamp                + '\n');
+    }, function onError(error) {
+        window.spinnerplugin.hide();
+        window.alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+    });
+
+
+         return false;
+    });
+
+
 
     }
  document.addEventListener("app.Ready", register_event_handlers, false);

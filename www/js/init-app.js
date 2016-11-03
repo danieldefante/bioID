@@ -59,7 +59,7 @@ app.initEvents = function() {
 
     //escolhe um background aleatorio
     //window.mudarBackground();
-
+    //window.verificarConexao();
     //verifica se usuario esta logado em alguma sessao
     window.verificaSession();
 

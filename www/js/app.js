@@ -32,9 +32,9 @@ var papel;
 
 //ip do servidor
 //var ipServidor = "192.168.0.7:8080";
-var ipServidor = "10.2.10.200:8080";
+//var ipServidor = "10.2.10.200:8080";
 //var ipServidor = "localhost:8080";
-//var ipServidor = "187.19.101.252:8082";
+var ipServidor = "187.19.101.252:8082";
 //var ipServidor = "10.1.2.52:8080";
 
 /*/funcao mudar background aleatorio
@@ -59,6 +59,15 @@ function mudarBackground(){
     }
 }*/
 
+function verificarConexao(){
+
+    if(navigator.connection.type == 'none'){
+
+
+        navigator.notification.alert('Detectamos que o dispositivo está sem conexão à internet, Algumas informações e funções dependem do servidor. Conecte-se a internet se possível!', function(){
+        },"Alerta!", "OK");
+    }
+}
 
 
 //papel agricultor
@@ -147,14 +156,17 @@ function carregaDados(){
             //usuario agricultor
             window.activate_page("#page_3");
             iniciarAgricultor();
+            //verifica se tem conexao com a internet, se tem conexao baixa as atualizacoes
+            verificarConexao();
             listarPropriedades();
             listarSafras();
+
         }else if(papel === "g" || papel === "e" || papel === "d"){
             //usuario gerenciador e entrevistador
             window.activate_page("#page_4");
             iniciarGerEntrev();
             listarEstoque();
-            listarAgricultoresUnidade();
+            //listarAgricultoresUnidade();
         }else{
             clearGoMainPage();
         }
@@ -178,9 +190,10 @@ function listarCultivarRecebidos(nomePropriedade){
             clearGoMainPage();
         //acessa o localStorge e cria a lista
         }else{
+            var a;
             //percore o tamanho do cultivares recebidos e cria um novo item
             $.each(cultivaresRecebidos, function(i){
-                var a = cultivaresRecebidos[i];
+                a = cultivaresRecebidos[i];
                 //teste a propriedade
                 if(a.nomepropriedade === nomePropriedade){
                      // var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ prazoRelatar(a.statussafra_idstatussafra)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">'+statusColheita(a.statussafra_idstatussafra)+ a.prazo_colheita+'</p><p class="list-group-item-text">'+statusDestinacao(a.statussafra_idstatussafra)+a.prazo_destinacao+'</p></a>';
@@ -249,9 +262,13 @@ function getIdUnidade(){
     return logSessao.idunidade;
 }
 
+function getIdPessoa(){
+    var logSessao = JSON.parse(window.localStorage.getItem("logSessao"));
+    return logSessao.idpessoa;
+}
+
 //servico de busca dos dados no servidor, consome dados de internet e armazena no localStorage
 function servArmazenarCulRecebdo(idpessoa, sessao){
-
 
     var cultivaresRecebidos = [];
     var propriedades = [];
@@ -260,8 +277,8 @@ function servArmazenarCulRecebdo(idpessoa, sessao){
 
 
     $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/cultivar/listarrecebidos", "idpessoa="+idpessoa+'&sessao='+sessao, function(dados){
+        window.spinnerplugin.show();
         //armazena no localStorge
-
         if(dados.sucesso){
 
             //armazena os cultivares recebidos
@@ -282,27 +299,12 @@ function servArmazenarCulRecebdo(idpessoa, sessao){
 
             });
             window.updateSessao(dados.sessao);
-        }/*else{
-            navigator.notification.confirm(
-            'Erro de busca!',
-            function() {
-                clearGoMainPage();
-            },
-            'Erro',
-            ['OK']
-        );
-        }*/
+        }
     }, "json")
     //Tratamento de erro da requisicao servico RESt login
     .fail(function(){
-        navigator.notification.confirm(
-            'Sem conexão com o servidor!',
-            function() {
-                clearGoMainPage();
-            },
-            'Erro',
-            ['OK']
-        );
+        window.spinnerplugin.hide();
+        verificarConexao();
     })
     .done(function(){
         //armazena no localstorage
@@ -321,10 +323,10 @@ function servArmazenarCulRecebdo(idpessoa, sessao){
         //localStorage.removeItem("perguntas");
         //localStorage.setItem("perguntas", JSON.stringify(perguntas));
         //chama o metodo que popula o item de propriedades
-    listarPropriedades();
+        listarPropriedades();
         //chama o metodo que lista as safras
-    listarSafras();
-
+        listarSafras();
+        window.spinnerplugin.hide();
     });
 
 
@@ -379,7 +381,7 @@ function listarEstoque(){
 
 
     $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/unidade/listarestoque", data, function(dados){
-
+        window.spinnerplugin.show();
         if(dados.sucesso){
             var estoque = dados.estoque;
             sessionStorage.setItem('estoque', JSON.stringify(estoque));
@@ -388,7 +390,7 @@ function listarEstoque(){
             var i = 0;
             $.each(estoque, function(){
 
-                $('.uib_w_127').append('<a id="culEstoque"'+ i +' class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+estoque[i].nomecultivar+'</h4><p class="list-group-item-text">'+parseFloat(estoque[i].quantidade.toFixed(2))+' '+estoque[i].grandeza+'</p></a>');
+                $('.uib_w_127').append('<a id="culEstoque"'+ i +' class="list-group-item widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">'+estoque[i].nomecultivar+'</h4><p class="list-group-item-text">'+parseFloat(estoque[i].quantidade.toFixed(2))+' '+estoque[i].grandeza+'</p></a>');
                 i++;
             });
             updateSessao(dados.sessao);
@@ -396,40 +398,47 @@ function listarEstoque(){
     },"json")
     //Tratamento de erro da requisicao servico RESt login
     .fail(function(){
-            navigator.notification.confirm(
-                'Sem conexão com o servidor, Continuar off-line ou conectar-se?',
-                function(buttonIndex) {
-//                     var sessao = {idsessao: '12345',
-//                                   conectado: false
-//                                   };
-                    if(buttonIndex === 2){
-
-                        //msg em lista de estoque
-                        $('.uib_w_127').empty();
-                        $('.uib_w_127').append('<a class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">Sem conexão com o servidor!</h4></a>');
+        window.spinnerplugin.hide();
+        window.verificarConexao();
 
 
-                        //msg em lista de agricultores
-                        $('.uib_w_118').empty();
-                        $('.uib_w_118').append('<a class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">Sem conexão com o servidor!</h4></a>');
+        //msg em lista de agricultores
+        $('.uib_w_127').empty().append('<a class="list-group-item widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">Sem conexão com o servidor!</h4></a>');
 
-                        //sessao.conectado = false;
+//            navigator.notification.confirm(
+//                'Sem conexão com o servidor, Continuar off-line ou conectar-se?',
+//                function(buttonIndex) {
+//
+//                    if(buttonIndex === 2){
+//
+//                        //msg em lista de estoque
+//                        $('.uib_w_127').empty();
+//                        $('.uib_w_127').append('<a class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">Sem conexão com o servidor!</h4></a>');
+//
+//
+//                        //msg em lista de agricultores
+//                        $('.uib_w_118').empty();
+//                        $('.uib_w_118').append('<a class="list-group-item allow-badge widget uib_w_128" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">Sem conexão com o servidor!</h4></a>');
+//
+//                        //sessao.conectado = false;
+//
+//                    }else{
+//                        //window.navigator.app.exitApp();
+//                        //window.clearGoMainPage();
+//                        //sessao.conectado = true;
+//                    }
+//
+//                    //guarda na sessao
+//                   // window.sessionStorage.setItem('sessao', JSON.stringify(sessao));
+//
+//                },
+//                'Alerta!',
+//                ['Conectar-se!','Off-line']
+//            );
 
-                    }else{
-                        //window.navigator.app.exitApp();
-                        //window.clearGoMainPage();
-                        //sessao.conectado = true;
-                    }
 
-                    //guarda na sessao
-                   // window.sessionStorage.setItem('sessao', JSON.stringify(sessao));
-
-                },
-                'Alerta!',
-                ['Conectar-se!','Off-line']
-            );
-
-
+    }).done(function(){
+        window.spinnerplugin.hide();
     });
     //lista os agricultores da unidade
 //    .done(function(){
@@ -468,7 +477,7 @@ function listarAgricultoresUnidade(){
 
     window.console.log(data);
     $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/unidade/listarAgricultoresUnidade", data, function(dados){
-
+        window.spinnerplugin.show();
         if(dados.sucesso){
             var listaAgricultores = dados.listaAgricultores;
             sessionStorage.setItem('listaAgricultores', JSON.stringify(listaAgricultores));
@@ -489,10 +498,12 @@ function listarAgricultoresUnidade(){
     },"json")
     //Tratamento de erro da requisicao servico RESt login
     .fail(function(){
+        window.spinnerplugin.hide();
+        window.verificarConexao();
+        $('.uib_w_118').empty().append('<a class="list-group-item widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-chevron-right"></span><h4 class="list-group-item-heading">Sem conexão com o servidor!</h4></a>');
 
-        navigator.notification.alert('Erro requisição servidor!', function(){},"Erro!", "OK");
-
-
+    }).done(function(){
+        window.spinnerplugin.hide();
     });
 
 }
