@@ -7,7 +7,144 @@
  */
  function onBackKeyDown()
  {
-    navigator.notification.alert("Evento em construção",function(){},"Alerta:", "ok");
+
+
+     //esconde o menu hambueguer
+     function escondeMenuHamb(item){
+
+         var esconder = true;
+         if($('#'+item).is(':visible') && $('.botaoMenu').is(':visible')){
+             $('#'+item).collapse('hide');
+             esconder= false;
+         }
+         return esconder;
+     }
+
+    //pagina inicial
+     if($('#mainpage').is(":visible")){
+        navigator.notification.confirm(
+            'Deseja fechar o app?', // message
+            function(buttonIndex) {
+                if(buttonIndex == 2){
+                    navigator.app.exitApp();
+                }
+            },            // callback to invoke with index of button pressed
+            'Confirmação',           // title
+            ['Cancelar', 'Fechar']     // buttonLabels
+         );
+    //pagina login
+     }else if($('#page_1').is(":visible")){
+         activate_page("#mainpage");
+         $('.uib_w_133').hide();
+         $('.uib_w_133').fadeIn(100);
+    //pagina cadastro
+     }else if($('#page_2').is(":visible")){
+        if(window.localStorage.getItem("logSessao")){
+            activate_page("#page_4");
+            $('.uib_w_154').hide();
+            $('.uib_w_154').fadeIn(100);
+        }else{
+
+            $(".camposcadastro").val("");
+            activate_page("#mainpage");
+            $('.uib_w_133').hide();
+            $('.uib_w_133').fadeIn(100);
+        }
+
+     //pagina inicial agricultor, cultivares recebidos
+     }else if($('#recebidos').is(":visible") && escondeMenuHamb('bs-navbar-1')){
+         navigator.notification.confirm(
+            'Deseja fechar o app?', // message
+            function(buttonIndex) {
+                if(buttonIndex == 2){
+                    navigator.app.exitApp();
+                }
+            },            // callback to invoke with index of button pressed
+            'Confirmação',           // title
+            ['Cancelar', 'Fechar']     // buttonLabels
+         );
+     //pagina safras agricultor
+     }else if($('#safra').is(":visible") && escondeMenuHamb('bs-navbar-1')){
+         $('#safra').fadeOut(100, function(evt){
+            $("#recebidos").fadeIn(100);
+        });
+     //pagina relatorios
+     }else if($('#relatorios').is(":visible") && escondeMenuHamb('bs-navbar-1')){
+          $('#relatorios').fadeOut(100, function(evt){
+            $("#recebidos").fadeIn(100);
+        });
+     //pagina relatar cultivar
+     }else if($('#page_6').is(":visible") && escondeMenuHamb('bs-navbar-1')){
+        //voltar a lista de cultivares recebidos
+        if($('.uib_w_250').is(':visible')){
+            $('.uib_w_250').fadeOut(100, function(evt){
+                activate_page("#page_3");
+                $("#recebidos").hide();
+                $("#recebidos").fadeIn(100);
+                $("#page_3").scrollTop(0);
+                sessionStorage.removeItem("indiceSelecionado");
+            });
+        }else if($('.uib_w_416').is(':visible')){
+            $('.uib_w_416').fadeOut(100, function(evt){
+
+                $(".uib_w_250").fadeIn(100);
+            });
+        }else{
+            $('.uib_w_418').fadeOut(100, function(evt){
+
+                $(".uib_w_250").fadeIn(100);
+            });
+        }
+
+     //pagina de configuracoes
+     }else if($('#page_99').is(":visible")){
+         if(window.papel === "a"){
+             activate_page("#page_3");
+         }else if(window.papel === "e" || window.papel === "g"){
+             activate_page("#page_4");
+         }else{
+             window.clearGoMainPage();
+         }
+     //inicio entrevistador, estoque
+     }else if($('.uib_w_123').is(":visible") && escondeMenuHamb('bs-navbar-2')){
+
+
+         navigator.notification.confirm(
+            'Deseja fechar o app?', // message
+            function(buttonIndex) {
+                if(buttonIndex == 2){
+                    navigator.app.exitApp();
+                }
+            },            // callback to invoke with index of button pressed
+            'Confirmação',           // title
+            ['Cancelar', 'Fechar']     // buttonLabels
+         );
+
+     //lista agricultores papel entrevistador var t = [".uib_w_116",".uib_w_123", ".uib_w_361", ".uib_w_378"];
+     }else if($('.uib_w_116').is(":visible") && escondeMenuHamb('bs-navbar-2')){
+         $('.uib_w_154').fadeOut(100, function(evt){
+             $('.uib_w_116').hide();
+             $('.uib_w_123').show();
+             $(".uib_w_154").fadeIn(100);
+         });
+
+       //entrevistador
+     }else if($('.uib_w_361').is(":visible") && escondeMenuHamb('bs-navbar-2')){
+         $('.uib_w_154').fadeOut(100, function(evt){
+             $('.uib_w_361').hide();
+             $('.uib_w_123').show();
+             $(".uib_w_154").fadeIn(100);
+
+         });
+     //entrevistador
+     }else if($('.uib_w_361').is(":visible") && escondeMenuHamb('bs-navbar-2')){
+         $('.uib_w_154').fadeOut(100, function(evt){
+             $('.uib_w_378').hide();
+             $('.uib_w_123').show();
+             $(".uib_w_154").fadeIn(100);
+
+         });
+     }
  }
 
 
@@ -138,6 +275,8 @@
             $('.uib_w_154').hide();
             $('.uib_w_154').fadeIn(100);
         }else{
+
+            $(".camposcadastro").val("");
             activate_page("#mainpage");
             $('.uib_w_133').hide();
             $('.uib_w_133').fadeIn(100);
@@ -805,7 +944,17 @@
         /* button  .uib_w_197 */
     $(document).on("click", ".uib_w_197", function(evt)
     {
-         navigator.app.exitApp();
+
+        navigator.notification.confirm(
+            'Deseja fechar o app?', // message
+            function(buttonIndex) {
+                if(buttonIndex == 2){
+                    navigator.app.exitApp();
+                }
+            },            // callback to invoke with index of button pressed
+            'Confirmação',           // title
+            ['Cancelar', 'Fechar']     // buttonLabels
+         );
 
          return false;
     });
@@ -837,9 +986,9 @@
                     //vai para a pagina de login
                     navigator.notification.alert(dados.mensagem, function(){
                         $(".camposcadastro").val("");
-                        activate_page("#page_1");
-                        $("#inputUsuario").val();
-                        $("#inputUsuario").focus();
+                        activate_page("#mainpage");
+                        //$("#inputUsuario").val();
+                        //$("#inputUsuario").focus();
 
                     },"Alerta!", "OK");
 
@@ -2073,22 +2222,29 @@
         /* button  .uib_w_169 */
     $(document).on("click", ".uib_w_169", function(evt)
     {
+
+
         window.spinnerplugin.show();
         window.navigator.geolocation.getCurrentPosition(function(position) {
-        window.spinnerplugin.hide();
-        window.alert('Latitude: '          + position.coords.latitude          + '\n' +
-              'Longitude: '         + position.coords.longitude         + '\n' +
-              'Altitude: '          + position.coords.altitude          + '\n' +
-              'Accuracy: '          + position.coords.accuracy          + '\n' +
-              'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-              'Heading: '           + position.coords.heading           + '\n' +
-              'Speed: '             + position.coords.speed             + '\n' +
-              'Timestamp: '         + position.timestamp                + '\n');
+
+
+            window.spinnerplugin.hide();
+            navigator.notification.alert("Coordenada local obtida!",function(){
+                $('#igpslat').val(position.coords.latitude);
+                $('#igpslong').val(position.coords.longitude);
+            },"Sucesso!", "OK");
+
     }, function onError(error) {
+           // navigator.notification.alert(error.code,function(){},"Alerta:", "OK");
         window.spinnerplugin.hide();
-        window.alert('code: '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
-    });
+
+        navigator.notification.alert('Erro em obter coordenada!\nVerifique se está ativado sua localização ou existe conexão à internet!',function(){
+            $('#igpslat').val('0');
+            $('#igpslong').val('0');
+        },"Erro!", "OK");
+
+
+    }, { timeout: 20000 });
 
 
          return false;
