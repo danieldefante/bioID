@@ -32,6 +32,20 @@
             'Confirmação',           // title
             ['Cancelar', 'Fechar']     // buttonLabels
          );
+     //sobre
+     }else if($('.uib_w_145').is(":visible")){
+        $('.uib_w_145').modal('toggle');
+
+     //voltar dados cultivar agricultor
+     }else if($('.uib_w_310').is(":visible")){
+         $('.uib_w_310').modal('toggle');
+
+//         $('.uib_w_401').fadeOut(100, function(evt){
+//            activate_page("#page_4");
+//            $(".uib_w_154").fadeIn(100);
+//         });
+
+
     //pagina login
      }else if($('#page_1').is(":visible")){
          activate_page("#mainpage");
@@ -67,6 +81,7 @@
      }else if($('#safra').is(":visible") && escondeMenuHamb('bs-navbar-1')){
          $('#safra').fadeOut(100, function(evt){
             $("#recebidos").fadeIn(100);
+             window.console.log('requisicao');
         });
      //pagina relatorios
      }else if($('#relatorios').is(":visible") && escondeMenuHamb('bs-navbar-1')){
@@ -75,14 +90,20 @@
         });
      //pagina relatar cultivar
      }else if($('#page_6').is(":visible") && escondeMenuHamb('bs-navbar-1')){
-        //voltar a lista de cultivares recebidos
+            if(window.navigator.connection.type != 'none'){
+                window.servArmazenarCulRecebdo(window.getIdPessoa(), window.getSessao());
+
+            }
+
+         //voltar a lista de cultivares recebidos
         if($('.uib_w_250').is(':visible')){
             $('.uib_w_250').fadeOut(100, function(evt){
                 activate_page("#page_3");
                 $("#recebidos").hide();
                 $("#recebidos").fadeIn(100);
                 $("#page_3").scrollTop(0);
-                sessionStorage.removeItem("indiceSelecionado");
+                //sessionStorage.removeItem("indiceSelecionado");
+                window.sessionStorage.clear();
             });
         }else if($('.uib_w_416').is(':visible')){
             $('.uib_w_416').fadeOut(100, function(evt){
@@ -96,7 +117,7 @@
             });
         }
 
-     //pagina de configuracoes
+//     //pagina de configuracoes
      }else if($('#page_99').is(":visible")){
          if(window.papel === "a"){
              activate_page("#page_3");
@@ -136,14 +157,32 @@
              $(".uib_w_154").fadeIn(100);
 
          });
-     //entrevistador
-     }else if($('.uib_w_361').is(":visible") && escondeMenuHamb('bs-navbar-2')){
+     //entrevistador lista de propriedade do agricultor
+     }else if($('.uib_w_378').is(":visible") && escondeMenuHamb('bs-navbar-2')){
          $('.uib_w_154').fadeOut(100, function(evt){
              $('.uib_w_378').hide();
-             $('.uib_w_123').show();
+             $('.uib_w_116').show();
              $(".uib_w_154").fadeIn(100);
 
          });
+     //modal relatar colheita e destinacao entrevistador
+     }else if($('.uib_w_397').is(":visible")){
+          $('.uib_w_397').modal('toggle');
+
+        $('.uib_w_413').children('select').val('Kilo(s)');
+        $('.uib_w_400').children('select').val('Consumo');
+        $('.uib_w_412').children('input').val('');
+        $('.uib_w_409').children('input').val('');
+        $('.uib_w_398').children('select').val('Kilo(s)');
+        $('.uib_w_405').children('div .text-container').empty().append('<p id="maisDestinacao"><span class=" fa fa-plus"></span>&nbsp;&nbsp; destinação</p><hr>');
+
+     //entrevistador dados da propriedade
+     }else if($('#page_7').is(":visible")){
+         $('.uib_w_401').fadeOut(100, function(evt){
+            activate_page("#page_4");
+            $(".uib_w_154").fadeIn(100);
+         });
+
      }
  }
 
@@ -221,7 +260,10 @@
 
      //esqueceu a senha
      $(document).on("click", "#esqueceuSenha", function(evt){
-         navigator.notification.alert("suporte_bioid@fundetec.org.br",function(){},"Contato:", "Sair");
+         //navigator.notification.alert("suporte_bioid@fundetec.org.br",function(){},"Contato:", "Sair");
+
+         navigator.app.loadUrl('http://'+window.ipServidor+'/Projeto_BioID-war/recuperarsenha.html', { openExternal:true });
+
      });
 
 
@@ -424,7 +466,7 @@
                 //verifica se existe conexao, se existir baixa do servidor informações
                 if(navigator.connection.type != 'none'){
                     window.servArmazenarCulRecebdo(window.getIdPessoa(), window.getSessao());
-                    c('entrou');
+
                 }
                 var t = ["#recebidos","#destinacao", "#colheita", "#relatorios","#safra"];
 
@@ -539,7 +581,7 @@
 
     $("#inputSenha").keypress(function(e){
         if(e.which === 13){
-            window.validacaoLogin();
+            validacaoLogin();
         }
 
     });
@@ -773,8 +815,14 @@
              $(".backgroundInicial").css("background-image", 'url("images/background3.jpg")');
          }else if($("#papelDeParede").val() === "Papel de parede 4"){
              $(".backgroundInicial").css("background-image", 'url("images/background4.jpg")');
-         }else{
+         }else if($("#papelDeParede").val() === "Papel de parede 5"){
              $(".backgroundInicial").css("background-image", 'url("images/background5.jpg")');
+         }else if($("#papelDeParede").val() === "Papel de parede 6"){
+             $(".backgroundInicial").css("background-image", 'url("images/background6.jpg")');
+         }else if($("#papelDeParede").val() === "Papel de parede 7"){
+             $(".backgroundInicial").css("background-image", 'url("images/background7.jpg")');
+         }else {
+             $(".backgroundInicial").css("background-image", 'url("images/background8.jpg")');
          }
     });
 
@@ -855,7 +903,7 @@
                 //muda a image do cultivar
                 $("#imgCultivar").attr("src", carregarCultivar(cultivarSelecionado.nomecultivar));
                 //carega os valores da safra, destinacao e datas de recebimento
-                $("#statuscultivar").html("<p>Safra: "+cultivarSelecionado.safra+"</p><p>Data recebimento: "+cultivarSelecionado.datareceb+"</p><p>Quantidade recebida: "+cultivarSelecionado.qtdrecebida+" "+cultivarSelecionado.grandeza_recebida+"</p><p>Quantidade colhida: "+cultivarSelecionado.qtdcolhida+" kilo(s)</p><p>Status colheita: "+cultivarSelecionado.prazo_colheita+"</p><p>Quantidade destinada: "+cultivarSelecionado.qtddestinada+" (kilo(s)</p><p>Status destinação: "+cultivarSelecionado.prazo_destinacao+"</p>");
+                $("#statuscultivar").html("<p>Safra: "+cultivarSelecionado.safra+"</p><p>Data recebimento: "+cultivarSelecionado.datareceb+"</p><p>Quantidade recebida: "+cultivarSelecionado.qtdrecebida+" "+cultivarSelecionado.grandeza_recebida+"</p><p>Quantidade colhida: "+cultivarSelecionado.qtdcolhida+" kilo(s)</p><p>Relatar colheita até: "+cultivarSelecionado.prazo_colheita+"</p><p>Quantidade destinada: "+cultivarSelecionado.qtddestinada+" (kilo(s)</p><p>Relatar destinação até: "+cultivarSelecionado.prazo_destinacao+"</p>");
 
                 activate_page("#page_6");
                 $('.uib_w_250').hide();
@@ -895,13 +943,15 @@
 
         //voltar a lista de cultivares recebidos
         if($('.uib_w_250').is(':visible')){
+
             $('.uib_w_250').fadeOut(100, function(evt){
                 activate_page("#page_3");
                 $("#recebidos").hide();
                 $("#recebidos").fadeIn(100);
-                $("#page_3").scrollTop(0);
-                sessionStorage.removeItem("indiceSelecionado");
             });
+            $("#page_3").scrollTop(0);
+            window.sessionStorage.clear();
+
         }else if($('.uib_w_416').is(':visible')){
             $('.uib_w_416').fadeOut(100, function(evt){
 
@@ -1215,7 +1265,11 @@
                          window.spinnerplugin.show();
                         //se safra foi relatada
                         if(dados.sucesso){
-                            navigator.notification.alert("Colheita relatada!", function(){},"Alerta!", "OK");
+                            navigator.notification.alert("Colheita relatada!", function(){
+                                $('.uib_w_416').fadeOut(100, function(evt){
+                                $(".uib_w_250").fadeIn(100);
+                                });
+                            },"Alerta!", "OK");
 
                         }else{
                            navigator.notification.alert("Colheita não relatada!", function(){},"Erro!", "OK");
@@ -1292,43 +1346,41 @@
      });
 
 
-     $(document).on("click", ".uib_w_338", function(evt){
-
-        //if($('#relatarqtd').val() !== ''){
-            if($('#todacolheita').is(':checked')){
-                $('#todacolheita').prop( "checked", false);
-                $('#relatarqtd').prop('disabled', false);
-                $('#relatarqtd').val('');
-                $('#relatarum').prop('disabled', false);
-                $('#relatarum').val('Kilo(s)');
-                $('#novoAbaDestinacao').show();
-            }else{
-                navigator.notification.confirm(
-                     'Toda a safra será destinada?', // message
-                     function(buttonIndex) {
-                         if(buttonIndex === 2){
-                            $('#todacolheita').prop( "checked", true);
-                            $('#relatarqtd').val(retornarValCultivares());
-                            $('#relatarqtd').prop('disabled', true);
-                            $('#relatarum').val('Kilo(s)');
-                            $('#relatarum').prop('disabled', true);
-                            $('#novoAbaDestinacao').hide();
-                         }
-                     },            // callback to invoke with index of button pressed
-                     'Confirmação',           // title
-                     ['Não', 'Sim']     // buttonLabels
-                );
-
-
-            }
-       // }else{
-            //navigator.notification.alert("Insira uma quantidade!",function(){
-             //   $('#relatarqtd').focus();
-           // },"Alerta!", "OK");
-        //}
-
-         return false;
-     });
+//     $(document).on("click", ".uib_w_338", function(evt){
+//
+//        //if($('#relatarqtd').val() !== ''){
+//            if($('#todacolheita').is(':checked')){
+//                $('#todacolheita').prop( "checked", false);
+//                $('#relatarqtd').prop('disabled', false);
+//                $('#relatarqtd').val('');
+//                $('#relatarum').prop('disabled', false);
+//                $('#relatarum').val('Kilo(s)');
+//            }else{
+//                navigator.notification.confirm(
+//                     'Toda a safra será destinada?', // message
+//                     function(buttonIndex) {
+//                         if(buttonIndex === 2){
+//                            $('#todacolheita').prop( "checked", true);
+//                            $('#relatarqtd').val(retornarValCultivares());
+//                            $('#relatarqtd').prop('disabled', true);
+//                            $('#relatarum').val('Kilo(s)');
+//                            $('#relatarum').prop('disabled', true);
+//                         }
+//                     },            // callback to invoke with index of button pressed
+//                     'Confirmação',           // title
+//                     ['Não', 'Sim']     // buttonLabels
+//                );
+//
+//
+//            }
+//       // }else{
+//            //navigator.notification.alert("Insira uma quantidade!",function(){
+//             //   $('#relatarqtd').focus();
+//           // },"Alerta!", "OK");
+//        //}
+//
+//         return false;
+//     });
 
 
 
@@ -1411,111 +1463,152 @@
          return false;
      });
 
-    function labelColheitaTotal(){
+//    function labelColheitaTotal(){
+//
+//        if($('.uib_w_308 li').length > 2){
+//            $('.uib_w_338').hide();
+//        }else{
+//            $('.uib_w_338').show();
+//        }
+//    }
 
-        if($('.uib_w_308 li').length > 2){
-            $('.uib_w_338').hide();
+
+     $(document).on("click", ".uib_w_405a pre", function(evt)
+     {
+         var relatarQtdcolhida = window.sessionStorage.getItem('relatarQtdcolhida');
+         var QtdRelatada;
+         if(window.sessionStorage.getItem('QtdRelatada')){
+             QtdRelatada = parseFloat(window.sessionStorage.getItem('QtdRelatada'));
+         }else{
+             QtdRelatada = 0;
+         }
+
+         QtdRelatada += parseFloat($('#relatarqtd').val());
+
+         if($('#relatardata').val() === ''){
+             navigator.notification.alert("Insira uma data para destinação!",function(){
+                $('#relatardata').focus();
+             },"Alerta!", "OK");
+
+        }else if($('#relatarqtd').val() === ''){
+            navigator.notification.alert("Insira uma quantidade para destinação!",function(){
+            $('#relatarqtd').focus();
+            },"Alerta!", "OK");
+        }else if(QtdRelatada > relatarQtdcolhida){
+
+            navigator.notification.alert("A quantidade destinada não pode ultrapassar o valor da colheita!",function(){
+            $('#relatarqtd').focus();
+            },"Alerta!", "OK");
+
         }else{
-            $('.uib_w_338').show();
+            window.sessionStorage.setItem('QtdRelatada', QtdRelatada);
+            $('.uib_w_405a .text-container').append('<p><h4><span class=" fa fa-trash-o"></span>&nbsp;&nbsp; '+$('#relatarDest').val() +' '+ $('#relatarqtd').val() +' '+ $('#relatarum').val() +'</h4></p>');
+
+            $('#relatardata').val('');
+            $('#relatarqtd').val('');
         }
-    }
-
-    $(document).on("click", ".uib_w_308 > li", function(evt)
-    {
-        var abaClicada = $(this).attr("id");
-        if($(".uib_w_308 li").length > 1 && $('.camposDestinacao').is(':visible')){
-            if($('#relatardata').val() !== ''){
-                if($('#relatarqtd').val() !== ''){
-                    salvarAbaDestinacao(abaClicada);
-
-                    if(abaClicada === "novoAbaDestinacao"){
-                        $(".uib_w_310").modal("toggle");
-                        $("#"+abaClicada).removeClass("active");
-
-                    }else{
-                        carredaDadosDestinacao(abaClicada);
-                        $(".uib_w_308").append($(this));
-                    }
-                }else{
-                    $("#"+sessionStorage.getItem("abaSelecionada")).addClass("active");
-                    $("#"+abaClicada).removeClass("active");
-                    navigator.notification.alert("Insira uma quantidade para navegar nas abas!",function(){
-                        $('#relatarqtd').focus();
-                    },"Alerta!", "OK");
-                }
-             }else{
-                $("#"+sessionStorage.getItem("abaSelecionada")).addClass("active");
-                $("#"+abaClicada).removeClass("active");
-                navigator.notification.alert("Insira uma data para navegar nas abas!",function(){
-                    $('#relatardata').focus();
-                },"Alerta!", "OK");
-
-            }
-
-
-        }else if(abaClicada === "novoAbaDestinacao"){
-            $(".uib_w_310").modal("toggle");
-            $("#"+abaClicada).removeClass("active");
-        }else{
-            //somente carrega
-            $('.camposDestinacao').show();
-            carredaDadosDestinacao(abaClicada);
-            sessionStorage.setItem("abaSelecionada", abaClicada);
-        }
-        //mostra o label de toda colheita
-        labelColheitaTotal();
 
         return false;
 
-    });
-     function salvarAbaDestinacao(abaClicada){
-
-         //guarda os valores
-         var campos = [];
-         var abaSelecionada = sessionStorage.getItem("abaSelecionada");
-         var i = sessionStorage.getItem("nAbas");
-         var idcarregar;
-
-         if(sessionStorage.getItem("camposDestinacao")){
-            campos = JSON.parse(sessionStorage.getItem("camposDestinacao"));
-
-            if(campos.length < $(".uib_w_308 li").length - 1 ){
-                campos[campos.length] = {idaba: 'abaDestinacao'+i,
-                datarelatada: $("#relatardata").val(),
-                um: $("#relatarum").val(),
-                valor: $("#relatarqtd").val()};
-
-            }else{
-                var j = 0;
-                $.each(campos, function(){
-                    if(campos[j].idaba === abaSelecionada ){
-                        campos[j] = {idaba: abaSelecionada,
-                        datarelatada: $("#relatardata").val(),
-                        um: $("#relatarum").val(),
-                        valor: $("#relatarqtd").val()};
-
-                    }
-                    j++;
-                });
+     });
 
 
-            }
-
-
-        }else{
-            campos[0] = {idaba: 'abaDestinacao'+i,
-            datarelatada: $("#relatardata").val(),
-            um: $("#relatarum").val(),
-            valor: $("#relatarqtd").val()};
-        }
-
-
-         sessionStorage.setItem("camposDestinacao", JSON.stringify(campos));
-         if(abaClicada !== 'novoAbaDestinacao'){
-             sessionStorage.setItem("abaSelecionada", abaClicada);
-         }
-
-     }
+//    $(document).on("click", ".uib_w_308 > li", function(evt)
+//    {
+//        var abaClicada = $(this).attr("id");
+//        if($(".uib_w_308 li").length > 1 && $('.camposDestinacao').is(':visible')){
+//            if($('#relatardata').val() !== ''){
+//                if($('#relatarqtd').val() !== ''){
+//                    salvarAbaDestinacao(abaClicada);
+//
+//                    if(abaClicada === "novoAbaDestinacao"){
+//                        $(".uib_w_310").modal("toggle");
+//                        $("#"+abaClicada).removeClass("active");
+//
+//                    }else{
+//                        carredaDadosDestinacao(abaClicada);
+//                        $(".uib_w_308").append($(this));
+//                    }
+//                }else{
+//                    $("#"+sessionStorage.getItem("abaSelecionada")).addClass("active");
+//                    $("#"+abaClicada).removeClass("active");
+//                    navigator.notification.alert("Insira uma quantidade para navegar nas abas!",function(){
+//                        $('#relatarqtd').focus();
+//                    },"Alerta!", "OK");
+//                }
+//             }else{
+//                $("#"+sessionStorage.getItem("abaSelecionada")).addClass("active");
+//                $("#"+abaClicada).removeClass("active");
+//                navigator.notification.alert("Insira uma data para navegar nas abas!",function(){
+//                    $('#relatardata').focus();
+//                },"Alerta!", "OK");
+//
+//            }
+//
+//
+//        }else if(abaClicada === "novoAbaDestinacao"){
+//            $(".uib_w_310").modal("toggle");
+//            $("#"+abaClicada).removeClass("active");
+//        }else{
+//            //somente carrega
+//            $('.camposDestinacao').show();
+//            carredaDadosDestinacao(abaClicada);
+//            sessionStorage.setItem("abaSelecionada", abaClicada);
+//        }
+//        //mostra o label de toda colheita
+//        labelColheitaTotal();
+//
+//        return false;
+//
+//    });
+//     function salvarAbaDestinacao(abaClicada){
+//
+//         //guarda os valores
+//         var campos = [];
+//         var abaSelecionada = sessionStorage.getItem("abaSelecionada");
+//         var i = sessionStorage.getItem("nAbas");
+//         var idcarregar;
+//
+//         if(sessionStorage.getItem("camposDestinacao")){
+//            campos = JSON.parse(sessionStorage.getItem("camposDestinacao"));
+//
+//            if(campos.length < $(".uib_w_308 li").length - 1 ){
+//                campos[campos.length] = {idaba: 'abaDestinacao'+i,
+//                datarelatada: $("#relatardata").val(),
+//                um: $("#relatarum").val(),
+//                valor: $("#relatarqtd").val()};
+//
+//            }else{
+//                var j = 0;
+//                $.each(campos, function(){
+//                    if(campos[j].idaba === abaSelecionada ){
+//                        campos[j] = {idaba: abaSelecionada,
+//                        datarelatada: $("#relatardata").val(),
+//                        um: $("#relatarum").val(),
+//                        valor: $("#relatarqtd").val()};
+//
+//                    }
+//                    j++;
+//                });
+//
+//
+//            }
+//
+//
+//        }else{
+//            campos[0] = {idaba: 'abaDestinacao'+i,
+//            datarelatada: $("#relatardata").val(),
+//            um: $("#relatarum").val(),
+//            valor: $("#relatarqtd").val()};
+//        }
+//
+//
+//         sessionStorage.setItem("camposDestinacao", JSON.stringify(campos));
+//         if(abaClicada !== 'novoAbaDestinacao'){
+//             sessionStorage.setItem("abaSelecionada", abaClicada);
+//         }
+//
+//     }
 
      function carredaDadosDestinacao(abaClicada){
         var campos = JSON.parse(sessionStorage.getItem("camposDestinacao"));
@@ -1537,87 +1630,87 @@
      }
 
      //botao no modal de destinacao
-    $(document).on("click", "#okmodal", function(evt)
-    {
-        var i;
-        if(sessionStorage.getItem("nAbas")){
-            i = sessionStorage.getItem("nAbas");
-            i++;
-            sessionStorage.setItem("nAbas", i);
-        }else{
-            i = 0;
-            sessionStorage.setItem("nAbas", i);
-        }
-
-
-        var item ='<li role="presentation" class="widget uib_w_309 active" data-uib="twitter%20bootstrap/tab_item" data-ver="1" id="abaDestinacao'+i+'"><a role="tab" data-toggle="tab">'+ $('#idestinacao').val()+'</a></li>';
-        $('.uib_w_308').append(item);
-
-        sessionStorage.setItem("abaSelecionada", 'abaDestinacao'+i);
-
-        $("#relatardata").val('');
-        $("#relatarum").val('Kilo(s)');
-        $("#relatarqtd").val('');
-
-        $('.camposDestinacao').show();
-        labelColheitaTotal();
-
-        return false;
-    });
-
-    $(document).on("click", "#cancelamodal", function(evt)
-    {
-        //sessionStorage.setItem("abaAnterior", 'novoabarelatar');
-        $("#novoabarelatar").removeClass("active");
-        $('.camposDestinacao').hide();
-         return false;
-    });
+//    $(document).on("click", "#okmodal", function(evt)
+//    {
+//        var i;
+//        if(sessionStorage.getItem("nAbas")){
+//            i = sessionStorage.getItem("nAbas");
+//            i++;
+//            sessionStorage.setItem("nAbas", i);
+//        }else{
+//            i = 0;
+//            sessionStorage.setItem("nAbas", i);
+//        }
+//
+//
+//        var item ='<li role="presentation" class="widget uib_w_309 active" data-uib="twitter%20bootstrap/tab_item" data-ver="1" id="abaDestinacao'+i+'"><a role="tab" data-toggle="tab">'+ $('#idestinacao').val()+'</a></li>';
+//        $('.uib_w_308').append(item);
+//
+//        sessionStorage.setItem("abaSelecionada", 'abaDestinacao'+i);
+//
+//        $("#relatardata").val('');
+//        $("#relatarum").val('Kilo(s)');
+//        $("#relatarqtd").val('');
+//
+//        $('.camposDestinacao').show();
+//        labelColheitaTotal();
+//
+//        return false;
+//    });
+//
+//    $(document).on("click", "#cancelamodal", function(evt)
+//    {
+//        //sessionStorage.setItem("abaAnterior", 'novoabarelatar');
+//        $("#novoabarelatar").removeClass("active");
+//        $('.camposDestinacao').hide();
+//         return false;
+//    });
 
      //excluir uma aba
     /* button  .uib_w_313 */
-    $(document).on("click", ".uib_w_313", function(evt)
-    {
-        navigator.notification.confirm(
-            'Deseja excluir essa destinção?', // message
-            function(buttonIndex) {
-                if(buttonIndex === 2){
-                    var abaSelecionada = $(".uib_w_308 .active").attr("id");
-                    var campos = JSON.parse(sessionStorage.getItem("camposDestinacao"));
-
-                    var novoCampos = [];
-                    var i = 0;
-                    $.each(campos, function(){
-                        //adiciona todos os dados da memoria menos os que vai ser excluido
-                        if(campos[i].idaba !== abaSelecionada){
-                            novoCampos[novoCampos.length] = campos[i];
-                        }
-                    i++;
-                    });
-
-
-                    sessionStorage.setItem("camposDestinacao", JSON.stringify(novoCampos));
-                    //$('#idestinacao').append('<option>'+$(".uib_w_308 .active").text()+'</option>');
-
-                    $(".uib_w_308 .active").remove();
-                    //desativa o checkbox e os inputs
-                    $('#todacolheita').prop( "checked", false);
-                    $('#relatarqtd').prop('disabled', false);
-                    $('#relatarum').prop('disabled', false);
-                    $("#relatarum").val("Kilo(s)");
-
-
-                    //deixa invisivel os campos
-                    $('.camposDestinacao').hide();
-                    //labelColheitaTotal();
-
-                }
-           },            // callback to invoke with index of button pressed
-            'Confirmação',           // title
-            ['Não', 'Sim']     // buttonLabels
-        );
-
-        return false;
-    });
+//    $(document).on("click", ".uib_w_313", function(evt)
+//    {
+//        navigator.notification.confirm(
+//            'Deseja excluir essa destinção?', // message
+//            function(buttonIndex) {
+//                if(buttonIndex === 2){
+//                    var abaSelecionada = $(".uib_w_308 .active").attr("id");
+//                    var campos = JSON.parse(sessionStorage.getItem("camposDestinacao"));
+//
+//                    var novoCampos = [];
+//                    var i = 0;
+//                    $.each(campos, function(){
+//                        //adiciona todos os dados da memoria menos os que vai ser excluido
+//                        if(campos[i].idaba !== abaSelecionada){
+//                            novoCampos[novoCampos.length] = campos[i];
+//                        }
+//                    i++;
+//                    });
+//
+//
+//                    sessionStorage.setItem("camposDestinacao", JSON.stringify(novoCampos));
+//                    //$('#idestinacao').append('<option>'+$(".uib_w_308 .active").text()+'</option>');
+//
+//                    $(".uib_w_308 .active").remove();
+//                    //desativa o checkbox e os inputs
+//                    $('#todacolheita').prop( "checked", false);
+//                    $('#relatarqtd').prop('disabled', false);
+//                    $('#relatarum').prop('disabled', false);
+//                    $("#relatarum").val("Kilo(s)");
+//
+//
+//                    //deixa invisivel os campos
+//                    $('.camposDestinacao').hide();
+//                    //labelColheitaTotal();
+//
+//                }
+//           },            // callback to invoke with index of button pressed
+//            'Confirmação',           // title
+//            ['Não', 'Sim']     // buttonLabels
+//        );
+//
+//        return false;
+//    });
 
 
 
@@ -1625,16 +1718,23 @@
     $(document).on("click", ".uib_w_344", function(evt)
     {
 
-        var i = sessionStorage.getItem('indiceSelecionado');
+        var idsafra = sessionStorage.getItem('idsafra');
+
         var cultivaresRecebidos = JSON.parse(window.localStorage.getItem("cultivaresRecebidos"));
         //deixa os botoes enviar e cancelar ocultos
 
-         activate_page("#page_3");
-         $("#destinacao").fadeIn(100);
-         $("#colheita").hide();
-         $("#recebidos").hide();
-         $('#nomeCDestinacao').text('Destinação de '+cultivaresRecebidos[i].qtdcolhida +' kilo(s) de '+cultivaresRecebidos[i].nomecultivar);
-         $('.camposDestinacao').hide();
+        $.each(cultivaresRecebidos, function(i, safra){
+           if(safra.idsafra == idsafra){
+               $('#dadosCultivar').text(safra.qtdcolhida + ' kilo(s) de '+ safra.nomecultivar);
+               window.sessionStorage.setItem('relatarQtdcolhida', safra.qtdcolhida );
+               return false;
+           }
+        });
+        $('.uib_w_250').fadeOut(100, function(evt){
+
+             $(".uib_w_418").fadeIn(100);
+
+         });
 
          return false;
     });
@@ -1684,17 +1784,20 @@
         /* button  .uib_w_346 */
     $(document).on("click", ".uib_w_346", function(evt)
     {
-        navigator.notification.confirm(
-            'Deseja enviar as destinações?', // message
-            function(buttonIndex) {
-                if(buttonIndex === 2){
-                    window.iniciarAgricultor();
+//        navigator.notification.confirm(
+//            'Deseja enviar as destinações?', // message
+//            function(buttonIndex) {
+//                if(buttonIndex === 2){
+//                    window.iniciarAgricultor();
+//
+//                }
+//           },            // callback to invoke with index of button pressed
+//            'Confirmação',           // title
+//            ['Não', 'Sim']     // buttonLabels
+//        );
 
-                }
-           },            // callback to invoke with index of button pressed
-            'Confirmação',           // title
-            ['Não', 'Sim']     // buttonLabels
-        );
+
+        navigator.notification.alert("Evento em construção!",function(){},"Alerta!", "Sair");
          return false;
     });
 
@@ -2045,6 +2148,7 @@
 
             });
             activate_page("#page_7");
+            $(".uib_w_401").fadeIn(100);
         }
 
 
@@ -2173,7 +2277,7 @@
                     qtdDestinadaSessao = parseFloat(window.sessionStorage.getItem('qtdDestinadaSessao'));
                 }
                 if((conversaoUnidadesMedida($('.uib_w_412').children('input'), $('.uib_w_413').children('select')) + qtdDestinadaSessao) == conversaoUnidadesMedida($('.uib_w_409').children('input'), $('.uib_w_398').children('select') )){
-                    c('tudo ok');
+                    c('tudo ok 2192');
                     //guarda cultivares na localstorage
 //                    var cultivarRelatados;
 //                    var cultivarRelatado = ;
@@ -2219,32 +2323,49 @@
          return false;
     });
 
-        /* button  .uib_w_169 */
+        /* button  obter coordenada */
     $(document).on("click", ".uib_w_169", function(evt)
     {
 
-
-        window.spinnerplugin.show();
-        window.navigator.geolocation.getCurrentPosition(function(position) {
-
-
-            window.spinnerplugin.hide();
-            navigator.notification.alert("Coordenada local obtida!",function(){
-                $('#igpslat').val(position.coords.latitude);
-                $('#igpslong').val(position.coords.longitude);
-            },"Sucesso!", "OK");
-
-    }, function onError(error) {
-           // navigator.notification.alert(error.code,function(){},"Alerta:", "OK");
-        window.spinnerplugin.hide();
-
-        navigator.notification.alert('Erro em obter coordenada!\nVerifique se está ativado sua localização ou existe conexão à internet!',function(){
-            $('#igpslat').val('0');
-            $('#igpslong').val('0');
-        },"Erro!", "OK");
+        navigator.notification.confirm(
+            'As coordenadas à serem obitidas neste local, estão de acordo com a localização da propriedade?', // message
+            function(buttonIndex) {
+                if(buttonIndex === 2){
+                    window.spinnerplugin.show();
+                    window.navigator.geolocation.getCurrentPosition(function(position) {
 
 
-    }, { timeout: 20000 });
+                        window.spinnerplugin.hide();
+                        navigator.notification.alert("Coordenada local obtida!",function(){
+                            $('#igpslat').val(position.coords.latitude);
+                            $('#igpslong').val(position.coords.longitude);
+                        },"Sucesso!", "OK");
+
+                    }, function onError(error) {
+                           // navigator.notification.alert(error.code,function(){},"Alerta:", "OK");
+                        window.spinnerplugin.hide();
+
+                        navigator.notification.alert('Erro em obter coordenada!\nVerifique se está ativado sua localização ou existe conexão à internet!',function(){
+                            $('#igpslat').val('0');
+                            $('#igpslong').val('0');
+                        },"Erro!", "OK");
+
+
+                    }, { timeout: 20000 });
+                //botao não aparece msg de inserir manualmente
+                }else{
+                    navigator.notification.alert('Insira manualmente os campos das coordenadas ou deixe 0',function(){
+                        $('#igpslat').val('0');
+                        $('#igpslong').val('0');
+                        $('#igpslat').focus();
+                    },"Alerta!", "OK");
+                }
+            },            // callback to invoke with index of button pressed
+            'Confirmação',           // title
+            ['Não', 'Sim']     // buttonLabels
+        );
+
+
 
 
          return false;

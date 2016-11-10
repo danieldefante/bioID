@@ -366,11 +366,11 @@ function listarPropriedades(){
     }else{
         $("#cultivarRecebido").empty();
 
-        item = '<a class="list-group-item allow-badge widget uib_w_267" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-rotate-left"> </span><h4 class="list-group-item-heading">Atualizar lista</h4><p class="list-group-item-text">data recebimento/quantidade</p></a>';
+//        item = '<a class="list-group-item allow-badge widget uib_w_267" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-rotate-left"> </span><h4 class="list-group-item-heading">Atualizar lista</h4><p class="list-group-item-text">data recebimento/quantidade</p></a>';
+//
+//        $("#cultivarRecebido").append(item);
 
-        $("#cultivarRecebido").append(item);
-
-        navigator.notification.alert("Nenhum cultivar recebido!",function(){},"Alerta","OK");
+        navigator.notification.alert("Nenhum cultivar recebido!\nReceba cultivares biofortificados em uma unidade de distribuição mais próxima de você,\nmais dúvidas entre em contato com inovacao@fundetec.org.br",function(){},"Alerta","OK");
     }
 }
 
@@ -512,6 +512,7 @@ function listarAgricultoresUnidade(){
 //limpa a memoria do app e redireciona para tela de login
 function clearGoMainPage(){
     window.activate_page("#mainpage");
+    sessionStorage.clear();
     localStorage.clear();
 }
 

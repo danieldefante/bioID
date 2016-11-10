@@ -156,6 +156,9 @@
                                                     <option>Papel de parede 3</option>
                                                     <option>Papel de parede 4</option>
                                                     <option>Papel de parede 5</option>
+                                                    <option>Papel de parede 6</option>
+                                                    <option>Papel de parede 7</option>
+                                                    <option>Papel de parede 8</option>
                                                 </select>
                                             </div>
                                             <div class="table-thing widget uib_w_239 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
@@ -596,7 +599,7 @@
                                                             <div class="widget-container left-receptacle"></div>
                                                             <div class="widget-container right-receptacle"></div>
                                                             <div class="text-container">
-                                                                <p>CooFundetec</p>
+                                                                <p>...</p>
                                                             </div>
                                                         </div>
                                                         <span class="fa fa-edit editarsocioe" align="right"></span>
@@ -620,7 +623,7 @@
                                                             <div class="widget-container left-receptacle"></div>
                                                             <div class="widget-container right-receptacle"></div>
                                                             <div class="text-container">
-                                                                <p>Daniel, Aline, Luis</p>
+                                                                <p>...</p>
                                                             </div>
                                                         </div>
                                                         <span class="fa fa-edit editarsocioe" align="right"></span>
@@ -644,7 +647,7 @@
                                                             <div class="widget-container left-receptacle"></div>
                                                             <div class="widget-container right-receptacle"></div>
                                                             <div class="text-container">
-                                                                <p>Bolsa Família</p>
+                                                                <p>...</p>
                                                             </div>
                                                         </div>
                                                         <span class="fa fa-edit editarsocioe" align="right"></span>
@@ -726,39 +729,7 @@
                     <div class="widget-container content-area horiz-area wrapping-col right"></div>
                 </div>
             </div>
-            <div class="modal outer-element uib_w_310" data-uib="twitter%20bootstrap/modal" data-ver="1" data-backdrop="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color:#007a61">
-                            <h4 class="modal-title" style="color:#fff"><span class="fa fa-info-circle"></span>&nbsp;Destinação</h4>
-                        </div>
 
-                        <div class="modal-body">
-                            <div class="col uib_col_76 single-col" data-uib="layout/col" data-ver="0">
-                                <div class="widget-container content-area vertical-col">
-                                    <div class="table-thing widget uib_w_311 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
-                                        <label class="narrow-control"></label>
-                                        <select class="wide-control form-control default input-lg" id="idestinacao">
-                                            <option>Consumo</option>
-                                            <option>Replantio</option>
-                                            <option>Venda</option>
-                                            <option>Merenda Escolar</option>
-                                            <option>Doação</option>
-                                            <option>Perda</option>
-                                        </select>
-                                    </div>
-                                    <span class="uib_shim"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-default" type="button" id="cancelamodal">Cancelar</button>
-                            <button data-dismiss="modal" class="btn btn-default" type="button" id="okmodal">OK</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="modal outer-element uib_w_331" data-uib="twitter%20bootstrap/modal" data-ver="1" data-backdrop="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -965,6 +936,13 @@
                                         <p>BioID applicativo de gerenciamento de produtos biofortificados.</p>
 
                                         <p>Desenvolvido pela Fundetec em parceria com a Embrapa, dentro do projeto BioFORT.</p>
+                                    </div>
+                                    <div class="widget scale-image d-margins" data-uib="media/img" data-ver="0">
+                                        <figure class="figure-align">
+                                            <img src="images/LOGOS.png">
+
+                                            <figcaption data-position="bottom"></figcaption>
+                                        </figure>
                                     </div>
                                 </div>
                                 <span class="uib_shim"></span>
@@ -1185,21 +1163,17 @@
                                     <div class="widget-container left-receptacle"></div>
                                     <div class="widget-container right-receptacle"></div>
                                     <div class="text-container">
-                                        <p>Relatar destinação<i class="fa fa-truck button-icon-right" data-position="right"></i>
-                                        </p>
+                                        <p></p>
+                                        <h4>Relatar destinação de<i class="fa fa-truck button-icon-right" data-position="right"></i></h4>
+                                        <p></p>
+                                        <p id="dadosCultivar"></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col uib_col_109 single-col" data-uib="layout/col" data-ver="0">
                             <div class="widget-container content-area vertical-col">
-                                <ul class="nav widget uib_w_308 d-margins footer-bg nav-tabs" role="tablist" data-uib="twitter%20bootstrap/tab_bar" data-ver="1">
-                                    <li role="presentation" class="widget uib_w_309" data-uib="twitter%20bootstrap/tab_item" data-ver="1" id="novoAbaDestinacao"><a role="tab" data-toggle="tab"><span class=" fa fa-plus"></span>Novo</a>
-                                    </li>
 
-                                </ul>
-                                <label class="checkbox checkbox-padding-left widget uib_w_338 d-margins camposDestinacao" data-uib="twitter%20bootstrap/checkbox" data-ver="1">
-                                    <input type="checkbox" id="todacolheita">Toda colheita</label>
                                 <div class="table-thing widget uib_w_305 d-margins camposDestinacao" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="relatardata">Data:</label>
                                     <input class="wide-control form-control default input-lg" type="date" id="relatardata" placeholder="dd/mm/aaaa">
@@ -1216,13 +1190,68 @@
                                     <label class="narrow-control label-top-left" for="relatarvalor">Quantidade:</label>
                                     <input class="wide-control form-control default input-lg" type="tel" placeholder="Digite a quantidade colhida..." id="relatarqtd">
                                 </div>
-                                <button class="btn widget uib_w_313 d-margins btn-lg btn-warning camposDestinacao" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="fa fa-rotate-left button-icon-left" data-position="left"></i>Cancelar</button>
+                                <div class="table-thing widget uib_w_422 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
+                                    <label class="narrow-control label-top-left">Destinação:</label>
+                                    <select class="wide-control form-control default input-lg" id="relatarDest">
+                                        <option>Consumo</option>
+                                        <option>Replantio</option>
+                                        <option>Venda</option>
+                                        <option>Merenda Escolar</option>
+                                        <option>Doação</option>
+                                        <option>Perda</option>
+                                    </select>
+                                </div>
+
+                                <hr>
+                                <div class="tarea widget uib_w_405a d-margins" data-uib="media/text" data-ver="0" name="uib_w_405a">
+                                    <div class="widget-container left-receptacle"></div>
+                                    <div class="widget-container right-receptacle"></div>
+                                    <div class="text-container">
+                                        <pre><h4><span class=" fa fa-plus"></span>&nbsp;&nbsp; Destinação</h4></pre>
+
+                                    </div>
+                                </div>
+                                <hr>
+
                                 <button class="btn widget uib_w_346 d-margins camposDestinacao btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1">Enviar <i class="fa fa-cloud-upload button-icon-right" data-position="right"></i>
                                 </button>
                                 <span class="uib_shim"></span>
                             </div>
                         </div>
 
+                    </div>
+                </div>
+            </div>
+            <div class="modal outer-element uib_w_310" data-uib="twitter%20bootstrap/modal" data-ver="1" data-backdrop="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color:#007a61">
+                            <h4 class="modal-title" style="color:#fff"><span class="fa fa-info-circle"></span>&nbsp;Destinação</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="col uib_col_76 single-col" data-uib="layout/col" data-ver="0">
+                                <div class="widget-container content-area vertical-col">
+                                    <div class="table-thing widget uib_w_311 d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
+                                        <label class="narrow-control"></label>
+                                        <select class="wide-control form-control default input-lg" id="idestinacao">
+                                            <option>Consumo</option>
+                                            <option>Replantio</option>
+                                            <option>Venda</option>
+                                            <option>Merenda Escolar</option>
+                                            <option>Doação</option>
+                                            <option>Perda</option>
+                                        </select>
+                                    </div>
+                                    <span class="uib_shim"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button data-dismiss="modal" class="btn btn-default" type="button" id="cancelamodal">Cancelar</button>
+                            <button data-dismiss="modal" class="btn btn-default" type="button" id="okmodal">OK</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1398,13 +1427,13 @@
                                         </div>
 
                                     </div>
-
+                                    <hr>
                                     <div class="tarea widget uib_w_405 d-margins" data-uib="media/text" data-ver="0" name="uib_w_405">
                                         <div class="widget-container left-receptacle"></div>
                                         <div class="widget-container right-receptacle"></div>
                                         <div class="text-container">
-                                            <p id="maisDestinacao"><span class=" fa fa-plus"></span>&nbsp;&nbsp; destinação</p>
-                                            <hr>
+                                            <pre id="maisDestinacao"><span class=" fa fa-plus"></span>&nbsp;&nbsp; Destinação</pre>
+
                                         </div>
                                     </div>
                                     <span class="uib_shim"></span>
@@ -1415,7 +1444,7 @@
 
                         <div class="modal-footer">
                             <button data-dismiss="modal" class="btn btn-warning" type="button" id="entRelCanc">Cancelar</button>
-                            <button class="btn btn-warning" type="button" id="entRelOk">OK</button>
+                            <button class="btn btn-warning" type="button" id="entRelOk">Salvar</button>
                         </div>
                     </div>
                 </div>
