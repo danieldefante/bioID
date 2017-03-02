@@ -49,8 +49,8 @@
     //pagina login
      }else if($('#page_1').is(":visible")){
          activate_page("#mainpage");
-         $('.uib_w_133').hide();
-         $('.uib_w_133').fadeIn(100);
+         $('#uib_w_133').hide();
+         $('#uib_w_133').fadeIn(100);
     //pagina cadastro
      }else if($('#page_2').is(":visible")){
         if(window.localStorage.getItem("logSessao")){
@@ -61,8 +61,8 @@
 
             $(".camposcadastro").val("");
             activate_page("#mainpage");
-            $('.uib_w_133').hide();
-            $('.uib_w_133').fadeIn(100);
+            $('#uib_w_133').hide();
+            $('#uib_w_133').fadeIn(100);
         }
 
      //pagina inicial agricultor, cultivares recebidos
@@ -260,28 +260,30 @@
 
      //esqueceu a senha
      $(document).on("click", "#esqueceuSenha", function(evt){
-         //navigator.notification.alert("suporte_bioid@fundetec.org.br",function(){},"Contato:", "Sair");
+         navigator.notification.alert("daniel@fundetec.org.br",function(){},"Suporte", "Sair");
 
-         navigator.app.loadUrl('http://'+window.ipServidor+'/Projeto_BioID-war/recuperarsenha.html', { openExternal:true });
+//         navigator.app.loadUrl('http://'+window.ipServidor+'/Projeto_BioID-war/recuperarsenha.html', { openExternal:true });
 
      });
 
 
 
-        /* button  .uib_w_3 */
-    $(document).on("click", ".uib_w_3", function(evt)
+        /* botao carregar pagina login*/
+    $(document).on("click", "#uib_w_3", function(evt)
     {
-         /*global activate_page */
-         activate_page("#page_1");
-         $('.uib_w_7').hide();
-         $('.uib_w_7').fadeIn(100);
 
+         activate_page("#page_1");
+        $("#username").val("gerenciador");
+        $("#password").val("gerenciador");
+        $("#formLogin").validator();
+        $('#alerta').hide();
+//         $('#uib_w_7').fadeIn(100);
 
          return false;
     });
 
-        /* button  .uib_w_4 */
-    $(document).on("click", ".uib_w_4", function(evt)
+        /* botao cadastro de um novo agricultor*/
+    $(document).on("click", "#uib_w_4", function(evt)
     {
          /*global activate_page */
          activate_page("#page_2");
@@ -297,16 +299,29 @@
          return false;
     });
 
-        /* button  .uib_w_31 */
-    $(document).on("click", ".uib_w_31", function(evt)
+        /* botao na janela de login e evento direciona para a pagina inicial */
+    $(document).on("click", "#uib_w_31", function(evt)
     {
          /*global activate_page */
          activate_page("#mainpage");
-         $('.uib_w_133').hide();
-         $('.uib_w_133').fadeIn(100);
+         $('#uib_w_133').hide();
+         $('#uib_w_133').fadeIn(100);
          $("#inputSenha").val("");
          return false;
     });
+
+
+
+//    /* botao na janela erro e evento direciona para a pagina inicial */
+//    $(document).on("click", ".goMainPage", function(evt)
+//    {
+//         /*global activate_page */
+//         activate_page("#mainpage");
+//         $('#uib_w_133').hide();
+//         $('#uib_w_133').fadeIn(100);
+//         $("#inputSenha").val("");
+//         return false;
+//    });
 
         /* button  .uib_w_32 */
     $(document).on("click", ".uib_w_32", function(evt)
@@ -320,8 +335,8 @@
 
             $(".camposcadastro").val("");
             activate_page("#mainpage");
-            $('.uib_w_133').hide();
-            $('.uib_w_133').fadeIn(100);
+            $('#uib_w_133').hide();
+            $('#uib_w_133').fadeIn(100);
         }
          return false;
     });
@@ -579,120 +594,107 @@
          window.listarEstoque();
      }
 
-    $("#inputSenha").keypress(function(e){
-        if(e.which === 13){
-            validacaoLogin();
-        }
+//    $("#inputSenha").keypress(function(e){
+//        if(e.which === 13){
+//            validacaoLogin();
+//        }
+//
+//    });
 
-    });
 
 
 
-     /* button  .uib_w_10 */
-    $(document).on("click", ".uib_w_10", function(evt)
-    {
+     //cadastro de um novo agricultor parte de dados pessoais
+$(document).on("submit", "#formLogin", function(e){
 
-         validacaoLogin();
+
+
+    if(!e.isDefaultPrevented()){
+
+        window.spinnerplugin.show();
+        var envio = {usuario: $("#username").val(),
+                    senha: $.sha256($("#password").val()),
+                    metodo: "VALIDACAO"
+                    };
+        $.when(
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: window.ipServidor+"/servico/outros/validacao",
+                data: JSON.stringify(envio),
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                }
+            })
+
+
+        ).then(function(dadosRetorno) {
+
+                if(dadosRetorno.sucesso){
+
+                    localStorage.setItem('logSessao', JSON.stringify(dadosRetorno.data));
+
+                    $.ajax({
+                        type: 'POST',
+                        url : window.ipServidor+'/j_security_check',
+                        data: $('.login').serialize()
+
+
+                    }).done(function (){
+                        switch(dadosRetorno.data.grupo){
+                            case "administradores":
+                                activate_page("#uib_page_erro");
+                                break;
+                            case "gerenciadores":
+                            case "entrevistadores":
+                                window.listarEstoque();
+                                window.iniciarGerEntrev();
+                                activate_page("#page_4");
+                                $('.uib_w_154').hide();
+                                $('.uib_w_154').fadeIn();
+                                break;
+                            case "agricultores":
+                                //rest popular propriedades
+                                //chama o metodo que busca dados no servidor e armazena no localStorage
+                                //para outro metodo acessar e criar a lista de cultivares recebidos
+                                window.iniciarAgricultor();
+                                window.servArmazenarCulRecebdo(dadosRetorno.data.idpessoa, window.getSessao());
+                                activate_page("#page_3");
+                                break;
+                        }
+                    });
+
+
+                }else{
+                    $("#alerta").empty().append('<a href="#" id="fecharAlert" class="close">&times;</a><strong>Erro!</strong> Usuário ou senha incorreta!').fadeIn();
+                }
+        });
+        window.spinnerplugin.hide();
+
+
+
+
+
+    }
+
+
+//         validacaoLogin();
 
          return false;
     });
 
-    //verifica se o campo usuario e senha estao preenchidos e faz a requisicao para o servidor, servico REst login
-    function validacaoLogin(){
-        try{
-            var usuario = "usuario="+$("#inputUsuario").val();
-            //cria um json para a requisicao post
-            var data = usuario+"&senha="+$("#inputSenha").val();
 
-            $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/pessoa/validacao", data, function(dados){
-                window.spinnerplugin.show();
-                //teste da requisicao no banco esta correta
-                if(dados.sucesso){
-                   //guarda dados do usuario no local storge
-                    var logSessao = JSON.stringify({
-                        idpessoa:  dados.idpessoa,
-                        sessao: dados.sessao,
-                       // tempoLogin: dados.tempoLogin,
-                        papel: dados.papel,
-                        idunidade: dados.idunidade
-                    });
-                    window.localStorage.setItem("logSessao", logSessao);
+    //fecha a janela de erro senha incorreta
+    $(document).on("click", "#fecharAlert", function(evt)
+    {
+        $("#alerta").fadeOut(400);
 
+        return false;
+    });
 
-                    window.papel = dados.papel;
-                    //limpa o campo senha
-                    $("#inputSenha").val("");
-                    //verifica o tipo de funcionario
-                    if(window.papel === "a"){
-                        //rest popular propriedades
-                        //chama o metodo que busca dados no servidor e armazena no localStorage
-                        //para outro metodo acessar e criar a lista de cultivares recebidos
-                        window.iniciarAgricultor();
-                        window.servArmazenarCulRecebdo(dados.idpessoa, window.getSessao());
-                        activate_page("#page_3");
-                    }else{
-
-                        window.listarEstoque();
-
-                        window.iniciarGerEntrev();
-                        activate_page("#page_4");
-                        $('.uib_w_154').hide();
-                        $('.uib_w_154').fadeIn();
-
-                    }
-
-
-
-
-                //informa se o usuario ou senha esta incorreta
-                }else if($("#inputUsuario").val()=== ""){
-                    navigator.notification.confirm(
-                        'O campo usuário não pode ser vazio!', // message
-                            function(){
-                                $("#inputUsuario").focus();
-                            },            // callback to invoke with index of button pressed
-                        'Erro',           // title
-                        ['Sair']     // buttonLabels
-                    );
-
-
-                }else if($("#inputSenha").val()=== ""){
-                    navigator.notification.confirm(
-                        'O campo senha não pode ser vazio!', // message
-                            function(){
-                                $("#inputSenha").focus();
-                            },            // callback to invoke with index of button pressed
-                        'Erro',           // title
-                        ['Sair']     // buttonLabels
-                    );
-                }else{
-                     navigator.notification.confirm(
-                        'Usuário ou Senha incorretos!', // message
-                            function(){
-                                $("#inputUsuario").focus();
-                            },            // callback to invoke with index of button pressed
-                        'Erro',           // title
-                        ['Sair']     // buttonLabels
-                    );
-                }
-
-            },"json")
-            //Tratamento de erro da requisicao servico RESt login
-            .fail(function(){
-                window.spinnerplugin.hide();
-                window.verificarConexao();
-
-            }).done(function(){
-                 window.spinnerplugin.hide();
-            });
-
-
-         }catch(e){
-             window.alert("Erro validacaoLogin: "+ e.message);
-             window.clearGoMainPage();
-         }
-
-     }
 
 
      $(document).on("click", "#page_3", function(evt)
@@ -991,8 +993,8 @@
          return false;
     });
 
-        /* button  .uib_w_197 */
-    $(document).on("click", ".uib_w_197", function(evt)
+        /* botao fechar app na pagina inicial */
+    $(document).on("click", "#uib_w_197", function(evt)
     {
 
         navigator.notification.confirm(
@@ -1026,7 +1028,7 @@
         var teste = testeCamposNulos();
 
         if(teste[0]){
-            var data = "nome="+$("#inome").val()+"&sobrenome="+$("#isobrenome").val()+"&apelido="+$("#iapelido").val()+"&cpf="+$("#icpf").val()+"&sexo="+$('input[name = "bs-radio-group-0"]:checked').val()+"&rg="+$("#irg").val()+"&datanascimento="+$("#idatanascimento").val()+"&telefone1="+$("#itelefone1").val()+"&telefone2="+$("#itelefone2").val()+ "&escolaridade_idescolaridade="+($("#iescolaridade")[0].selectedIndex+1)+ "&estadocivil_idestadocivil="+($("#iestadocivil")[0].selectedIndex+1)+"&nomepropriedade="+$("#inomepropriedade").val()+"&rua="+$("#irua").val()+"&numero="+$("#inumero").val()+"&bairro="+$("#ibairro").val()+"&complemento="+$("#icomplemento").val()+"&cep="+$("#icep").val()+"&cidade_idcidade="+verificarIDCidade()+"&area="+$("#iarea").val()+"&unidadedemedida="+$('input[name = "bs-radio-group-2"]:checked').val()+"&areautilizavel="+$("#iareautilizavel").val()+"&unidadedemedidaau="+$('input[name = "bs-radio-group-1"]:checked').val()+"&gps_lat="+$("#igpslat").val()+"&gps_long="+$("#igpslong").val()+"&qtdedeintegrantes="+$("#iqtdintegrantes").val()+"&qtdedecriancas="+$("#iqtdcriancas").val()+"&qtdedegravidas="+$("#iqtdgravidas").val()+"&usuario="+$("#iusuario").val()+"&senha="+$("#isenha").val()+"&email="+$("#iemail").val()+"&papel=a&unidade_idunidade=2";
+            var data = "nome="+$("#inome").val()+"&sobrenome="+$("#isobrenome").val()+"&apelido="+$("#iapelido").val()+"&cpf="+$("#icpf").val()+"&sexo="+$('input[name = "bs-radio-group-0"]:checked').val()+"&rg="+$("#irg").val()+"&datanascimento="+$("#idatanascimento").val()+"&telefone1="+$("#itelefone1").val()+"&telefone2="+$("#itelefone2").val()+ "&escolaridade_idescolaridade="+($("#iescolaridade")[0].selectedIndex)+ "&estadocivil_idestadocivil="+($("#iestadocivil")[0].selectedIndex)+"&nomepropriedade="+$("#inomepropriedade").val()+"&rua="+$("#irua").val()+"&numero="+$("#inumero").val()+"&bairro="+$("#ibairro").val()+"&complemento="+$("#icomplemento").val()+"&cep="+$("#icep").val()+"&cidade_idcidade="+verificarIDCidade()+"&area="+$("#iarea").val()+"&unidadedemedida="+$('input[name = "bs-radio-group-2"]:checked').val()+"&areautilizavel="+$("#iareautilizavel").val()+"&unidadedemedidaau="+$('input[name = "bs-radio-group-1"]:checked').val()+"&gps_lat="+$("#igpslat").val()+"&gps_long="+$("#igpslong").val()+"&qtdedeintegrantes="+$("#iqtdintegrantes").val()+"&qtdedecriancas="+$("#iqtdcriancas").val()+"&qtdedegravidas="+$("#iqtdgravidas").val()+"&usuario="+$("#iusuario").val()+"&senha="+$("#isenha").val()+"&email="+$("#iemail").val()+"&papel=a&unidade_idunidade=2";
 
 
             $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/pessoa/inseriragricultor", data, function(dados){

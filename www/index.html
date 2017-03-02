@@ -62,8 +62,10 @@
         <!-- for your init code, see README and file comments for details -->
         <script src="xdk/init-dev.js"></script>
         <!-- normalizes device and document ready events, see file for details -->
-        <script type="application/javascript" src="lib/jquery.min.js"></script>
         <script type="application/javascript" src="marginal/marginal-position.min.js"></script>
+        <script type="application/javascript" src="lib/jquery.min.js"></script>
+        <script type="application/javascript" src="js/sha256.js"></script>
+        <script type="application/javascript" src="js/validator.js"></script>
         <script type="application/javascript" src="js/index_user_scripts.js"></script>
         <script type="application/javascript" src="xdk/ad/bs_subpage.js"></script>
         <script type="application/javascript" src="bootstrap/js/bootstrap.min.js"></script>
@@ -75,25 +77,23 @@
     </head>
 
     <body>
-        <!-- IMPORTANT: Do not include a weinre script tag as part of your release builds! -->
-        <!-- Place your remote debugging (weinre) script URL from the Test tab here, if it does not work above -->
-        <!-- <script src="http://debug-software.intel.com/target/target-script-min.js#insertabiglongfunkynumberfromthexdkstesttab"></script> -->
+        <!--pagina inicial -->
         <div class="upage backgroundInicial" id="mainpage">
             <div class="upage-outer">
                 <div class="upage-content ac0 content-area vertical-col left" id="page_82_1">
-                    <div class="panel widget uib_w_133 d-margins marginTopo panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
-                        <div class="col uib_col_22 single-col" data-uib="layout/col" data-ver="0">
+                    <div id="uib_w_133" class="panel widget d-margins marginTopo panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
+                        <div class="col single-col" data-uib="layout/col" data-ver="0">
                             <div class="widget-container content-area vertical-col">
-                                <div class="widget uib_w_2 scale-image d-margins" data-uib="media/img" data-ver="0">
+                                <div class="widget scale-image d-margins" data-uib="media/img" data-ver="0">
                                     <figure class="figure-align">
                                         <img src="images/logo-grande.png">
 
                                         <figcaption data-position="bottom"></figcaption>
                                     </figure>
                                 </div>
-                                <button class="btn widget uib_w_3 d-margins btn-lg btn-success" data-uib="twitter%20bootstrap/button" data-ver="1">Login <i class="fa fa-chevron-right button-icon-right" data-position="right"></i>
+                                <button id="uib_w_3" class="btn widget d-margins btn-lg btn-success" data-uib="twitter%20bootstrap/button" data-ver="1">Entrar <i class="fa fa-chevron-right button-icon-right" data-position="right"></i>
                                 </button>
-                                <button class="btn widget uib_w_4 d-margins btn-lg btn-success" data-uib="twitter%20bootstrap/button" data-ver="1">Cadastrar <i class="fa fa-user-plus button-icon-right" data-position="right"></i>
+                                <button id="uib_w_4" class="btn widget d-margins btn-lg btn-success" data-uib="twitter%20bootstrap/button" data-ver="1">Cadastrar <i class="fa fa-user-plus button-icon-right" data-position="right"></i>
                                 </button>
 
                                 <span class="uib_shim"></span>
@@ -104,10 +104,10 @@
 
                 </div>
 
-                <div class="uib-footer uib-footer-fixed footer-bg container-group inner-element uib_w_198" data-uib="layout/footer" data-ver="0">
+                <div class="uib-footer uib-footer-fixed footer-bg container-group inner-element" data-uib="layout/footer" data-ver="0">
                     <h2></h2>
                     <div class="widget-container wrapping-col single-centered">
-                        <button class="btn widget uib_w_197 d-margins btn-success" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="fa fa-power-off" data-position="icon only"></i>
+                        <button id="uib_w_197" class="btn widget d-margins btn-success" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="fa fa-power-off" data-position="icon only"></i>
                         </button>
                     </div>
                     <div class="widget-container content-area horiz-area wrapping-col left"></div>
@@ -116,6 +116,7 @@
             </div>
         </div>
 
+        <!--pagina de configuracoes-->
         <div class="upage hidden backgroundInicial" id="page_99">
             <div class="upage-outer">
                 <div class="uib-header header-bg container-group inner-element uib_w_135" data-uib="layout/header" data-ver="0">
@@ -187,50 +188,59 @@
             </div>
         </div>
 
+        <!--pagina de login-->
         <div class="upage hidden backgroundInicial" id="page_1">
             <div class="upage-outer">
-                <div class="uib-header header-bg container-group inner-element uib_w_6" data-uib="layout/header" data-ver="0">
-                    <h2 style="color:#fff">Login</h2>
+                <div class="uib-header header-bg container-group inner-element" data-uib="layout/header" data-ver="0">
+                    <h2 style="color:#fff">Entrar</h2>
                     <div class="widget-container wrapping-col single-centered"></div>
                     <div class="widget-container content-area horiz-area wrapping-col left">
-                        <button class="btn widget uib_w_31 d-margins btn-success" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="glyphicon glyphicon-chevron-left" data-position="icon only"></i>
+                        <button id="uib_w_31" class="btn widget d-margins btn-success" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="glyphicon glyphicon-chevron-left" data-position="icon only"></i>
                         </button>
                     </div>
                     <div class="widget-container content-area horiz-area wrapping-col right"></div>
                 </div>
                 <div class="upage-content ac0 content-area vertical-col left" id="page_22_31">
-                    <div class="panel widget uib_w_7 d-margins marginTopo panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
+                    <div class="panel widget d-margins marginTopo panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
 
-                        <div class="col uib_col_1 single-col" data-uib="layout/col" data-ver="0">
-                            <div class="widget-container content-area vertical-col center">
-                                <div class="table-thing widget uib_w_8 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
-                                    <label class="narrow-control label-top-left" for="inputUsuario">Usuário:</label>
-                                    <input class="wide-control form-control default input-lg" type="text" placeholder="Digite seu usuário..." id="inputUsuario">
-                                </div>
-                                <div class="table-thing widget uib_w_9 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
-                                    <label class="narrow-control label-top-left" for="inputSenha">Senha:</label>
-                                    <input class="wide-control form-control default input-lg" type="password" placeholder="Digite sua senha..." id="inputSenha">
-                                </div>
-                                <button class="btn widget uib_w_10 d-margins btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1">Entrar <i class="fa fa-sign-in button-icon-right" data-position="right"></i>
-                                </button>
+                        <form data-toggle="validator" role="form" method="post" action="j_security_check" id="formLogin">
+                            <div class="col single-col" data-uib="layout/col" data-ver="0">
+                                <div class="widget-container content-area vertical-col">
 
-                                <div class="tarea widget uib_w_11 d-margins" data-uib="media/text" data-ver="0" name="uib_w_11">
-                                    <div class="widget-container left-receptacle"></div>
-                                    <div class="widget-container right-receptacle"></div>
-                                    <div class="text-container">
-                                        <p><a id="esqueceuSenha">Esqueceu sua senha?</a>
-                                        </p>
+                                    <div class="form-group table-thing widget d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
+                                        <label class="narrow-control label-top-left" for="inputUsuario">Usuário:</label>
+                                        <input id="username" class="wide-control form-control default input-lg" type="text" name="j_username" placeholder="Digite o usuário..." data-error="Por favor, informe o usuário." required="">
+                                        <div class="help-block with-errors"></div>
                                     </div>
+                                    <div class="form-group table-thing widget d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
+                                        <label class="narrow-control label-top-left" for="inputSenha">Senha:</label>
+                                        <input class="wide-control form-control default input-lg" type="password" id="password" name="j_password" placeholder="Digite o a senha..." data-error="Por favor, informe a senha." required="">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+
+                                    <p class="text-center">
+                                        <a id="esqueceuSenha">Esqueceu sua senha?</a>
+                                    </p>
+                                    <div id="alerta" class="alert alert-danger alert-dismissable" hidden="">
+
+                                    </div>
+
+                                    <button name="submit" value="Login" class="btn widget d-margins btn-lg btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1">Entrar <i class="fa fa-sign-in button-icon-right" data-position="right"></i>
+                                    </button>
+
+                                    <span class="uib_shim"></span>
+
                                 </div>
-                                <span class="uib_shim"></span>
                             </div>
-                        </div>
+                        </form>
 
                     </div>
                 </div>
 
             </div>
         </div>
+
+        <!--        janela de cadastro de um novo agricultor-->
         <div class="upage hidden backgroundInicial" id="page_2">
             <div class="upage-outer">
                 <div class="uib-header header-bg container-group inner-element uib_w_12 uib-header-fixed" data-uib="layout/header" data-ver="0">
@@ -350,8 +360,8 @@
                                     <input class="wide-control form-control default input-lg palavras camposcadastro" type="text" placeholder="Digite seu endereço..." id="irua" maxlength="50">
                                 </div>
                                 <div class="table-thing widget uib_w_21 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
-                                    <label class="narrow-control label-top-left" for="inumero">Numero:</label>
-                                    <input class="wide-control form-control default camposcadastro numeroInt input-lg" type="tel" placeholder="Digite o numero..." id="inumero" min="1">
+                                    <label class="narrow-control label-top-left" for="inumero">Número:</label>
+                                    <input class="wide-control form-control default camposcadastro numeroInt input-lg" type="tel" placeholder="Digite o número..." id="inumero" min="1">
                                 </div>
                                 <div class="table-thing widget uib_w_295 d-margins" data-uib="twitter%20bootstrap/input" data-ver="1">
                                     <label class="narrow-control label-top-left" for="ibairro">Bairro:</label>
@@ -1449,6 +1459,51 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!--        pagina erro-->
+        <div class="upage hidden" id="uib_page_erro">
+            <div class="upage-outer">
+                <div class="upage-content ac0 content-area vertical-col left" id="page_72_63" style="margin-top:50px;">
+
+                    <div class="panel widget  d-margins panel-default" data-uib="twitter%20bootstrap/panel" data-ver="1">
+                        <div class="col single-col" data-uib="layout/col" data-ver="0">
+                            <div class="widget-container content-area vertical-col">
+                                <div class="tarea widget  d-margins" data-uib="media/text" data-ver="0">
+                                    <div class="widget-container left-receptacle"></div>
+                                    <div class="widget-container right-receptacle"></div>
+                                    <div class="text-container text-center">
+                                        <span class="fa fa-lock amarelo" aria-hidden="true" style="font-size: 100px;">
+
+                                        </span>
+                                        <hr>
+                                        <h4>O app não suporta este nível de acesso!</h4>
+
+                                    </div>
+                                </div>
+                                <span class="uib_shim"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="uib-footer uib-footer-fixed footer-bg container-group inner-element " data-uib="layout/footer" data-ver="0">
+                    <h2></h2>
+                    <div class="widget-container wrapping-col single-centered">
+                        <div class="tarea widget  d-margins" data-uib="media/text" data-ver="0" >
+                            <div class="widget-container left-receptacle"></div>
+                            <div class="widget-container right-receptacle"></div>
+                            <div class="text-container" onclick="clearGoMainPage()" style="color: #fff;">
+                                <span class="fa fa-reply" aria-hidden="true"></span>&nbsp;Retomar
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-container content-area horiz-area wrapping-col left"></div>
+                    <div class="widget-container content-area horiz-area wrapping-col right"></div>
+                </div>
+            </div>
+            <!-- /container -->
+
         </div>
 
     </body>

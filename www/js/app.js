@@ -31,11 +31,11 @@ var papel;
 //var idpropriedade = 4;
 
 //ip do servidor
-//var ipServidor = "192.168.0.7:8080";
-//var ipServidor = "10.2.10.200:8080";
-//var ipServidor = "localhost:8080";
-//var ipServidor = "187.19.101.252:8082";
-var ipServidor = "10.1.2.52:8080";
+
+//var ipServidor = "http://bioid.ddns.net:8088/Projeto_BioID-war";//acesso fora com dns
+//var ipServidor = "http://10.1.2.52:8080/Projeto_BioID-war"; //sistema teste interno
+var ipServidor = "http://10.2.10.200:8080/Projeto_BioID-war"; //sistema em producao
+
 
 /*/funcao mudar background aleatorio
 function mudarBackground(){
@@ -58,6 +58,58 @@ function mudarBackground(){
 
     }
 }*/
+
+
+
+
+
+
+
+//function requisicao(url, envio, metodo){
+function requisicao(painelCarregando, url, envio, callback) {
+
+  //testa se nescessita de painel de carregando
+    if(painelCarregando){
+        window.spinnerplugin.show();
+    }
+        //alert(JSON.stringify(envio));
+       $.ajax({
+            type: 'POST',
+            url: ipServidor+"/servico/"+url,
+            data: JSON.stringify(envio),
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            success: function(retorno){
+                callback(retorno);
+            },
+            error: function() {
+                if(painelCarregando){
+                    window.spinnerplugin.hide();
+                }
+                navigator.notification.alert("Alerta!", "Sem conexão com o servidor!", function(){
+                },"Alerta!", "OK");
+            }
+        });
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function verificarConexao(){
 
@@ -244,27 +296,15 @@ function statusDestinacao(statussafra){
 }
 
 
-function updateSessao(sessao){
-    var logSessao = JSON.parse(window.localStorage.getItem("logSessao"));
-    logSessao.sessao = sessao;
-    window.localStorage.setItem("logSessao", JSON.stringify(logSessao));
-}
-
-
 function getSessao(){
-    var logSessao = JSON.parse(window.localStorage.getItem("logSessao"));
-    return logSessao.sessao;
-
+    var logSessao = JSON.parse(localStorage.getItem("logSessao"));
+    return logSessao;
 }
 
-function getIdUnidade(){
-    var logSessao = JSON.parse(window.localStorage.getItem("logSessao"));
-    return logSessao.idunidade;
-}
-
-function getIdPessoa(){
-    var logSessao = JSON.parse(window.localStorage.getItem("logSessao"));
-    return logSessao.idpessoa;
+function updateSessao(novaSessao){
+    var logSessao = JSON.parse(localStorage.getItem("logSessao"));
+    logSessao.sessao = novaSessao;
+    localStorage.setItem("logSessao", JSON.stringify(logSessao));
 }
 
 //servico de busca dos dados no servidor, consome dados de internet e armazena no localStorage
@@ -375,10 +415,9 @@ function listarPropriedades(){
 }
 
 function listarEstoque(){
-    var idunidade = getIdUnidade();
-    var sessao = getSessao();
+    var Sessao = getSessao();
 
-    var data = "idunidade="+idunidade+'&sessao='+sessao;
+    var data = { idunidade: Sessao.idunidade};
 
 
     $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/unidade/listarestoque", data, function(dados){
@@ -473,11 +512,11 @@ function listarPropriedadesBackup(){
 
 
 function listarAgricultoresUnidade(){
-
-    var data = "idunidade="+getIdUnidade()+'&sessao='+getSessao();
+    var Sessao = getSessao();
+    var data = {idunidade: Sessao.idunidade};
 
     window.console.log(data);
-    $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/unidade/listarAgricultoresUnidade", data, function(dados){
+    $.post("http://"+window.ipServidor+"/Projeto_BioID-war/servico/unidade/listaragricultoresunidade", data, function(dados){
         window.spinnerplugin.show();
         if(dados.sucesso){
             var listaAgricultores = dados.listaAgricultores;
