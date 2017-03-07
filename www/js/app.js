@@ -100,14 +100,52 @@ function requisicao(url, envio, callback) {
 
 
 
+function verificarPagina(){
+     if($('#mainpage').is(":visible")){
+         return '#mainpage';
+
+     }else if($('#page_gerenciador').is(":visible")){
+         return '#page_gerenciador';
+
+     }else if($('#page_entrevistador').is(":visible")){
+         return '#page_entrevistador';
+
+     }else if($('#page_agricultor').is(":visible")){
+        return '#page_agricultor';
+
+     }else if($('#page_configuracoes').is(":visible")){
+        return '#page_configuracoes';
+
+     }else if($('#page_login').is(":visible")){
+        return '#page_login';
+
+     }else if($('#page_erro').is(":visible")){
+        return '#page_erro';
+     }
+}
+
+//function verificarNavBar(){
+//    if($('#bs-navbar-1').is(':visible')){
+//         return '#bs-navbar-1';
+//    }else if($('#bs-navbar-2').is(':visible')){
+//         return '#bs-navbar-2';
+//    }else{
+//         return '#bs-navbar-2';
+//    }
+//}
 
 
+function escondeMenuHamburguer(item){
 
+ if($('.botaoMenu').is(':visible')){
+    if($(item).is(':visible')){
+        $(item).collapse('hide');
+        return true;
+    }
+ return false;
+ }
 
-
-
-
-
+}
 
 
 
@@ -121,70 +159,6 @@ function verificarConexao(){
     }
 }
 
-
-//papel agricultor
-function iniciarAgricultor(){
-
-     window.listarCultivarRecebidos();
-     window.activate_page("#page_agricultor");
-     $("#page_agricultor").scrollTop(0);
-     //desativa o painel central para dar efeito fade
-     $('#uib_w_149').hide();
-     //ativa o painel inicial que eh o de cultivares recebidos
-     $("#uib_w_265").show();
-     //desativa o painel safras
-     $("#uib_w_110").hide();
-     //desativa o painel socioeconomico
-     $("#uib_w_610").hide();
-     //inicia o painel central
-     $('#uib_w_149').fadeIn();
-     window.spinnerplugin.hide();
-
-
-
-
-
-}
-
- //pagina gerenciador/entrevistador
- function iniciarGerenciador(){
-
-     window.listarEstoqueGerenciador();
-     window.activate_page("#page_gerenciador");
-     $("#page_gerenciador").scrollTop(0);
-     //desativa o painel central para dar efeito fade
-     $('#uib_w_154').hide();
-     //ativa o painel inicial que eh o de estoque
-     $("#uib_w_123").show();
-     //desativa o painel de agricultores
-     $("#uib_w_116").hide();
-     //desativa o painel membros
-     $("#uib_w_361").hide();
-     //inicia o painel central
-     $('#uib_w_154').fadeIn();
-     window.spinnerplugin.hide();
- }
-
- //pagina gerenciador/entrevistador
- function iniciarEntrevistador(){
-
-     window.listarEstoqueEntrevistador();
-     window.activate_page("#page_entrevistador");
-     $("#page_entrevistador").scrollTop(0);
-     //desativa o painel central para dar efeito fade
-     $('#uib_w_600').hide();
-     //ativa o painel inicial que eh o de estoque
-     $("#uib_w_601").show();
-     //desativa o painel de agricultores
-     $("#uib_w_602").hide();
-     //desativa o painel membros
-     $("#uib_w_606").hide();
-     //desativa o painel backup entrevista
-     $("#uib_w_378").hide();
-     //inicia o painel central
-     $('#uib_w_600').fadeIn();
-     window.spinnerplugin.hide();
- }
 
 //verifica se existe sessao na localStorage
 //inicia pela ultima sessao ou abre tela de login

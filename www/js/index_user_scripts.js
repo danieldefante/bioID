@@ -2,14 +2,84 @@
 /*global $ */(function()
 {
  "use strict";
- /*
-   hook up event handlers
- */
+
+
+//////////////FUNCOES PADROES USADAS PELO HARDWARE DO APARELHO E ELEMENTOS HTML/////////////////////////
+
+function fecharApp(){
+     navigator.notification.confirm(
+            'Deseja fechar o app?', // message
+            function(buttonIndex) {
+                if(buttonIndex == 2){
+                    navigator.app.exitApp();
+                }
+            },            // callback to invoke with index of button pressed
+            'Confirmação',           // title
+            ['Cancelar', 'Fechar']     // buttonLabels
+         );
+
+}
+
+ //pagina gerenciador/entrevistador
+ function iniciarGerenciador(){
+
+     window.listarEstoqueGerenciador();
+     window.activate_page("#page_gerenciador");
+     $("#page_gerenciador").scrollTop(0);
+     //desativa o painel central para dar efeito fade
+     $('#uib_w_154').hide();
+     //desativa os paineis
+     $('.paineisGerenciador').hide();
+     //ativa o painel inicial que eh o de estoque
+     $("#uib_w_123").show();
+     //inicia o painel central
+     $('#uib_w_154').fadeIn();
+     window.spinnerplugin.hide();
+ }
+
+ //pagina gerenciador/entrevistador
+ function iniciarEntrevistador(){
+
+     window.listarEstoqueEntrevistador();
+     window.activate_page("#page_entrevistador");
+     $("#page_entrevistador").scrollTop(0);
+     //desativa o painel central para dar efeito fade
+     $('#uib_w_600').hide();
+     //desativa os paineis
+     $('.paineisEntrevistador').hide();
+     //ativa o painel inicial que eh o de estoque
+     $("#uib_w_601").show();
+     //inicia o painel central
+     $('#uib_w_600').fadeIn();
+     window.spinnerplugin.hide();
+ }
+
+//papel agricultor
+function iniciarAgricultor(){
+
+     window.listarCultivarRecebidos();
+     window.activate_page("#page_agricultor");
+     $("#page_agricultor").scrollTop(0);
+     //desativa o painel central para dar efeito fade
+     $('#uib_w_149').hide();
+    //desativa os paineis
+     $('.paineisAgricultor').hide();
+     //ativa o painel inicial que eh o de cultivares recebidos
+     $("#uib_w_265").show();
+     //inicia o painel central
+     $('#uib_w_149').fadeIn();
+     window.spinnerplugin.hide();
+
+}
+
+////////// FIM FUNCOES PADROES USADAS PELO HARDWARE DO APARELHO E ELEMENTOS HTML///////////////////////
+
+//////////////FUNCAO HARDWARE, CAPTURA DO BOTAO VOLTAR/////////////////////////////////////////////////
  function onBackKeyDown()
  {
 
 
-     navigator.notification.alert("Por motivo de segurança este botão está indisponível no momento!", function(){},"Alerta de desenvolvimento!", "Sair");
+
 
 //     //esconde o menu hambueguer
 //     function escondeMenuHamb(item){
@@ -22,18 +92,88 @@
 //         return esconder;
 //     }
 //
-//    //pagina inicial
-//     if($('#mainpage').is(":visible")){
-//        navigator.notification.confirm(
-//            'Deseja fechar o app?', // message
-//            function(buttonIndex) {
-//                if(buttonIndex == 2){
-//                    navigator.app.exitApp();
-//                }
-//            },            // callback to invoke with index of button pressed
-//            'Confirmação',           // title
-//            ['Cancelar', 'Fechar']     // buttonLabels
-//         );
+
+
+
+
+
+     switch(window.verificarPagina()){
+         //pagina inicial
+         case '#mainpage':
+             fecharApp();
+             break;
+
+         //pagina login
+         case '#page_login':
+             activate_page("#mainpage");
+             break;
+
+         //pagina gerenciador
+         case '#page_gerenciador':
+             if(!window.escondeMenuHamburguer("#bs-navbar-2")){
+                 //se estiver no inicio pede para sair do gerenciador
+                 if($('.paineisGerenciador:visible').attr("id") === 'uib_w_123'){
+                    fecharApp();
+
+                 }else{
+                    iniciarGerenciador();
+                 }
+             }
+
+             break;
+
+         //pagina entrevistador
+         case '#page_entrevistador':
+             if(!window.escondeMenuHamburguer("#bs-navbar-3")){
+                 //se estiver no inicio pede para sair do gerenciador
+                 if($('.paineisEntrevistador:visible').attr("id") === 'uib_w_601'){
+                     fecharApp();
+                 }else{
+                     iniciarEntrevistador();
+                 }
+             }
+             break;
+
+         case '#page_agricultor':
+             if(!window.escondeMenuHamburguer("#bs-navbar-1")){
+                 //se estiver no inicio pede para sair do gerenciador
+                 if($('.paineisAgricultor:visible').attr("id") === 'uib_w_265'){
+                    fecharApp();
+                 }else{
+                     iniciarAgricultor();
+                 }
+             }
+             break;
+
+         case '#page_configuracoes':
+             history.go(-1);
+             break;
+
+         case '#page_erro':
+             activate_page("#page_login");
+             break;
+
+         default:
+             navigator.notification.alert("Função não disponível!", function(){},"Alerta!", "Sair");
+             break;
+     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //     //sobre
 //     }else if($('#modalSobre').is(":visible")){
 //        $('#modalSobre').modal('toggle');
@@ -191,7 +331,7 @@
 
 
 
-//eventos dos botoes e de toda a interaçao do app
+/////////////////////////EVENTOS DOS ELEMENTOS HTML//////////////////////////////////////////////
  function register_event_handlers()
  {
 
@@ -200,7 +340,7 @@
          window.console.log(msg);
      }
 
-//////////////FIM DE FUNCOES PADROES USASAS EM TODOS OS NIVEIS DE USUARIOS//////////////////
+//////////////FUNCOES PADROES USASAS EM TODOS OS NIVEIS DE USUARIOS//////////////////
      //botao do navbar sair
 //     $(document).on("click", "#page_entrevistador", function(evt)
 //     {
@@ -211,24 +351,24 @@
 //         return false;
 //     });
 
-     function escondeMenuHamburguer(){
 
-         if($('.botaoMenu').is(':visible')){
-            if($('#bs-navbar-1').is(':visible')){
-                $('#bs-navbar-1').collapse('hide');
-            }else if($('#bs-navbar-2').is(':visible')){
-                 $('#bs-navbar-2').collapse('hide');
-            }else{
-                 $('#bs-navbar-3').collapse('hide');
-            }
-         }
-
+     function verificarNavBar(){
+        if($('#bs-navbar-1').is(':visible')){
+             return '#bs-navbar-1';
+        }else if($('#bs-navbar-2').is(':visible')){
+             return '#bs-navbar-2';
+        }else{
+             return '#bs-navbar-2';
+        }
      }
+//////////////FIM DE FUNCOES PADROES USASAS EM TODOS OS NIVEIS DE USUARIOS//////////////////
+
+ //////////////INICIO PAGINA CONFIGURACOES//////////////////
 
      //botao do navbar sair
      $(document).on("click", ".sair", function(evt)
      {
-         escondeMenuHamburguer();
+         window.escondeMenuHamburguer(verificarNavBar());
 
          navigator.notification.confirm(
             'Deseja sair?', // message
@@ -250,24 +390,60 @@
      });
 
 
-//botao do navbar configuracoes
+     //botao do navbar configuracoes
      $(document).on("click", ".configuracoes", function(evt)
      {
-         escondeMenuHamburguer();
+         window.escondeMenuHamburguer(verificarNavBar());
          activate_page("#page_configuracoes");
 
          return false;
      });
 
-//botao do navbar sobre
+     //botao do navbar sobre
      $(document).on("click", ".sobre", function(evt)
      {
 
-        escondeMenuHamburguer();
+        window.escondeMenuHamburguer(verificarNavBar());
         $("#modalSobre").modal("toggle");
 
         return false;
      });
+
+
+
+//    /* button  selecionar um papel de parede */
+//    $(document).on("click", "#uib_w_146", function(evt)
+//    {
+//         $("#modalSobre").modal("toggle");
+//         return false;
+//    });
+
+    /* button  selecionar um papel de parede */
+    $("#papelDeParede").change(function(){
+
+         if($("#papelDeParede").val() === "Papel de parede 1"){
+             $(".backgroundInicial").css("background-image", 'url("images/background1.jpg")');
+         }else if($("#papelDeParede").val() === "Papel de parede 2"){
+             $(".backgroundInicial").css("background-image", 'url("images/background2.jpg")');
+         }else if($("#papelDeParede").val() === "Papel de parede 3"){
+             $(".backgroundInicial").css("background-image", 'url("images/background3.jpg")');
+         }else if($("#papelDeParede").val() === "Papel de parede 4"){
+             $(".backgroundInicial").css("background-image", 'url("images/background4.jpg")');
+         }else if($("#papelDeParede").val() === "Papel de parede 5"){
+             $(".backgroundInicial").css("background-image", 'url("images/background5.jpg")');
+         }else if($("#papelDeParede").val() === "Papel de parede 6"){
+             $(".backgroundInicial").css("background-image", 'url("images/background6.jpg")');
+         }else if($("#papelDeParede").val() === "Papel de parede 7"){
+             $(".backgroundInicial").css("background-image", 'url("images/background7.jpg")');
+         }else {
+             $(".backgroundInicial").css("background-image", 'url("images/background8.jpg")');
+         }
+    });
+
+
+
+
+/////////FIM DA PAGINA CONFIGURACOES///////////////////
 
 //////////////PAGINA INICIAL////////////
     /* botao carregar pagina login*/
@@ -275,8 +451,8 @@
     {
 
          activate_page("#page_login");
-        $("#username").val("");
-        $("#password").val("");
+        $("#username").val("gerenciador");
+        $("#password").val("gerenciador");
         $("#formLogin").validator();
         $('#alerta').hide();
 //         $('#uib_w_7').fadeIn(100);
@@ -341,16 +517,16 @@ $(document).on("submit", "#formLogin", function(e){
                     }).done(function (){
                         switch(dadosRetorno.data.grupo){
                             case "administradores":
-                                activate_page("#uib_page_erro");
+                                activate_page("#page_erro");
                                 break;
                             case "gerenciadores":
-                                window.iniciarGerenciador();
+                                iniciarGerenciador();
                                 break;
                             case "entrevistadores":
-                                window.iniciarEntrevistador();
+                                iniciarEntrevistador();
                                 break;
                             case "agricultores":
-                                window.iniciarAgricultor();
+                                iniciarAgricultor();
                                 break;
                             default:
                                 navigator.notification.alert("Erro em estabelecer o grupo!", function(){
@@ -382,6 +558,33 @@ $(document).on("submit", "#formLogin", function(e){
 
         return false;
     });
+
+
+     /* botao fechar app na pagina inicial */
+    $(document).on("click", "#uib_w_197", function(evt)
+    {
+
+        navigator.notification.confirm(
+            'Deseja fechar o app?', // message
+            function(buttonIndex) {
+                if(buttonIndex == 2){
+                    navigator.app.exitApp();
+                }
+            },            // callback to invoke with index of button pressed
+            'Confirmação',           // title
+            ['Cancelar', 'Fechar']     // buttonLabels
+         );
+
+         return false;
+    });
+
+    //esqueceu a senha
+     $(document).on("click", "#esqueceuSenha", function(evt){
+         navigator.notification.alert("daniel@fundetec.org.br",function(){},"Suporte", "Sair");
+
+//         navigator.app.loadUrl('http://'+window.ipServidor+'/Projeto_BioID-war/recuperarsenha.html', { openExternal:true });
+
+     });
 
  ///////////FIM PAGINA LOGIN///////////////////
 
@@ -545,7 +748,7 @@ function listarEquipe(){
         mostrarSelecionadoAgricultor("#uib_w_265");
 
 
-//        if(!escondeMenuHamburguer('bs-navbar-1')){
+//        if(!window.escondeMenuHamburguer('bs-navbar-1')){
 //            if(sessionStorage.getItem('indiceSelecionado')){
 //                navigator.notification.confirm(
 //                    'O cultivar não foi relatado, Deseja cancelar?', // message
@@ -575,7 +778,7 @@ function listarEquipe(){
     {
 
        mostrarSelecionadoAgricultor("#uib_w_110");
-//        if(!escondeMenuHamburguer('bs-navbar-1')){
+//        if(!window.escondeMenuHamburguer('bs-navbar-1')){
 //            if(sessionStorage.getItem('indiceSelecionado')){
 //                navigator.notification.confirm(
 //                    'O cultivar não foi relatado, Deseja cancelar?', // message
@@ -603,7 +806,7 @@ function listarEquipe(){
 
         mostrarSelecionadoAgricultor("#uib_w_610");
 
-//        if(!escondeMenuHamburguer('bs-navbar-1')){
+//        if(!window.escondeMenuHamburguer('bs-navbar-1')){
 //            if(sessionStorage.getItem('indiceSelecionado')){
 //                navigator.notification.confirm(
 //                    'O cultivar não foi relatado, Deseja cancelar?', // message
@@ -715,13 +918,6 @@ function listarEquipe(){
 //     });
 
 //
-//     //esqueceu a senha
-//     $(document).on("click", "#esqueceuSenha", function(evt){
-//         navigator.notification.alert("daniel@fundetec.org.br",function(){},"Suporte", "Sair");
-//
-////         navigator.app.loadUrl('http://'+window.ipServidor+'/Projeto_BioID-war/recuperarsenha.html', { openExternal:true });
-//
-//     });
 
 
 
@@ -770,7 +966,7 @@ function listarEquipe(){
 //        /* button  .uib_w_38 */
 //    $(document).on("click", ".uib_w_38", function(evt)
 //    {
-//         window.iniciarAgricultor();
+//         iniciarAgricultor();
 //         return false;
 //    });
 //
@@ -840,7 +1036,7 @@ function listarEquipe(){
 //         if(buttonIndex === 2){
 //            //limpa o sessionStorage
 //            window.sessionStorage.clear();
-//            window.iniciarAgricultor();
+//            iniciarAgricultor();
 //         }
 //     }
 //
@@ -898,18 +1094,18 @@ function listarEquipe(){
 //
 //     $(document).on("click", "#page_agricultor", function(evt)
 //     {
-//         escondeMenuHamburguer('bs-navbar-1');
+//         window.escondeMenuHamburguer('bs-navbar-1');
 //         return false;
 //     });
 //
 //     $(document).on("click", "#page_gerenciador", function(evt)
 //     {
-//         escondeMenuHamburguer('bs-navbar-2');
+//         window.escondeMenuHamburguer('bs-navbar-2');
 //         return false;
 //     });
 //
 //     //esconde o menu hambueguer
-//     function escondeMenuHamburguer(item){
+//     function window.escondeMenuHamburguer(item){
 //
 //         var esconder = false;
 //         if($('#'+item).is(':visible') && $('.botaoMenu').is(':visible')){
@@ -926,7 +1122,7 @@ function listarEquipe(){
 //    //organiza lista de propriedades com o click da propriedade
 //    $(document).on("click", ".uib_w_286 > li", function(evt)
 //    {
-//        if(!escondeMenuHamburguer('bs-navbar-1')){
+//        if(!window.escondeMenuHamburguer('bs-navbar-1')){
 //
 //            var propriedades = JSON.parse(window.localStorage.getItem("propriedades"));
 //            $(".uib_w_286").append($(this));
@@ -950,42 +1146,6 @@ function listarEquipe(){
 //
 //
 //
-//        /* button  Button */
-//    $(document).on("click", ".uib_w_146", function(evt)
-//    {
-//         /* Other options: .modal("show")  .modal("hide")  .modal("toggle")
-//         See full API here: http://getbootstrap.com/javascript/#modals
-//            */
-//
-//         $("#modalSobre").modal("toggle");
-//         return false;
-//    });
-//
-//
-//    $("#papelDeParede").change(function(){
-//
-//         if($("#papelDeParede").val() === "Papel de parede 1"){
-//             $(".backgroundInicial").css("background-image", 'url("images/background1.jpg")');
-//         }else if($("#papelDeParede").val() === "Papel de parede 2"){
-//             $(".backgroundInicial").css("background-image", 'url("images/background2.jpg")');
-//         }else if($("#papelDeParede").val() === "Papel de parede 3"){
-//             $(".backgroundInicial").css("background-image", 'url("images/background3.jpg")');
-//         }else if($("#papelDeParede").val() === "Papel de parede 4"){
-//             $(".backgroundInicial").css("background-image", 'url("images/background4.jpg")');
-//         }else if($("#papelDeParede").val() === "Papel de parede 5"){
-//             $(".backgroundInicial").css("background-image", 'url("images/background5.jpg")');
-//         }else if($("#papelDeParede").val() === "Papel de parede 6"){
-//             $(".backgroundInicial").css("background-image", 'url("images/background6.jpg")');
-//         }else if($("#papelDeParede").val() === "Papel de parede 7"){
-//             $(".backgroundInicial").css("background-image", 'url("images/background7.jpg")');
-//         }else {
-//             $(".backgroundInicial").css("background-image", 'url("images/background8.jpg")');
-//         }
-//    });
-//
-//
-//
-//
 
 //
 //        /* button  .uib_w_225 */
@@ -1001,7 +1161,7 @@ function listarEquipe(){
 //        /* listar cultivares recebidos*/
 //    $(document).on("click",".listaCultivar > a", function(evt)
 //    {
-//        if(!escondeMenuHamburguer('bs-navbar-1')){
+//        if(!window.escondeMenuHamburguer('bs-navbar-1')){
 //
 //            var a = $(this).attr("id");
 //            //carrega item que esta no localStorage
@@ -1136,23 +1296,7 @@ function listarEquipe(){
 //         return false;
 //    });
 //
-//        /* botao fechar app na pagina inicial */
-//    $(document).on("click", "#uib_w_197", function(evt)
-//    {
 //
-//        navigator.notification.confirm(
-//            'Deseja fechar o app?', // message
-//            function(buttonIndex) {
-//                if(buttonIndex == 2){
-//                    navigator.app.exitApp();
-//                }
-//            },            // callback to invoke with index of button pressed
-//            'Confirmação',           // title
-//            ['Cancelar', 'Fechar']     // buttonLabels
-//         );
-//
-//         return false;
-//    });
 //
 //        /* button  Button */
 //    $(document).on("click", ".uib_w_278", function(evt)
@@ -1366,7 +1510,7 @@ function listarEquipe(){
 //        /* button  .uib_w_105 */
 //    $(document).on("click", ".uib_w_105", function(evt)
 //    {
-//        if(!escondeMenuHamburguer('bs-navbar-1')){
+//        if(!window.escondeMenuHamburguer('bs-navbar-1')){
 //            var msg;
 //
 //            if($('#relatarPerda').is(':checked')){
@@ -1538,7 +1682,7 @@ function listarEquipe(){
 //
 //
 //     $(document).on("click", ".uib_w_340 > label", function(evt){
-//         if(!escondeMenuHamburguer('bs-navbar-1')){
+//         if(!window.escondeMenuHamburguer('bs-navbar-1')){
 //             var id = $(this).children('input').attr('id');
 //
 //             if(id === "colheitaParcial"){
@@ -1933,7 +2077,7 @@ function listarEquipe(){
 ////            'Deseja enviar as destinações?', // message
 ////            function(buttonIndex) {
 ////                if(buttonIndex === 2){
-////                    window.iniciarAgricultor();
+////                    iniciarAgricultor();
 ////
 ////                }
 ////           },            // callback to invoke with index of button pressed
