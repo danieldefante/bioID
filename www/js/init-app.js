@@ -61,7 +61,7 @@ app.initEvents = function() {
     //window.mudarBackground();
     //window.verificarConexao();
     //verifica se usuario esta logado em alguma sessao
-    window.verificaSession();
+//    window.verificaSession();
 
     // TODO: configure following to work with both touch and click events (mouse + touch)
     // see http://msopentech.com/blog/2013/09/16/add-pinch-pointer-events-apache-cordova-phonegap-app/
