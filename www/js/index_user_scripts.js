@@ -3,9 +3,27 @@
 {
  "use strict";
 
+     //funcao somente para fins de teste
+     function c(msg){
+         window.console.log(msg);
+     }
 
 //////////////FUNCOES PADROES USADAS PELO HARDWARE DO APARELHO E ELEMENTOS HTML/////////////////////////
 
+//fecha o menu hamburguer
+function escondeMenuHamburguer(item){
+
+ if($('.botaoMenu').is(':visible')){
+    if($(item).is(':visible')){
+        $(item).collapse('hide');
+        return true;
+    }
+ return false;
+ }
+
+}
+
+///fecha o app
 function fecharApp(){
      navigator.notification.confirm(
             'Deseja fechar o app?', // message
@@ -20,27 +38,138 @@ function fecharApp(){
 
 }
 
- //pagina gerenciador/entrevistador
- function iniciarGerenciador(){
+//function requisicao(url, envio, metodo){
+function requisicao(url, envio, callback) {
 
-     window.listarEstoqueGerenciador();
-     window.activate_page("#page_gerenciador");
-     $("#page_gerenciador").scrollTop(0);
-     //desativa o painel central para dar efeito fade
-     $('#uib_w_154').hide();
-     //desativa os paineis
-     $('.paineisGerenciador').hide();
-     //ativa o painel inicial que eh o de estoque
-     $("#uib_w_123").show();
-     //inicia o painel central
-     $('#uib_w_154').fadeIn();
-     window.spinnerplugin.hide();
- }
+  //testa se nescessita de painel de carregando
+//    if(painelCarregando){
+        window.spinnerplugin.show();
+//    }
+        //alert(JSON.stringify(envio));
+       $.ajax({
+            type: 'POST',
+            url: window.ipServidor+"/servico/"+url,
+            data: JSON.stringify(envio),
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            success: function(retorno){
+                callback(retorno);
+            },
+            error: function() {
+//                if(painelCarregando){
+                    window.spinnerplugin.hide();
+//                }
+                navigator.notification.alert("Alerta!", "Sem conexão com o servidor!", function(){
+                },"Alerta!", "OK");
+            }
+        });
 
- //pagina gerenciador/entrevistador
+
+}
+
+/////////ABRIR PAGINA AMOSTRAGEM////////
+function abrirPageAmostragem(tituloAmostragem, tituloBoxAmostragem, corpoAmostragem){
+    //popula a pagina amostragem
+    $('#tituloAmostragem').empty().text(tituloAmostragem);
+    //nome do cultivar na pagina amostragem
+    $('#tituloBoxAmostragem').empty().append(tituloBoxAmostragem);
+    //adiciona itens ao corpo da pagina
+    $("#corpoAmostragem").empty().append(corpoAmostragem);
+    //retira o painel loading
+    window.spinnerplugin.hide();
+    //ativa a pagina
+    activate_page("#page_amostragem");
+}
+///////////FIM ABRIR PAGINA AMOSTRAGEM//////
+
+///BUSCAR CULTIVAR E MOSTRAR NA PAGINA AMOSTRAGEM//////
+function mostrarCultivar(idClicado){
+    var envio = {
+    metodo: "GET_CULTIVAR",
+    idcultivar: idClicado
+    };
+
+    //chama a requisicao do servidor, o resultado é listado em uma tabela
+    requisicao("cultivar/buscar", envio, function(dadosRetorno) {
+//            $('#listaDeMembros').empty();
+        if(dadosRetorno.sucesso){
+
+            //chama a funcao que mostra a pagina amostragem
+            abrirPageAmostragem('Cultivar', dadosRetorno.data.nomecultivar+'<i class="fa fa-leaf button-icon-right" data-position="top"></i>', '<div class="widget-container content-area vertical-col"><div class="widget scale-image d-margins marginTopoImg" data-uib="media/img" data-ver="0"><figure class="figure-align"><img src='+dadosRetorno.data.imagem+'><figcaption data-position="bottom"></figcaption></figure></div></div>            <span class="uib_shim"></span>                <div class="col single-col" data-uib="layout/col" data-ver="0"><div class="widget-container content-area vertical-col"><div class="tarea widget d-margins" data-uib="media/text" data-ver="0" ><div class="widget-container left-receptacle"></div><div class="widget-container right-receptacle"></div><div class="text-container">          <hr><p class="cinza">Biofortificado: '+dadosRetorno.data.biofortificado+'</p><p>Unidade de medida: '+dadosRetorno.data.grandeza+'</p><p class="cinza">Descrição: '+dadosRetorno.data.peso_saca+'</p><p>Ciclo de produção: '+dadosRetorno.data.tempodecolheita+' dia(s)</p><p class="cinza">Periodo de armazenamento/destinação: '+dadosRetorno.data.tempodestinacao+' dia(s)</p><p>Descrição: '+dadosRetorno.data.descricao+'</p><p class="cinza">Valor nutricional: '+dadosRetorno.data.valornutricional+'</p><hr>       </div></div><span class="uib_shim"></span></div></div>');
+
+        }else{
+            //retira o painel loading
+            window.spinnerplugin.hide();
+            navigator.notification.alert(dadosRetorno.mensagem, function(){
+                iniciarGerenciador();
+            },"Erro!", "Sair");
+
+        }
+
+    });
+}
+////FIM BUSCAR CULTIVAR E MOSTRAR NA PAGINA AMOSTRAGEM/////
+
+///////INICIO BUSCAR AGRICULTOR E MOSTRAR NA PAGINA AMOSTRAGEM//////////
+function mostarAgricultor(idClicado){
+    var envio = {
+        metodo: "GET_POR_ID",
+        idpessoa: idClicado
+    };
+
+    //chama a requisicao do servidor, o resultado é listado em uma tabela
+    requisicao("agricultor/buscar", envio, function(dadosRetorno) {
+//            $('#listaDeMembros').empty();
+        if(dadosRetorno.sucesso){
+
+
+            //chama a funcao que mostra a pagina amostragem
+            abrirPageAmostragem('Agricultor', dadosRetorno.data.nome+' '+dadosRetorno.data.sobrenome+'<i class="fa fa-user button-icon-right" data-position="top"></i>', '<div class="col single-col" data-uib="layout/col" data-ver="0"><div class="widget-container content-area vertical-col"><div class="tarea widget d-margins" data-uib="media/text" data-ver="0" ><div class="widget-container left-receptacle"></div><div class="widget-container right-receptacle"></div><div class="text-container">              <p>CPF: '+dadosRetorno.data.cpf+'</p><p class="cinza">RG: '+dadosRetorno.data.rg+'</p><p>Apelido: '+dadosRetorno.data.apelido+'</p><p class="cinza">Data nascimento: '+dadosRetorno.data.datanascimento+'</p><p>Sexo: '+dadosRetorno.data.sexo+'</p><p class="cinza">Telefone1: '+dadosRetorno.data.telefone1+'</p><p>Telefone2: '+dadosRetorno.data.telefone2+'</p><p class="cinza">Email: '+dadosRetorno.data.email+'</p><p>Estado civíl: '+dadosRetorno.data.estadocivil+'</p><p class="cinza">Escolaridade: '+dadosRetorno.data.escolaridade+'</p><p>Qtd integrante(s) na família: '+dadosRetorno.data.qtdintegrantes+'</p><p class="cinza">Qtd crianças: '+dadosRetorno.data.qtdcriancas+'</p><p>Qtd grávidas: '+dadosRetorno.data.qtdgravidas+'</p><hr>       </div></div><span class="uib_shim"></span></div></div>');
+
+        }else{
+            //retira o painel loading
+            window.spinnerplugin.hide();
+            navigator.notification.alert(dadosRetorno.mensagem, function(){
+                iniciarGerenciador();
+            },"Erro!", "Sair");
+
+        }
+
+    });
+}
+
+///FUNCAO QUE VERIFICA QUAL A PAGINA QUE ESTA VISIVEL
+function verificarPagina(){
+     if($('#mainpage').is(":visible")){
+         return '#mainpage';
+
+     }else if($('#page_gerenciador').is(":visible")){
+         return '#page_gerenciador';
+
+     }else if($('#page_entrevistador').is(":visible")){
+         return '#page_entrevistador';
+
+     }else if($('#page_agricultor').is(":visible")){
+        return '#page_agricultor';
+
+     }else if($('#page_login').is(":visible")){
+        return '#page_login';
+
+     }else if($('#page_erro').is(":visible")){
+        return '#page_erro';
+
+     }else if($('#page_amostragem').is(":visible")){
+        return '#page_amostragem';
+     }
+}
+
+
+ //INICIAR ENTREVISTADOR
  function iniciarEntrevistador(){
 
-     window.listarEstoqueEntrevistador();
+     listarEstoqueEntrevistador();
      window.activate_page("#page_entrevistador");
      $("#page_entrevistador").scrollTop(0);
      //desativa o painel central para dar efeito fade
@@ -54,10 +183,10 @@ function fecharApp(){
      window.spinnerplugin.hide();
  }
 
-//papel agricultor
 function iniciarAgricultor(){
 
-     window.listarCultivarRecebidos();
+     listarPropriedades();
+
      window.activate_page("#page_agricultor");
      $("#page_agricultor").scrollTop(0);
      //desativa o painel central para dar efeito fade
@@ -72,32 +201,401 @@ function iniciarAgricultor(){
 
 }
 
+//FUNCAO QUE LISTA A PROPRIEDADE
+function listarPropriedades(){
+
+    var Sessao = window.getSessao();
+    var envio = {
+            metodo: "POR_USUARIO_E_IDUNIDADE",
+            usuario: Sessao.usuario,
+            idunidade: Sessao.idunidade
+        };
+
+    //chama a requisicao do servidor, o resultado é listado em uma tabela
+    requisicao("propriedade/listar", envio, function(dadosRetorno) {
+        if(dadosRetorno.sucesso){
+
+
+            $('#listaPropriedades').empty();
+            //percorre a lista de propriedades e lista em abas
+            $.each(dadosRetorno.data, function(i, valor){
+
+                $('#listaPropriedades').append('<li value="'+valor.idpropriedade+'" role="presentation" class="widget active" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+valor.nomepropriedade+'</a></li>');
+
+                //funcao que lista os cultivares recebidos
+                listarCultivarRecebidos(valor.idpropriedade);
+            });
+
+
+            //retira o painel loading
+             window.spinnerplugin.hide();
+        }else{
+            //retira o painel loading
+            window.spinnerplugin.hide();
+            navigator.notification.alert(dadosRetorno.mensagem, function(){},"Aviso!", "Sair");
+
+        }
+
+    });
+
+
+
+
+
+
+//    var item;
+//    var itemP;
+//    $(".uib_w_286").empty();
+//    $(".uib_w_357").empty();
+//
+//    var propriedades = JSON.parse(localStorage.getItem("propriedades"));
+//
+//    if(propriedades.length > 0){
+//
+//        $.each(propriedades, function(i){
+//            item = '<li role="presentation" class="widget uib_w_287" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i]+'</a></li>';
+//
+//            itemP = '<li role="presentation" class="widget uib_w_358" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">'+propriedades[i]+'</a></li>';
+//
+//            $(".uib_w_286").append(item);
+//            $(".uib_w_357").append(itemP);
+//
+//        });
+//
+//
+//        //marca o ultima propriedade como ativa
+//        $('.uib_w_287').last().addClass("active");
+//        $('.uib_w_358').last().addClass("active");
+//
+//
+//        //chama a funcao de listar cultivares recebidos
+//        listarCultivarRecebidos(propriedades[propriedades.length - 1]);
+//
+//    }else{
+//        $("#cultivarRecebido").empty();
+//
+////        item = '<a class="list-group-item allow-badge widget uib_w_267" data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-rotate-left"> </span><h4 class="list-group-item-heading">Atualizar lista</h4><p class="list-group-item-text">data recebimento/quantidade</p></a>';
+////
+////        $("#cultivarRecebido").append(item);
+//
+//        navigator.notification.alert("Nenhum cultivar recebido!\nReceba cultivares biofortificados em uma unidade de distribuição mais próxima de você,\nmais dúvidas entre em contato com inovacao@fundetec.org.br",function(){},"Alerta","OK");
+//    }
+}
+///////////FIM DA FUNCAO LISTAR PROPRIEDADES PAPEL AGRICULTORES/////////////////////////
+
+///////////INICIO FUNCAO LISTAR CULTIVARES RECEBIDOS PAPEL AGRICULTORES//////////
+function listarCultivarRecebidos(idPropriedade){
+
+
+    var envio = {
+            metodo: "CULTIVARES_RECEBIDOS",
+            idpropriedade: idPropriedade
+        };
+
+    //chama a requisicao do servidor que lista os cultivares recebidos de uma propriedade
+    requisicao("safra/listar", envio, function(dadosRetorno) {
+        if(dadosRetorno.sucesso){
+
+
+            $('#cultivaresRecebidos').empty();
+            //percorre a lista de propriedades e lista em abas
+            $.each(dadosRetorno.data, function(i, valor){
+
+                $('#cultivaresRecebidos').append('<a value="'+valor.idsafra+'" class="list-group-item allow-badge widget" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ prazoRelatar(valor.statussafra)+'<h4 class="list-group-item-heading">'+ valor.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ valor.safra +'</p></a>');
+
+            });
+
+
+            //retira o painel loading
+             window.spinnerplugin.hide();
+        }else{
+            //retira o painel loading
+            window.spinnerplugin.hide();
+            navigator.notification.alert(dadosRetorno.mensagem, function(){},"Aviso!", "Sair");
+
+        }
+
+    });
+
+
+//        $("#cultivarRecebido").empty();
+//        var cultivaresRecebidos = JSON.parse(localStorage.getItem("cultivaresRecebidos"));
+//
+//        //se nao conter os dados redireciona para acesso no servidor, armazena na localStorage e depois chama novamente o metotodo listarCultivarRecebidos
+//        if(cultivaresRecebidos === null){
+//            clearGoMainPage();
+//        //acessa o localStorge e cria a lista
+//        }else{
+//            var a;
+//            //percore o tamanho do cultivares recebidos e cria um novo item
+//            $.each(cultivaresRecebidos, function(i){
+//                a = cultivaresRecebidos[i];
+//                //teste a propriedade
+//                if(a.nomepropriedade === nomePropriedade){
+//                     // var item ='<a id="'+i+'" class="list-group-item allow-badge widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1">'+ prazoRelatar(a.statussafra_idstatussafra)+'<h4 class="list-group-item-heading">'+ a.nomecultivar +'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">'+statusColheita(a.statussafra_idstatussafra)+ a.prazo_colheita+'</p><p class="list-group-item-text">'+statusDestinacao(a.statussafra_idstatussafra)+a.prazo_destinacao+'</p></a>';
+//                     var item ='<a id="'+i+'" class="list-group-item widget uib_w_268" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+ a.nomecultivar + prazoRelatar(a.statussafra_idstatussafra)+'</h4><p class="list-group-item-text">Safra: '+ a.safra +'</p><p class="list-group-item-text">'+statusColheita(a.statussafra_idstatussafra)+ a.prazo_colheita+'</p><p class="list-group-item-text">'+statusDestinacao(a.statussafra_idstatussafra)+a.prazo_destinacao+'</p></a>';
+//                    $("#cultivarRecebido").append(item);
+//                }
+//            });
+//        }
+
+}
+///////////FIM FUNCAO LISTAR CULTIVARES RECEBIDOS PAPEL AGRICULTORES//////////
+
+////////////////////////INICIAR FUNCAO DE ICONE DE SAFRA//////////////////////
+    function prazoRelatar(status){
+
+    if(status === 7 || status === 8){
+        //return '<span class="vermelho badge fa fa-thumbs-o-down"><span class="vermelho badge fa fa-chevron-right"> </span></span>';
+        return '<i class="vermelho fa fa-thumbs-o-down button-icon-right" data-position="top"></i>';
+    }else if(status === 6 ){
+        return '<i class="verde fa fa-thumbs-o-up button-icon-right" data-position="top"></i>';
+        //return '<span class="verde badge fa fa-thumbs-o-up"><span class="verde badge fa fa-chevron-right"> </span></span>';
+    }else if(status === 1){
+        return '<i class="laranja fa fa-hand-o-right button-icon-right" data-position="top"></i>';
+        // return ' <span class="laranja badge fa fa-chevron-right"> </span>';
+    }else{
+        //return ' <span class="amarelo badge fa fa-chevron-right"> </span>';
+        return '<i class="amarelo fa fa-hand-o-right button-icon-right" data-position="top"></i>';
+    }
+
+}
+//////////////FIM FUNCAO DE ICONE DE SAFRA//////////////////
+
+
+//function statusColheita(statussafra){
+//    if(statussafra <= 3){
+//        return 'Relatar colheita até: ';
+//    }else{
+//        return 'Colheita ';
+//    }
+//
+//}
+//function statusDestinacao(statussafra){
+//    if(statussafra <= 5){
+//        return 'Relatar destinação até: ';
+//    }else{
+//        return 'Destinação ';
+//    }
+//
+//}
+    ////////////////////////FIM FUNCAO
+
+////////////////////INICIO MOSTRAR O CULTIVAR RECEBIDO EM UMA SAFRA PAPEL AGRICULTOR////////////
+
+function mostrarCultivarRecebido(idsafra){
+    var envio = {
+    metodo: "GET_POR_IDSAFRA",
+    idsafra: idsafra
+    };
+
+    //chama a requisicao do servidor, o resultado é listado em uma tabela
+    requisicao("safra/buscar", envio, function(dadosRetorno) {
+//            $('#listaDeMembros').empty();
+        if(dadosRetorno.sucesso){
+
+            c(JSON.stringify(dadosRetorno.data));
+            //chama a funcao que mostra a pagina amostragem
+            abrirPageAmostragem('Cultivar recebido', dadosRetorno.data.nomecultivar+'<i class="fa fa-leaf button-icon-right" data-position="top"></i>', '<div class="widget-container content-area vertical-col"><div class="widget scale-image d-margins marginTopoImg" data-uib="media/img" data-ver="0"><figure class="figure-align"><img src='+dadosRetorno.data.imagem+'><figcaption data-position="bottom"></figcaption></figure></div></div>            <span class="uib_shim"></span>                <div class="col single-col" data-uib="layout/col" data-ver="0"><div class="widget-container content-area vertical-col"><div class="tarea widget d-margins" data-uib="media/text" data-ver="0" ><div class="widget-container left-receptacle"></div><div class="widget-container right-receptacle"></div><div class="text-container">          <hr><p class="cinza">Safra: '+dadosRetorno.data.safra+'</p><p>Data recebimento: '+dadosRetorno.data.datareceb+'</p><p class="cinza">Qtd recebida: '+dadosRetorno.data.qtdrecebida+' '+dadosRetorno.data.grandeza+'</p><p>Status da safra: '+dadosRetorno.data.descricao_status+'</p><hr> '+botoesRelatarSafra(dadosRetorno.data.statussafra)+'       </div></div><span class="uib_shim"></span></div></div>');
+
+        }else{
+            //retira o painel loading
+            window.spinnerplugin.hide();
+            navigator.notification.alert(dadosRetorno.mensagem, function(){
+                iniciarGerenciador();
+            },"Erro!", "Sair");
+
+        }
+
+    });
+}
+
+////////////////////FIM MOSTRAR O CULTIVAR RECEBIDO EM UMA SAFRA PAPEL AGRICULTOR////////////
+
+/////////INICIO TESTE SE A SAFRA ESTA EM ABERTA AINDA//////////////
+function botoesRelatarSafra(status){
+
+    var retorno = "";
+
+    switch(status){
+        case 1:
+            retorno =  '<button id="relatarColheita" class="btn widget d-margins btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="fa fa-cube button-icon-left" data-position="left"></i>Relatar colheita</button>';
+            break;
+        case 2:
+        case 3:
+            retorno =  '<button id="relatarColheita" class="btn widget d-margins btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="fa fa-cube button-icon-left" data-position="left"></i>Relatar colheita</button> <button id="relatarDestinacao" class="btn widget d-margins btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="fa fa-truck button-icon-left" data-position="left"></i>Relatar destinação</button>';
+            break;
+        case 4:
+        case 5:
+            retorno =  '<button id="relatarDestinacao" class="btn widget d-margins btn-warning" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="fa fa-truck button-icon-left" data-position="left"></i>Relatar destinação</button>';
+            break;
+        default:
+            retorno = "";
+            break;
+    }
+
+
+    return retorno;
+}
+/////////FIM INICIO TESTE SE A SAFRA ESTA EM ABERTA AINDA//////////////
+
 ////////// FIM FUNCOES PADROES USADAS PELO HARDWARE DO APARELHO E ELEMENTOS HTML///////////////////////
+
+//////////////////// FUNCOES USADAS PELO GERENCIADOR//////////////////////////////////////////
+//INICIAR GERENCIADOR
+ function iniciarGerenciador(){
+
+     listarEstoqueGerenciador();
+     window.activate_page("#page_gerenciador");
+     $("#page_gerenciador").scrollTop(0);
+     //desativa o painel central para dar efeito fade
+     $('#uib_w_154').hide();
+     //desativa os paineis
+     $('.paineisGerenciador').hide();
+     //ativa o painel inicial que eh o de estoque
+     $("#uib_w_123").show();
+     //inicia o painel central
+     $('#uib_w_154').fadeIn();
+     window.spinnerplugin.hide();
+ }
+
+//LISTA ESTOQUE DA UNIDADE PAPEL GERENCIADOR
+function listarEstoqueGerenciador(){
+
+    var Sessao = window.getSessao();
+    var envio = {
+            metodo: "TODOS",
+            idunidade: Sessao.idunidade
+        };
+
+    //chama a requisicao do servidor, o resultado é listado em uma tabela
+    requisicao("estoque/listar", envio, function(dadosRetorno) {
+        if(dadosRetorno.sucesso){
+
+            $('#itensEstoqueGerenciador').empty();
+            $.each(dadosRetorno.data, function(i, valor){
+//                items += "<tr><td>"+valor.idcultivar+"</td><td>"+valor.nomecultivar+"</td><td>"+valor.quantidade+"</td><td>"+valor.grandeza+"</td></tr>";
+                $('#itensEstoqueGerenciador').append('<a value="'+valor.idcultivar+'" class="list-group-item widget " data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+valor.nomecultivar+'<i class="amarelo glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text">'+valor.quantidade+' '+valor.grandeza+'</p></a>');
+            });
+
+            //retira o painel loading
+             window.spinnerplugin.hide();
+        }else{
+            //retira o painel loading
+            window.spinnerplugin.hide();
+            navigator.notification.alert(dadosRetorno.mensagem, function(){},"Erro!", "Sair");
+
+        }
+
+    });
+
+
+}
+//FIM LISTA ESTOQUE DA UNIDADE PAPEL GERENCIADOR
+
+//LISTA ESTOQUE DA UNIDADE PAPEL ENTREVISTADOR
+function listarEstoqueEntrevistador(){
+
+    var Sessao = window.getSessao();
+    var envio = {
+            metodo: "TODOS",
+            idunidade: Sessao.idunidade
+        };
+
+    //chama a requisicao do servidor, o resultado é listado em uma tabela
+    requisicao("estoque/listar", envio, function(dadosRetorno) {
+        if(dadosRetorno.sucesso){
+            $('#itensEstoqueEntrevistador').empty();
+            $.each(dadosRetorno.data, function(i, valor){
+//                items += "<tr><td>"+valor.idcultivar+"</td><td>"+valor.nomecultivar+"</td><td>"+valor.quantidade+"</td><td>"+valor.grandeza+"</td></tr>";
+                $('#itensEstoqueEntrevistador').append('<a value="'+valor.idcultivar+'" class="list-group-item widget " data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+valor.nomecultivar+'<i class="amarelo glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text">'+valor.quantidade+' '+valor.grandeza+'</p></a>');
+            });
+
+            //retira o painel loading
+//             window.spinnerplugin.hide();
+        }else{
+            //retira o painel loading
+            window.spinnerplugin.hide();
+            navigator.notification.alert(dadosRetorno.mensagem, function(){},"Erro!", "Sair");
+
+        }
+
+    });
+
+}
+//FIM LISTA ESTOQUE DA UNIDADE PAPEL ENTREVISTADOR
+
+//LISTA OS AGRICULTORES DA UNIDADE GERENCIADOR
+function listarAgricultoresUnidade(lista){
+
+    var Sessao = window.getSessao();
+    var envio = {
+        metodo: "TODOS_DA_UNIDADE",
+        usuario: Sessao.usuario,
+        sessao: Sessao.sessao,
+        idunidade: Sessao.idunidade
+    };
+
+    //chama a requisicao do servidor, o resultado é listado em uma tabela
+    requisicao("agricultor/listar", envio, function(dadosRetorno) {
+
+        if(dadosRetorno.sucesso){
+
+//            sessionStorage.setItem('listaAgricultores', JSON.stringify(listaAgricultores));
+            $(lista).empty();
+
+            $.each(dadosRetorno.data, function(i, valor){
+                $(lista).append( '<a value="'+valor.idpessoa+'" class="list-group-item widget " data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+valor.nome+'<i class="amarelo glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text"> '+valor.sobrenome+'</p><p class="list-group-item-text"> RG: '+valor.rg+'</p><p class="list-group-item-text">CPF: '+valor.cpf+'</p></a>');
+
+            });
+
+//item += "<tr><td>"+valor.idpessoa+"</td><td>"+valor.nome+"</td><td>"+valor.sobrenome+"</td><td>"+valor.rg+"</td><td>"+valor.cpf+"</td><td>"+valor.telefone1+"</td><td>"+valor.nomeunidade+"</td></tr>";
+
+
+             //retira o painel loading
+             window.spinnerplugin.hide();
+        }else{
+            //retira o painel loading
+            window.spinnerplugin.hide();
+            navigator.notification.alert(dadosRetorno.mensagem, function(){},"Erro!", "Sair");
+
+        }
+
+    });
+
+
+}
+//FIM LISTA OS AGRICULTORES DA UNIDADE
+
+    //function listarPropriedadesBackup(){
+//    var backupPropriedades = [];
+//    var item;
+//
+//    $('.uib_w_363').empty();
+//    if(localStorage.getItem('backupPropriedades')){
+//        backupPropriedades = JSON.parse(localStorage.getItem('backupPropriedades'));
+//
+//        $.each(backupPropriedades, function(i){
+//
+//            item = '<a class="list-group-item widget uib_w_364" data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="fa fa-briefcase">&nbsp;</span>'+backupPropriedades[i].nomepropriedade+'<i class=" amarelo glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text idpropriedadeBackup" hidden> '+backupPropriedades[i].idpropriedade+'</p></a>';
+//
+//            $('.uib_w_363').append(item);
+//        });
+//    }else{
+//        item = '<a id="infoSemBackup" class="list-group-item widget " data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;&nbsp;&nbsp;Não contém propriedades armazenadas!</h4></a>';
+//
+//        $('.uib_w_363').append(item);
+//    }
+//
+//
+//}
+
+////////////////////////////////FIM FUNCOES USADAS PELO GERENCIADOR///////////////////////
 
 //////////////FUNCAO HARDWARE, CAPTURA DO BOTAO VOLTAR/////////////////////////////////////////////////
  function onBackKeyDown()
  {
-
-
-
-
-//     //esconde o menu hambueguer
-//     function escondeMenuHamb(item){
-//
-//         var esconder = true;
-//         if($('#'+item).is(':visible') && $('.botaoMenu').is(':visible')){
-//             $('#'+item).collapse('hide');
-//             esconder= false;
-//         }
-//         return esconder;
-//     }
-//
-
-
-
-
-
-     switch(window.verificarPagina()){
+     switch(verificarPagina()){
          //pagina inicial
          case '#mainpage':
              fecharApp();
@@ -110,7 +608,7 @@ function iniciarAgricultor(){
 
          //pagina gerenciador
          case '#page_gerenciador':
-             if(!window.escondeMenuHamburguer("#bs-navbar-2")){
+             if(!escondeMenuHamburguer("#bs-navbar-2")){
                  //se estiver no inicio pede para sair do gerenciador
                  if($('.paineisGerenciador:visible').attr("id") === 'uib_w_123'){
                     fecharApp();
@@ -124,7 +622,7 @@ function iniciarAgricultor(){
 
          //pagina entrevistador
          case '#page_entrevistador':
-             if(!window.escondeMenuHamburguer("#bs-navbar-3")){
+             if(!escondeMenuHamburguer("#bs-navbar-3")){
                  //se estiver no inicio pede para sair do gerenciador
                  if($('.paineisEntrevistador:visible').attr("id") === 'uib_w_601'){
                      fecharApp();
@@ -135,7 +633,7 @@ function iniciarAgricultor(){
              break;
 
          case '#page_agricultor':
-             if(!window.escondeMenuHamburguer("#bs-navbar-1")){
+             if(!escondeMenuHamburguer("#bs-navbar-1")){
                  //se estiver no inicio pede para sair do gerenciador
                  if($('.paineisAgricultor:visible').attr("id") === 'uib_w_265'){
                     fecharApp();
@@ -144,8 +642,7 @@ function iniciarAgricultor(){
                  }
              }
              break;
-
-         case '#page_configuracoes':
+         case '#page_amostragem':
              history.go(-1);
              break;
 
@@ -158,175 +655,6 @@ function iniciarAgricultor(){
              break;
      }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//     //sobre
-//     }else if($('#modalSobre').is(":visible")){
-//        $('#modalSobre').modal('toggle');
-//
-//     //voltar dados cultivar agricultor
-//     }else if($('.uib_w_310').is(":visible")){
-//         $('.uib_w_310').modal('toggle');
-//
-////         $('.uib_w_401').fadeOut(100, function(evt){
-////            activate_page("#page_gerenciador");
-////            $("#uib_w_154").fadeIn(100);
-////         });
-//
-//
-//    //pagina login
-//     }else if($('#page_login').is(":visible")){
-//         activate_page("#mainpage");
-//         $('#uib_w_133').hide();
-//         $('#uib_w_133').fadeIn(100);
-//    //pagina cadastro
-//     }else if($('#page_2').is(":visible")){
-//        if(window.localStorage.getItem("logSessao")){
-//            activate_page("#page_gerenciador");
-//            $('#uib_w_154').hide();
-//            $('#uib_w_154').fadeIn(100);
-//        }else{
-//
-//            $(".camposcadastro").val("");
-//            activate_page("#mainpage");
-//            $('#uib_w_133').hide();
-//            $('#uib_w_133').fadeIn(100);
-//        }
-//
-//     //pagina inicial agricultor, cultivares recebidos
-//     }else if($('#recebidos').is(":visible") && escondeMenuHamb('bs-navbar-1')){
-//         navigator.notification.confirm(
-//            'Deseja fechar o app?', // message
-//            function(buttonIndex) {
-//                if(buttonIndex == 2){
-//                    navigator.app.exitApp();
-//                }
-//            },            // callback to invoke with index of button pressed
-//            'Confirmação',           // title
-//            ['Cancelar', 'Fechar']     // buttonLabels
-//         );
-//     //pagina safras agricultor
-//     }else if($('#safra').is(":visible") && escondeMenuHamb('bs-navbar-1')){
-//         $('#safra').fadeOut(100, function(evt){
-//            $("#recebidos").fadeIn(100);
-//             window.console.log('requisicao');
-//        });
-//     //pagina relatorios
-//     }else if($('#relatorios').is(":visible") && escondeMenuHamb('bs-navbar-1')){
-//          $('#relatorios').fadeOut(100, function(evt){
-//            $("#recebidos").fadeIn(100);
-//        });
-//     //pagina relatar cultivar
-//     }else if($('#page_6').is(":visible") && escondeMenuHamb('bs-navbar-1')){
-//            if(window.navigator.connection.type != 'none'){
-//                window.servArmazenarCulRecebdo(window.getIdPessoa(), window.getSessao());
-//
-//            }
-//
-//         //voltar a lista de cultivares recebidos
-//        if($('.uib_w_250').is(':visible')){
-//            $('.uib_w_250').fadeOut(100, function(evt){
-//                activate_page("#page_agricultor");
-//                $("#recebidos").hide();
-//                $("#recebidos").fadeIn(100);
-//                $("#page_agricultor").scrollTop(0);
-//                //sessionStorage.removeItem("indiceSelecionado");
-//                window.sessionStorage.clear();
-//            });
-//        }else if($('.uib_w_416').is(':visible')){
-//            $('.uib_w_416').fadeOut(100, function(evt){
-//
-//                $(".uib_w_250").fadeIn(100);
-//            });
-//        }else{
-//            $('.uib_w_418').fadeOut(100, function(evt){
-//
-//                $(".uib_w_250").fadeIn(100);
-//            });
-//        }
-//
-////     //pagina de configuracoes
-//     }else if($('#page_configuracoes').is(":visible")){
-//
-//         if(window.papel === "a"){
-//             activate_page("#page_agricultor");
-//         }else if(window.papel === "e" || window.papel === "g"){
-//             activate_page("#page_gerenciador");
-//         }else{
-//             window.clearGoMainPage();
-//         }
-//     //inicio entrevistador, estoque
-//     }else if($('#uib_w_123').is(":visible") && escondeMenuHamb('bs-navbar-2')){
-//
-//
-//         navigator.notification.confirm(
-//            'Deseja fechar o app?', // message
-//            function(buttonIndex) {
-//                if(buttonIndex == 2){
-//                    navigator.app.exitApp();
-//                }
-//            },            // callback to invoke with index of button pressed
-//            'Confirmação',           // title
-//            ['Cancelar', 'Fechar']     // buttonLabels
-//         );
-//
-//     //lista agricultores papel entrevistador var t = ["#uib_w_116","#uib_w_123", "#uib_w_361", "#uib_w_378"];
-//     }else if($('#uib_w_116').is(":visible") && escondeMenuHamb('bs-navbar-2')){
-//         $('#uib_w_154').fadeOut(100, function(evt){
-//             $('#uib_w_116').hide();
-//             $('#uib_w_123').show();
-//             $("#uib_w_154").fadeIn(100);
-//         });
-//
-//       //entrevistador
-//     }else if($('#uib_w_361').is(":visible") && escondeMenuHamb('bs-navbar-2')){
-//         $('#uib_w_154').fadeOut(100, function(evt){
-//             $('#uib_w_361').hide();
-//             $('#uib_w_123').show();
-//             $("#uib_w_154").fadeIn(100);
-//
-//         });
-//     //entrevistador lista de propriedade do agricultor
-//     }else if($('#uib_w_378').is(":visible") && escondeMenuHamb('bs-navbar-2')){
-//         $('#uib_w_154').fadeOut(100, function(evt){
-//             $('#uib_w_378').hide();
-//             $('#uib_w_116').show();
-//             $("#uib_w_154").fadeIn(100);
-//
-//         });
-//     //modal relatar colheita e destinacao entrevistador
-//     }else if($('.uib_w_397').is(":visible")){
-//          $('.uib_w_397').modal('toggle');
-//
-//        $('.uib_w_413').children('select').val('Kilo(s)');
-//        $('.uib_w_400').children('select').val('Consumo');
-//        $('.uib_w_412').children('input').val('');
-//        $('.uib_w_409').children('input').val('');
-//        $('.uib_w_398').children('select').val('Kilo(s)');
-//        $('.uib_w_405').children('div .text-container').empty().append('<p id="maisDestinacao"><span class=" fa fa-plus"></span>&nbsp;&nbsp; destinação</p><hr>');
-//
-//     //entrevistador dados da propriedade
-//     }else if($('#page_7').is(":visible")){
-//         $('.uib_w_401').fadeOut(100, function(evt){
-//            activate_page("#page_gerenciador");
-//            $("#uib_w_154").fadeIn(100);
-//         });
-//
-//     }
  }
 
 
@@ -335,32 +663,31 @@ function iniciarAgricultor(){
  function register_event_handlers()
  {
 
-     //funcao somente para fins de teste
-     function c(msg){
-         window.console.log(msg);
-     }
+
 
 //////////////FUNCOES PADROES USASAS EM TODOS OS NIVEIS DE USUARIOS//////////////////
-     //botao do navbar sair
-//     $(document).on("click", "#page_entrevistador", function(evt)
+
+//     $(document).on("click", "#page_agricultor", function(evt)
 //     {
-//         if($('#bs-navbar-1').is(':visible') || $('#bs-navbar-2').is(':visible') || $('#bs-navbar-3').is(':visible')){
-//           navigator.notification.alert("aberto", function(){},"Erro!", "Sair");
+//         if($('#bs-navbar-1').is(":visible")){
+//             $('#bs-navbar-1').collapse("hide");
 //         }
 //
 //         return false;
 //     });
+//
 
 
-     function verificarNavBar(){
-        if($('#bs-navbar-1').is(':visible')){
-             return '#bs-navbar-1';
-        }else if($('#bs-navbar-2').is(':visible')){
-             return '#bs-navbar-2';
-        }else{
-             return '#bs-navbar-2';
-        }
-     }
+ //verificar qual navbar esta aberta
+ function verificarNavBar(){
+    if($('#bs-navbar-1').is(':visible')){
+         return '#bs-navbar-1';
+    }else if($('#bs-navbar-2').is(':visible')){
+         return '#bs-navbar-2';
+    }else{
+         return '#bs-navbar-3';
+    }
+ }
 //////////////FIM DE FUNCOES PADROES USASAS EM TODOS OS NIVEIS DE USUARIOS//////////////////
 
  //////////////INICIO PAGINA CONFIGURACOES//////////////////
@@ -368,7 +695,7 @@ function iniciarAgricultor(){
      //botao do navbar sair
      $(document).on("click", ".sair", function(evt)
      {
-         window.escondeMenuHamburguer(verificarNavBar());
+         escondeMenuHamburguer(verificarNavBar());
 
          navigator.notification.confirm(
             'Deseja sair?', // message
@@ -393,8 +720,11 @@ function iniciarAgricultor(){
      //botao do navbar configuracoes
      $(document).on("click", ".configuracoes", function(evt)
      {
-         window.escondeMenuHamburguer(verificarNavBar());
-         activate_page("#page_configuracoes");
+         escondeMenuHamburguer(verificarNavBar());
+
+         //chama a funcao que mostra a pagina amostragem
+         abrirPageAmostragem('Configurações', 'Sistema <i class="fa fa-info-circle button-icon-right" data-position="top"></i>', '<div class="col  single-col" data-uib="layout/col" data-ver="0"><div class="widget-container content-area vertical-col"><div class="table-thing widget d-margins" data-uib="twitter%20bootstrap/select" data-ver="1"><label class="narrow-control label-top-left">Papel de Parede:</label><select id="papelDeParede" class="wide-control form-control default input-lg"><option>Papel de parede 1</option><option>Papel de parede 2</option><option>Papel de parede 3</option><option>Papel de parede 4</option><option>Papel de parede 5</option><option>Papel de parede 6</option><option>Papel de parede 7</option><option>Papel de parede 8</option></select></div><div class="table-thing widget d-margins" data-uib="twitter%20bootstrap/select" data-ver="1"><label class="narrow-control label-top-left">Localidade:</label><select class="wide-control form-control default input-lg"><option>Brasil</option></select></div><div class="table-thing widget d-margins" data-uib="twitter%20bootstrap/select" data-ver="1"><label class="narrow-control label-top-left">Linguagem:</label><select class="wide-control form-control default"><option>Português-BR</option></select></div><span class="uib_shim"></span></div></div>');
+
 
          return false;
      });
@@ -403,41 +733,51 @@ function iniciarAgricultor(){
      $(document).on("click", ".sobre", function(evt)
      {
 
-        window.escondeMenuHamburguer(verificarNavBar());
-        $("#modalSobre").modal("toggle");
+        escondeMenuHamburguer(verificarNavBar());
+
+        //chama a funcao que mostra a pagina amostragem
+        abrirPageAmostragem('BioID', 'Sobre <i class="fa fa-info-circle button-icon-right" data-position="top"></i>', '<div class="text-container"><p>BioID applicativo de gerenciamento de produtos biofortificados.</p><hr><p>Desenvolvido pela Fundetec em parceria com a Embrapa, dentro do projeto BioFORT.</p><hr><p>Versão: 0.0.91 (Build Teste Alfa)</p><p>Sistema Operacional: Android</p></div><hr><div class="widget scale-image d-margins" data-uib="media/img" data-ver="0"><figure class="figure-align"><img src="images/LOGOS.png"><figcaption data-position="bottom"></figcaption></figure></div>');
+
 
         return false;
      });
 
 
 
-//    /* button  selecionar um papel de parede */
-//    $(document).on("click", "#uib_w_146", function(evt)
-//    {
-//         $("#modalSobre").modal("toggle");
-//         return false;
-//    });
 
     /* button  selecionar um papel de parede */
-    $("#papelDeParede").change(function(){
+    $(document).on("change", "#papelDeParede", function(evt){
 
-         if($("#papelDeParede").val() === "Papel de parede 1"){
-             $(".backgroundInicial").css("background-image", 'url("images/background1.jpg")');
-         }else if($("#papelDeParede").val() === "Papel de parede 2"){
-             $(".backgroundInicial").css("background-image", 'url("images/background2.jpg")');
-         }else if($("#papelDeParede").val() === "Papel de parede 3"){
-             $(".backgroundInicial").css("background-image", 'url("images/background3.jpg")');
-         }else if($("#papelDeParede").val() === "Papel de parede 4"){
-             $(".backgroundInicial").css("background-image", 'url("images/background4.jpg")');
-         }else if($("#papelDeParede").val() === "Papel de parede 5"){
-             $(".backgroundInicial").css("background-image", 'url("images/background5.jpg")');
-         }else if($("#papelDeParede").val() === "Papel de parede 6"){
-             $(".backgroundInicial").css("background-image", 'url("images/background6.jpg")');
-         }else if($("#papelDeParede").val() === "Papel de parede 7"){
-             $(".backgroundInicial").css("background-image", 'url("images/background7.jpg")');
-         }else {
-             $(".backgroundInicial").css("background-image", 'url("images/background8.jpg")');
-         }
+        switch($(this)[0].selectedIndex){
+            case 0:
+                $(".backgroundInicial").css("background-image", 'url("images/background1.jpg")');
+                break;
+            case 1:
+                $(".backgroundInicial").css("background-image", 'url("images/background2.jpg")');
+                break;
+            case 2:
+                $(".backgroundInicial").css("background-image", 'url("images/background3.jpg")');
+                break;
+            case 3:
+                $(".backgroundInicial").css("background-image", 'url("images/background4.jpg")');
+                break;
+            case 4:
+                $(".backgroundInicial").css("background-image", 'url("images/background5.jpg")');
+                break;
+            case 5:
+                $(".backgroundInicial").css("background-image", 'url("images/background6.jpg")');
+                break;
+            case 6:
+                $(".backgroundInicial").css("background-image", 'url("images/background7.jpg")');
+                break;
+            case 7:
+                $(".backgroundInicial").css("background-image", 'url("images/background8.jpg")');
+                break;
+            default:
+                $(".backgroundInicial").css("background-image", 'url("images/background1.jpg")');
+                break;
+        }
+
     });
 
 
@@ -450,9 +790,9 @@ function iniciarAgricultor(){
     $(document).on("click", "#uib_w_3", function(evt)
     {
 
-         activate_page("#page_login");
-        $("#username").val("gerenciador");
-        $("#password").val("gerenciador");
+        activate_page("#page_login");
+        $("#username").val("");
+        $("#password").val("");
         $("#formLogin").validator();
         $('#alerta').hide();
 //         $('#uib_w_7').fadeIn(100);
@@ -517,7 +857,8 @@ $(document).on("submit", "#formLogin", function(e){
                     }).done(function (){
                         switch(dadosRetorno.data.grupo){
                             case "administradores":
-                                activate_page("#page_erro");
+                                //chama a funcao que mostra a pagina amostragem
+                                abrirPageAmostragem('BioID', 'Segurança<i class="fa fa-shield button-icon-right" data-position="top"></i>', '<div class="text-container text-center"><hr><span class="fa fa-lock amarelo" aria-hidden="true" style="font-size: 100px;"></span><hr><h4>O app não suporta este nível de acesso!</h4><hr></div>');
                                 break;
                             case "gerenciadores":
                                 iniciarGerenciador();
@@ -580,9 +921,25 @@ $(document).on("submit", "#formLogin", function(e){
 
     //esqueceu a senha
      $(document).on("click", "#esqueceuSenha", function(evt){
-         navigator.notification.alert("daniel@fundetec.org.br",function(){},"Suporte", "Sair");
+//         navigator.notification.alert("(usuario=gerenciador,senha=gerenciador) (usuario=entrevistador,senha=entrevistador) (usuario=agricultor,senha=agricultor) ou entre em contato daniel@fundetec.org.br",function(){},"Suporte(Teste alfa)", "Sair");
 
-//         navigator.app.loadUrl('http://'+window.ipServidor+'/Projeto_BioID-war/recuperarsenha.html', { openExternal:true });
+
+
+
+         navigator.notification.confirm(
+             'Abrir link externo? - (usuario=gerenciador,senha=gerenciador) (usuario=entrevistador,senha=entrevistador) (usuario=agricultor,senha=agricultor)', // message
+             function(buttonIndex) {
+                 if(buttonIndex === 2){
+                     navigator.app.loadUrl(window.ipServidor+'/seguranca/recuperarsenha.html', { openExternal:true });
+                 }
+             },            // callback to invoke with index of button pressed
+             'Suporte',           // title
+             ['Não', 'Sim']     // buttonLabels
+         );
+
+
+
+
 
      });
 
@@ -590,7 +947,7 @@ $(document).on("submit", "#formLogin", function(e){
 
 
 
-////////////PAGINA 4 GERENCIADOR//////////////
+////////////INICIO EVENTOS PAGINA GERENCIADOR//////////////
 
     //funcao que verifica o box e mostra o qual foi selecionado
     function mostrarSelecionadoGerenciador(selecionado){
@@ -606,7 +963,7 @@ $(document).on("submit", "#formLogin", function(e){
     //funcao de inicio do usuario gerenciador
     function retornaInicioGerenciador(){
         //lista o estoque, funcao no script app.js
-        window.listarEstoqueGerenciador();
+        listarEstoqueGerenciador();
         mostrarSelecionadoGerenciador('#uib_w_123');
      }
 
@@ -633,7 +990,7 @@ $(document).on("submit", "#formLogin", function(e){
 
 //         mostrarPainelAgricultor();
 
-         window.listarAgricultoresUnidade('#listaAgricultoresGerenciador');
+         listarAgricultoresUnidade('#listaAgricultoresGerenciador');
          mostrarSelecionadoGerenciador('#uib_w_116');
          return false;
     });
@@ -650,13 +1007,13 @@ function listarEquipe(){
         idunidade: Sessao.idunidade
     };
     //chama a requisicao do servidor, o resultado é listado em uma tabela
-    window.requisicao("usuario/listar", envio, function(dadosRetorno) {
+    requisicao("usuario/listar", envio, function(dadosRetorno) {
         $('#listaDeMembros').empty();
         if(dadosRetorno.sucesso){
 
             $.each(dadosRetorno.data, function(i, valor){
 
-                $('#listaDeMembros').append( '<a class="list-group-item widget " data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+valor.nome+'<i class="amarelo glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text"> '+valor.sobrenome+'</p><p class="list-group-item-text">Grupo: '+valor.grupo+'</p><p class="list-group-item-text usuarioOculto" hidden>'+valor.idpessoa+'</p></a>');
+                $('#listaDeMembros').append( '<a value="'+valor.idpessoa+'" class="list-group-item widget " data-uib="twitter%20bootstrap/list_item" data-ver="1"><h4 class="list-group-item-heading">'+valor.nome+'<i class="amarelo glyphicon glyphicon-chevron-right button-icon-right" data-position="top"></i></h4><p class="list-group-item-text"> '+valor.sobrenome+'</p><p class="list-group-item-text">Grupo: '+valor.grupo+'</p></a>');
 
             });
 
@@ -675,9 +1032,61 @@ function listarEquipe(){
 
 
 
+     /* click em um item na lista de cultivares no estoque da unidade */
+    $(document).on("click", "#itensEstoqueGerenciador > a", function(evt)
+    {
+        mostrarCultivar($(this).attr("value"));
+        return false;
+    });
+
+     /* click em um item na lista de agricultores pagina gerenciador */
+    $(document).on("click", "#listaAgricultoresGerenciador > a", function(evt)
+    {
+
+        mostarAgricultor($(this).attr("value"));
+
+        return false;
+    });
+
+    /* click em um item na lista da equipe pagina gerenciador */
+    $(document).on("click", "#listaDeMembros > a", function(evt)
+    {
+
+        var envio = {
+        metodo: "GET_MEMBRO",
+        idpessoa: $(this).attr("value")
+        };
+
+        //chama a requisicao do servidor, o resultado é listado em uma tabela
+        requisicao("usuario/buscar", envio, function(dadosRetorno) {
+//            $('#listaDeMembros').empty();
+            if(dadosRetorno.sucesso){
+                //popula a pagina amostragem
+                $('#tituloAmostragem').empty().text('Membro da equipe');
+                //nome do cultivar na pagina amostragem
+                $('#tituloBoxAmostragem').empty().append(dadosRetorno.data.nome+' '+dadosRetorno.data.sobrenome+'<i class="fa fa-user button-icon-right" data-position="top"></i>');
 
 
+                $("#corpoAmostragem").empty().append('<div class="col single-col" data-uib="layout/col" data-ver="0"><div class="widget-container content-area vertical-col"><div class="tarea widget d-margins" data-uib="media/text" data-ver="0" ><div class="widget-container left-receptacle"></div><div class="widget-container right-receptacle"></div><div class="text-container">          <p>Grupo: '+dadosRetorno.data.grupo+'</p><p class="cinza">Unidade de atuação: '+dadosRetorno.data.nomeunidade+'</p><p>CPF: '+dadosRetorno.data.cpf+'</p><p class="cinza">RG: '+dadosRetorno.data.rg+'</p><p>Apelido: '+dadosRetorno.data.apelido+'</p><p class="cinza">Data nascimento: '+dadosRetorno.data.datanascimento+'</p><p>Sexo: '+dadosRetorno.data.sexo+'</p><p class="cinza">Telefone1: '+dadosRetorno.data.telefone1+'</p><p>Telefone2: '+dadosRetorno.data.telefone2+'</p><p class="cinza">Email: '+dadosRetorno.data.email+'</p><p>Estado civíl: '+dadosRetorno.data.estadocivil+'</p><p class="cinza">Escolaridade: '+dadosRetorno.data.escolaridade+'</p><hr>       </div></div><span class="uib_shim"></span></div></div>');
 
+
+                //retira o painel loading
+                window.spinnerplugin.hide();
+                //ativa a pagina
+                activate_page("#page_amostragem");
+
+            }else{
+                //retira o painel loading
+                window.spinnerplugin.hide();
+                navigator.notification.alert(dadosRetorno.mensagem, function(){
+                    iniciarGerenciador();
+                },"Erro!", "Sair");
+
+            }
+
+        });
+        return false;
+    });
 
 
 ////////////FIM PAGINA GERENCIADOR////////////
@@ -700,7 +1109,7 @@ function listarEquipe(){
      //funcao de inicio do usuario gerenciador
     function retornaInicioEntrevistador(){
         //lista o estoque, funcao no script app.js
-        window.listarEstoqueEntrevistador();
+        listarEstoqueEntrevistador();
         mostrarSelecionadoEntrevistador("#uib_w_601");
      }
 
@@ -714,7 +1123,7 @@ function listarEquipe(){
      /* button  do rodape agricultores */
     $(document).on("click", "#uib_w_6", function(evt)
     {
-        window.listarAgricultoresUnidade("#listaAgricultoresEntrevistador");
+        listarAgricultoresUnidade("#listaAgricultoresEntrevistador");
         mostrarSelecionadoEntrevistador("#uib_w_602");
         return false;
     });
@@ -725,6 +1134,22 @@ function listarEquipe(){
 
         mostrarSelecionadoEntrevistador("#uib_w_606");
          return false;
+    });
+
+    /* click em um item na lista de cultivares no estoque da unidade */
+    $(document).on("click", "#itensEstoqueEntrevistador > a", function(evt)
+    {
+        mostrarCultivar($(this).attr("value"));
+        return false;
+    });
+
+     /* click em um item na lista de agricultores pagina entrevistador */
+    $(document).on("click", "#listaAgricultoresEntrevistador > a", function(evt)
+    {
+
+        mostarAgricultor($(this).attr("value"));
+
+        return false;
     });
 ////////////FIM PAGINA ENTREVISTADOR////////////
 
@@ -737,38 +1162,22 @@ function listarEquipe(){
              $(".paineisAgricultor").hide();
              $(selecionado).show();
              $("#uib_w_149").fadeIn(400);
-             window.spinnerplugin.hide();
+//             window.spinnerplugin.hide();
          });
     }
 
+ /* clicando em um item na lista */
+    $(document).on("click", "#cultivaresRecebidos > a ", function(evt)
+    {
+        mostrarCultivarRecebido($(this).attr("value"));
+
+        return false;
+    });
 
     /* button rodape cultivares recebidos */
     $(document).on("click", "#uib_w_44", function(evt)
     {
-        mostrarSelecionadoAgricultor("#uib_w_265");
-
-
-//        if(!window.escondeMenuHamburguer('bs-navbar-1')){
-//            if(sessionStorage.getItem('indiceSelecionado')){
-//                navigator.notification.confirm(
-//                    'O cultivar não foi relatado, Deseja cancelar?', // message
-//                     testeButtonRecebidos,            // callback to invoke with index of button pressed
-//                    'Confirmação',           // title
-//                    ['Não','Sim']     // buttonLabels
-//                );
-//            }else{
-//                //verifica se existe conexao, se existir baixa do servidor informações
-//                if(navigator.connection.type != 'none'){
-//                    window.servArmazenarCulRecebdo(window.getIdPessoa(), window.getSessao());
-//
-//                }
-//                var t = ["#recebidos","#destinacao", "#colheita", "#relatorios","#safra"];
-//
-//                $(boxFades(t)).fadeOut(100, function(evt){
-//                    $("#recebidos").fadeIn(100);
-//                });
-//            }
-//         }
+        iniciarAgricultor();
 
          return false;
     });
@@ -778,7 +1187,7 @@ function listarEquipe(){
     {
 
        mostrarSelecionadoAgricultor("#uib_w_110");
-//        if(!window.escondeMenuHamburguer('bs-navbar-1')){
+//        if(!escondeMenuHamburguer('bs-navbar-1')){
 //            if(sessionStorage.getItem('indiceSelecionado')){
 //                navigator.notification.confirm(
 //                    'O cultivar não foi relatado, Deseja cancelar?', // message
@@ -806,7 +1215,7 @@ function listarEquipe(){
 
         mostrarSelecionadoAgricultor("#uib_w_610");
 
-//        if(!window.escondeMenuHamburguer('bs-navbar-1')){
+//        if(!escondeMenuHamburguer('bs-navbar-1')){
 //            if(sessionStorage.getItem('indiceSelecionado')){
 //                navigator.notification.confirm(
 //                    'O cultivar não foi relatado, Deseja cancelar?', // message
@@ -834,24 +1243,25 @@ function listarEquipe(){
 
 //////////////PAGINA CONFIGURACOES////////////////
 
-    /* button  voltar */
-    $(document).on("click", "#uib_w_136", function(evt)
-    {
-        var Sessao = window.getSessao();
-        if(Sessao.grupo === "agricultores"){
-             activate_page("#page_agricultor");
-         }else if(Sessao.grupo === "gerenciadores"){
-             activate_page("#page_gerenciador");
-         }else if(Sessao.grupo === "entrevistadores"){
-             activate_page("#page_entrevistador");
-         }else{
-             navigator.notification.alert("Erro de memória do dispositivo!", function(){
-                 window.clearGoMainPage();
-             },"Erro!", "Sair");
-
-         }
-         return false;
-    });
+//    /* button  voltar */
+//    $(document).on("click", "#uib_w_136", function(evt)
+//    {
+////        var Sessao = window.getSessao();
+////        if(Sessao.grupo === "agricultores"){
+////             activate_page("#page_agricultor");
+////         }else if(Sessao.grupo === "gerenciadores"){
+////             activate_page("#page_gerenciador");
+////         }else if(Sessao.grupo === "entrevistadores"){
+////             activate_page("#page_entrevistador");
+////         }else{
+////             navigator.notification.alert("Erro de memória do dispositivo!", function(){
+////                 window.clearGoMainPage();
+////             },"Erro!", "Sair");
+////
+////         }
+//        history.go(-1);
+//         return false;
+//    });
 //////////////FIM PAGINA CONFIGURACOES//////////////
 
 
@@ -927,7 +1337,7 @@ function listarEquipe(){
 //    $(document).on("click", "#uib_w_4", function(evt)
 //    {
 //         /*global activate_page */
-//         activate_page("#page_2");
+//         activate_page("#page_cadastro");
 //         $('.uib_w_156').hide();
 //         $('.uib_w_158').hide();
 //         $('.uib_w_172').hide();
@@ -975,7 +1385,7 @@ function listarEquipe(){
 //    $(document).on("click", ".uib_w_62", function(evt)
 //    {
 //         /*global activate_page */
-//         activate_page("#page_2");
+//         activate_page("#page_cadastro");
 //         return false;
 //    });
 //
@@ -983,7 +1393,7 @@ function listarEquipe(){
 //    $(document).on("click", ".uib_w_71", function(evt)
 //    {
 //         /*global activate_page */
-//         activate_page("#page_2");
+//         activate_page("#page_cadastro");
 //         return false;
 //    });
 //
@@ -991,7 +1401,7 @@ function listarEquipe(){
 //    $(document).on("click", ".uib_w_81", function(evt)
 //    {
 //         /*global activate_page */
-//         activate_page("#page_2");
+//         activate_page("#page_cadastro");
 //         return false;
 //    });
 //
@@ -1053,7 +1463,7 @@ function listarEquipe(){
 //    $(document).on("click", ".uib_w_360", function(evt)
 //    {
 //        $('#uib_w_154').fadeOut(100);
-//         activate_page("#page_2");
+//         activate_page("#page_cadastro");
 //
 //         $('.uib_w_156').hide();
 //         $('.uib_w_158').hide();
@@ -1094,18 +1504,18 @@ function listarEquipe(){
 //
 //     $(document).on("click", "#page_agricultor", function(evt)
 //     {
-//         window.escondeMenuHamburguer('bs-navbar-1');
+//         escondeMenuHamburguer('bs-navbar-1');
 //         return false;
 //     });
 //
 //     $(document).on("click", "#page_gerenciador", function(evt)
 //     {
-//         window.escondeMenuHamburguer('bs-navbar-2');
+//         escondeMenuHamburguer('bs-navbar-2');
 //         return false;
 //     });
 //
 //     //esconde o menu hambueguer
-//     function window.escondeMenuHamburguer(item){
+//     function escondeMenuHamburguer(item){
 //
 //         var esconder = false;
 //         if($('#'+item).is(':visible') && $('.botaoMenu').is(':visible')){
@@ -1122,7 +1532,7 @@ function listarEquipe(){
 //    //organiza lista de propriedades com o click da propriedade
 //    $(document).on("click", ".uib_w_286 > li", function(evt)
 //    {
-//        if(!window.escondeMenuHamburguer('bs-navbar-1')){
+//        if(!escondeMenuHamburguer('bs-navbar-1')){
 //
 //            var propriedades = JSON.parse(window.localStorage.getItem("propriedades"));
 //            $(".uib_w_286").append($(this));
@@ -1161,7 +1571,7 @@ function listarEquipe(){
 //        /* listar cultivares recebidos*/
 //    $(document).on("click",".listaCultivar > a", function(evt)
 //    {
-//        if(!window.escondeMenuHamburguer('bs-navbar-1')){
+//        if(!escondeMenuHamburguer('bs-navbar-1')){
 //
 //            var a = $(this).attr("id");
 //            //carrega item que esta no localStorage
@@ -1210,10 +1620,10 @@ function listarEquipe(){
 //                //carega os valores da safra, destinacao e datas de recebimento
 //                $("#statuscultivar").html("<p>Safra: "+cultivarSelecionado.safra+"</p><p>Data recebimento: "+cultivarSelecionado.datareceb+"</p><p>Quantidade recebida: "+cultivarSelecionado.qtdrecebida+" "+cultivarSelecionado.grandeza_recebida+"</p><p>Quantidade colhida: "+cultivarSelecionado.qtdcolhida+" kilo(s)</p><p>Relatar colheita até: "+cultivarSelecionado.prazo_colheita+"</p><p>Quantidade destinada: "+cultivarSelecionado.qtddestinada+" (kilo(s)</p><p>Relatar destinação até: "+cultivarSelecionado.prazo_destinacao+"</p>");
 //
-//                activate_page("#page_6");
+//                activate_page("#page_amostragem");
 //                $('.uib_w_250').hide();
 //                $('.uib_w_250').fadeIn(100);
-//                $("#page_6").scrollTop(0);
+//                $("#page_amostragem").scrollTop(0);
 //            }
 //
 //    }
@@ -1510,7 +1920,7 @@ function listarEquipe(){
 //        /* button  .uib_w_105 */
 //    $(document).on("click", ".uib_w_105", function(evt)
 //    {
-//        if(!window.escondeMenuHamburguer('bs-navbar-1')){
+//        if(!escondeMenuHamburguer('bs-navbar-1')){
 //            var msg;
 //
 //            if($('#relatarPerda').is(':checked')){
@@ -1682,7 +2092,7 @@ function listarEquipe(){
 //
 //
 //     $(document).on("click", ".uib_w_340 > label", function(evt){
-//         if(!window.escondeMenuHamburguer('bs-navbar-1')){
+//         if(!escondeMenuHamburguer('bs-navbar-1')){
 //             var id = $(this).children('input').attr('id');
 //
 //             if(id === "colheitaParcial"){

@@ -58,8 +58,8 @@ app.initEvents = function() {
     // NOTE: initialize your app event handlers, see app.js for a simple event handler example
 
     //escolhe um background aleatorio
-    //window.mudarBackground();
-    //window.verificarConexao();
+    window.mudarBackground();
+    window.verificarConexao();
     //verifica se usuario esta logado em alguma sessao
 //    window.verificaSession();
 

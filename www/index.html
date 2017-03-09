@@ -117,79 +117,6 @@
         </div>
         <!--FIM PAGINA INICIAL-->
 
-        <!--INICIO PAGINA DE CONFIGURACOES-->
-        <div class="upage hidden backgroundInicial" id="page_configuracoes">
-            <div class="upage-outer">
-                <div class="uib-header header-bg container-group inner-element" data-uib="layout/header" data-ver="0">
-                    <h2 style="color:#fff">Configurações</h2>
-                    <div class="widget-container wrapping-col single-centered"></div>
-                    <div class="widget-container content-area horiz-area wrapping-col left">
-                        <button id="uib_w_136" class="btn widget d-margins btn-success" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="glyphicon glyphicon-chevron-left" data-position="icon only"></i>
-                        </button>
-                    </div>
-                    <div class="widget-container content-area horiz-area wrapping-col right"></div>
-                </div>
-                <div class="upage-content ac0 content-area vertical-col left" id="page_25_27">
-                    <div class="panel widget  d-margins panel-success marginTopo" data-uib="twitter%20bootstrap/panel" data-ver="1">
-                        <div class="col single-col" data-uib="layout/col" data-ver="0">
-                            <div class="widget-container content-area vertical-col">
-
-                                <div class="panel widget d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
-                                    <div class="panel-heading">
-                                        <div class="widget-container">
-                                            <div class="tarea widget d-margins" data-uib="media/text" data-ver="0" >
-                                                <div class="widget-container left-receptacle"></div>
-                                                <div class="widget-container right-receptacle"></div>
-                                                <div class="text-container">
-                                                    <p>Sistema<i class="fa fa-gears button-icon-right" data-position="right"></i>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col  single-col" data-uib="layout/col" data-ver="0">
-                                        <div class="widget-container content-area vertical-col">
-
-                                            <div class="table-thing widget d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
-                                                <label class="narrow-control label-top-left">Papel de Parede:</label>
-                                                <select id="papelDeParede" class="wide-control form-control default input-lg" >
-                                                    <option>Papel de parede 1</option>
-                                                    <option>Papel de parede 2</option>
-                                                    <option>Papel de parede 3</option>
-                                                    <option>Papel de parede 4</option>
-                                                    <option>Papel de parede 5</option>
-                                                    <option>Papel de parede 6</option>
-                                                    <option>Papel de parede 7</option>
-                                                    <option>Papel de parede 8</option>
-                                                </select>
-                                            </div>
-                                            <div class="table-thing widget d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
-                                                <label class="narrow-control label-top-left">Localidade:</label>
-                                                <select class="wide-control form-control default input-lg">
-                                                    <option>Brasil</option>
-                                                </select>
-                                            </div>
-                                            <div class="table-thing widget d-margins" data-uib="twitter%20bootstrap/select" data-ver="1">
-                                                <label class="narrow-control label-top-left">Linguagem:</label>
-                                                <select class="wide-control form-control default">
-                                                    <option>Português-BR</option>
-                                                </select>
-                                            </div><span class="uib_shim"></span>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <span class="uib_shim"></span>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!--FIM DA PAGINA CONFIGURACOES-->
-
         <!--INICIO PAGINA LOGIN-->
         <div class="upage hidden backgroundInicial" id="page_login">
             <div class="upage-outer">
@@ -243,7 +170,7 @@
         </div>
 
         <!--INICIO JANELA CADASTRO-->
-        <div class="upage hidden backgroundInicial" id="page_2">
+        <div class="upage hidden backgroundInicial" id="page_cadastro">
             <div class="upage-outer">
                 <div class="uib-header header-bg container-group inner-element uib_w_12 uib-header-fixed" data-uib="layout/header" data-ver="0">
                     <h2 style="color:#fff">Cadastrar</h2>
@@ -575,12 +502,12 @@
                                     <div class="col single-col" data-uib="layout/col" data-ver="0">
                                         <div class="widget-container content-area vertical-col">
 
-                                            <ul class="nav widget d-margins footer-bg nav-tabs" role="tablist" data-uib="twitter%20bootstrap/tab_bar" data-ver="1">
+                                            <ul id="listaPropriedades" class="nav widget d-margins footer-bg nav-tabs" role="tablist" data-uib="twitter%20bootstrap/tab_bar" data-ver="1">
                                                 <li role="presentation" class="widget active" data-uib="twitter%20bootstrap/tab_item" data-ver="1"><a role="tab" data-toggle="tab">Sem propriedades cadastradas</a>
                                                 </li>
 
                                             </ul>
-                                            <div class="list-group widget d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1" id="cultivarRecebido">
+                                            <div id="cultivaresRecebidos" class="list-group widget d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1" >
                                                 <a class="list-group-item allow-badge widget " data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge fa fa-rotate-left"> </span>
                                                     <h4 class="list-group-item-heading">Atualizar lista</h4>
                                                     <p class="list-group-item-text">data recebimento/quantidade</p>
@@ -612,7 +539,7 @@
                                     <div class="col single-col" data-uib="layout/col" data-ver="0">
                                         <div class="widget-container content-area vertical-col">
                                             <div class="list-group widget d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1"><a class="list-group-item allow-badge widget " data-uib="twitter%20bootstrap/list_item" data-ver="1"><span class="badge glyphicon glyphicon-ok"> </span>
-                                            <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;&nbsp;Carregando...</h4>
+                                            <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;&nbsp;Em construção...</h4>
                                             </a>
                                             </div>
                                             <span class="uib_shim"></span>
@@ -875,7 +802,7 @@
 -->
 
                                             <div id="listaAgricultoresGerenciador" class="list-group widget d-margins" data-uib="twitter%20bootstrap/list_group" data-ver="1">
-                                                <a class="list-group-item allow-badge widget uib_w_119" data-uib="twitter%20bootstrap/list_item" data-ver="1">
+                                                <a class="list-group-item allow-badge widget " data-uib="twitter%20bootstrap/list_item" data-ver="1">
                                                     <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;&nbsp;Carregando...</h4>
                                                 </a>
                                             </div>
@@ -944,63 +871,74 @@
         </div>
         <!--FIM PAGINA GERENCIADOR-->
 
-        <!--MODAL ALERTA SOBRE-->
-        <div id="modalSobre" class="modal outer-element" data-uib="twitter%20bootstrap/modal" data-ver="1" data-backdrop="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header" style="background-color:#007a61">
-                        <h4 class="modal-title" style="color:#fff"><span class="fa fa-info-circle"></span>&nbsp;Sobre</h4>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="col uib_col_26 single-col" data-uib="layout/col" data-ver="0">
-                            <div class="widget-container content-area vertical-col">
-                                <div class="tarea widget uib_w_146 d-margins" data-uib="media/text" data-ver="0" name="uib_w_146">
-                                    <div class="widget-container left-receptacle"></div>
-                                    <div class="widget-container right-receptacle"></div>
-                                    <div class="text-container">
-                                        <p>BioID applicativo de gerenciamento de produtos biofortificados.</p>
-
-                                        <p>Desenvolvido pela Fundetec em parceria com a Embrapa, dentro do projeto BioFORT.</p>
-                                    </div>
-                                    <div class="widget scale-image d-margins" data-uib="media/img" data-ver="0">
-                                        <figure class="figure-align">
-                                            <img src="images/LOGOS.png">
-
-                                            <figcaption data-position="bottom"></figcaption>
-                                        </figure>
-                                    </div>
-                                </div>
-                                <span class="uib_shim"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button data-dismiss="modal" class="btn btn-success" type="button">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--FIM MODAL ALERTA SOBRE-->
 
         <script type="text/javascript">
             window.onload = function() {
                 new dgCidadesEstados(document.getElementById('estado'), document.getElementById('cidade'), true);
             }
         </script>
-        <div class="upage hidden backgroundInicial" id="page_6">
+
+        <!--INICIO PAGINA AMOSTRAGEM-->
+        <div class="upage hidden backgroundInicial" id="page_amostragem">
             <div class="upage-outer">
-                <div class="uib-header header-bg container-group inner-element uib_w_241 uib-header-fixed" data-uib="layout/header" data-ver="0">
-                    <h2 style="color:#fff">Cultivar</h2>
+                <!--INICIO NAVBAR PAGINA AMOSTRAGEM-->
+                <div class="uib-header header-bg container-group inner-element uib-header-fixed" data-uib="layout/header" data-ver="0">
+                    <h2 id="tituloAmostragem" style="color:#fff">...</h2>
                     <div class="widget-container wrapping-col single-centered"></div>
                     <div class="widget-container content-area horiz-area wrapping-col left">
-                        <button class="btn widget uib_w_242 d-margins btn-success" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="glyphicon glyphicon-chevron-left" data-position="icon only"></i>
+                        <!--BOTAO VOLTAR AMOSTRAGEM-->
+                        <button onclick="javascript:history.go(-1);" class="btn widget d-margins btn-success" data-uib="twitter%20bootstrap/button" data-ver="1"><i class="glyphicon glyphicon-chevron-left" data-position="icon only"></i>
                         </button>
                     </div>
                     <div class="widget-container content-area horiz-area wrapping-col right"></div>
                 </div>
+                <!--FIM DA NAVABAR PAGINA AMOSTRAGEM-->
                 <div class="upage-content ac0 content-area vertical-col left" id="page_16_65">
-                    <div class="panel widget uib_w_250 d-margins panel-success marginTopo" data-uib="twitter%20bootstrap/panel" data-ver="1">
+                    <!--INICIO BOX PRINCIPAL PAGINA AMOSTRAGEM-->
+                    <div id="uib_w_250" class="panel widget d-margins marginTopo panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
+                        <!-- CABECALHO DO PAINEL-->
+
+                        <!--FIM DO CABECALHO DO PAINEL-->
+                        <!--CORPO DA AMOSTRAGEM-->
+                        <div class="col single-col" data-uib="layout/col" data-ver="0">
+                            <div class="widget-container content-area vertical-col">
+
+<!--                                aaaaaaaa-->
+                                <div class="panel widget d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
+                                    <div class="panel-heading">
+                                        <div class="widget-container">
+                                            <div class="tarea widget  d-margins" data-uib="media/text" data-ver="0" >
+                                                <div class="widget-container left-receptacle"></div>
+                                                <div class="widget-container right-receptacle"></div>
+                                                <div class="text-container">
+                                                    <p id="tituloBoxAmostragem">...<i class="fa fa-user button-icon-right" data-position="top"></i></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col single-col" data-uib="layout/col" data-ver="0">
+                                        <div class="widget-container content-area vertical-col">
+                                            <div class="tarea widget  d-margins" data-uib="media/text" data-ver="0">
+                                                <div class="widget-container left-receptacle"></div>
+                                                <div class="widget-container right-receptacle"></div>
+                                                <div id="corpoAmostragem">
+                                                </div>
+                                            </div>
+                                            <span class="uib_shim"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <span class="uib_shim"></span>
+                                <!--                                aaaaaaaa-->
+                            </div>
+                        </div>
+                        <!--FIM CORPO DA AMOSTRAGEM-->
+                    </div>
+                    <!--FIM BOX PRINCIPAL PAGINA AMOSTRAGEM-->
+
+                    <!--
+                    <div class="panel widget d-margins marginTopo panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
                         <div class="panel-heading">
                             <div class="widget-container">
                                 <div class="tarea widget uib_w_252 d-margins" data-uib="media/text" data-ver="0" name="uib_w_252">
@@ -1131,8 +1069,10 @@
                         </div>
 
                     </div>
+-->
 
-                    <div class="panel widget uib_w_416 d-margins panel-success marginTopo" hidden="" data-uib="twitter%20bootstrap/panel" data-ver="1">
+                    <!--
+                    <div class="panel widget uib_w_416 d-margins panel-success marginTopo" data-uib="twitter%20bootstrap/panel" data-ver="1">
                         <div class="panel-heading">
                             <div class="widget-container">
                                 <div class="tarea widget uib_w_417 d-margins" data-uib="media/text" data-ver="0" name="uib_w_417">
@@ -1183,7 +1123,10 @@
                         </div>
 
                     </div>
-                    <div class="panel widget uib_w_418 d-margins panel-success marginTopo" hidden="" data-uib="twitter%20bootstrap/panel" data-ver="1">
+-->
+
+                    <!--
+                    <div class="panel widget uib_w_418 d-margins panel-success marginTopo" data-uib="twitter%20bootstrap/panel" data-ver="1">
                         <div class="panel-heading">
                             <div class="widget-container">
                                 <div class="tarea widget uib_w_419 d-margins" data-uib="media/text" data-ver="0" name="uib_w_419">
@@ -1247,8 +1190,11 @@
                         </div>
 
                     </div>
+-->
                 </div>
             </div>
+
+            <!--MODAL AMOSTRAGEM-->
             <div class="modal outer-element uib_w_310" data-uib="twitter%20bootstrap/modal" data-ver="1" data-backdrop="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -1282,7 +1228,10 @@
                     </div>
                 </div>
             </div>
+            <!--FIM MODAL AMOSTRAGEM-->
         </div>
+        <!--FIM DA PAGINA AMOSTRAGEM-->
+
         <div class="upage hidden backgroundInicial" id="page_7">
             <div class="upage-outer">
                 <div class="uib-header header-bg container-group inner-element uib_w_385" data-uib="layout/header" data-ver="0">
@@ -1478,51 +1427,6 @@
             </div>
         </div>
 
-        <!--        pagina erro-->
-        <div class="upage hidden" id="page_erro">
-            <div class="upage-outer">
-                <div class="upage-content ac0 content-area vertical-col left" id="page_72_63" style="margin-top:50px;">
-
-                    <div class="panel widget  d-margins panel-default" data-uib="twitter%20bootstrap/panel" data-ver="1">
-                        <div class="col single-col" data-uib="layout/col" data-ver="0">
-                            <div class="widget-container content-area vertical-col">
-                                <div class="tarea widget  d-margins" data-uib="media/text" data-ver="0">
-                                    <div class="widget-container left-receptacle"></div>
-                                    <div class="widget-container right-receptacle"></div>
-                                    <div class="text-container text-center">
-                                        <span class="fa fa-lock amarelo" aria-hidden="true" style="font-size: 100px;">
-
-                                        </span>
-                                        <hr>
-                                        <h4>O app não suporta este nível de acesso!</h4>
-
-                                    </div>
-                                </div>
-                                <span class="uib_shim"></span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="uib-footer uib-footer-fixed footer-bg container-group inner-element " data-uib="layout/footer" data-ver="0">
-                    <h2></h2>
-                    <div class="widget-container wrapping-col single-centered">
-                        <div class="tarea widget  d-margins" data-uib="media/text" data-ver="0">
-                            <div class="widget-container left-receptacle"></div>
-                            <div class="widget-container right-receptacle"></div>
-                            <div class="text-container" onclick="clearGoMainPage()" style="color: #fff;">
-                                <span class="fa fa-reply" aria-hidden="true"></span>&nbsp;Retomar
-                            </div>
-                        </div>
-                    </div>
-                    <div class="widget-container content-area horiz-area wrapping-col left"></div>
-                    <div class="widget-container content-area horiz-area wrapping-col right"></div>
-                </div>
-            </div>
-            <!-- /container -->
-
-        </div>
-
         <!--INICIO PAGINA ENTREVISTADOR-->
         <div class="upage vertical-col left hidden backgroundInicial" id="page_entrevistador">
             <div class="upage-outer">
@@ -1650,8 +1554,9 @@
 
                                 </div>
 
-                                <!--                            FIM DO PAINEL ENTREVISTA-->
-                                <!--                            PAINEL BACKUP ENTREVISTA-->
+                                <!--FIM DO PAINEL ENTREVISTA-->
+
+                                <!--PAINEL BACKUP ENTREVISTA-->
 
                                 <div id="uib_w_378" class="paineisEntrevistador panel widget d-margins panel-success" data-uib="twitter%20bootstrap/panel" data-ver="1">
                                     <div class="panel-heading">
